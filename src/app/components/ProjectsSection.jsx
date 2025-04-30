@@ -4,26 +4,44 @@ import React from 'react';
 
 const projects = [
   {
-    title: "Project Management System",
-    description: "A Python program for managing company projects with efficient organization and tracking capabilities.",
-    tech: ["Python", "MySQL"],
-    link: "https://github.com/Anuja-jayasinghe/Project-manegement-system",
-    github: "https://github.com/Anuja-jayasinghe/Project-manegement-system",
+    title: "EcoAction",
+    description: "An environmental action platform that helps users track and reduce their carbon footprint.",
+    tech: ["React", "Node.js", "MongoDB"],
+    link: "https://ecoaction-demo.vercel.app",
+    github: "https://github.com/Anuja-jayasinghe/EcoAction",
   },
   {
-    title: "NIC Detail Extractor",
-    description: "A Python script that extracts and processes information from Sri Lankan National Identity Card numbers.",
-    tech: ["Python"],
-    link: "https://github.com/Anuja-jayasinghe/NIC-detailExtracter",
-    github: "https://github.com/Anuja-jayasinghe/NIC-detailExtracter",
+    title: "Simple JS Calculator",
+    description: "A clean and intuitive calculator built with vanilla JavaScript, featuring basic arithmetic operations.",
+    tech: ["JavaScript", "HTML", "CSS"],
+    link: "https://simple-js-calculator.vercel.app",
+    github: "https://github.com/Anuja-jayasinghe/Simple_JS_Calculator",
+  },
+  {
+    title: "My Portfolio",
+    description: "A modern, responsive portfolio website showcasing my projects and skills.",
+    tech: ["Next.js", "React", "Tailwind CSS"],
+    link: "https://anuja-portfolio.vercel.app",
+    github: "https://github.com/Anuja-jayasinghe/my-portfolio",
+  },
+  {
+    title: "Chess Academy System",
+    description: "A Java-based management system for chess academies, handling student registrations and course management.",
+    tech: ["Java", "JavaFX", "MySQL"],
+    github: "https://github.com/Anuja-jayasinghe/ChessAcademySystem_Java",
   },
   {
     title: "Percolation Demonstration",
     description: "A Python program that demonstrates percolation theory in a simple and interactive manner.",
     tech: ["Python"],
-    link: "https://github.com/Anuja-jayasinghe/percolation_demonstration",
     github: "https://github.com/Anuja-jayasinghe/percolation_demonstration",
   },
+  {
+    title: "Traffic Analyzer",
+    description: "A system for analyzing and visualizing traffic patterns using real-time data.",
+    tech: ["Python", "Pandas", "Matplotlib"],
+    github: "https://github.com/Anuja-jayasinghe/traffic_analyzer",
+  }
 ];
 
 const ProjectsSection = () => {
@@ -60,14 +78,16 @@ const ProjectsSection = () => {
                 >
                   GitHub
                 </a>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-blue-400 transition-colors duration-300"
-                >
-                  Live Demo
-                </a>
+                {index < 3 && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-blue-400 transition-colors duration-300"
+                  >
+                    Live Demo
+                  </a>
+                )}
               </div>
             </div>
           ))}
