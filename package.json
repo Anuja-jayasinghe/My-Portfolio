@@ -9,13 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.4",
+    "@tailwindcss/vite": "^4.1.4",
+    "framer-motion": "^12.9.2",
+    "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.1"
+    "react-tsparticles": "^2.12.2",
+    "tsparticles": "^3.8.1"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
-    "@eslint/eslintrc": "^3"
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4"
   }
 }
