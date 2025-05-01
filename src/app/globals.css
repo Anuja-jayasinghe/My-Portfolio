@@ -2,17 +2,29 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
+  --background-start-rgb: 0, 162, 255;
   --background-end-rgb: 15, 15, 15;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
-  );
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 2px, transparent 3px) 0 0/50px 50px,
+    linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    );
+  animation: moveBackground 20s linear infinite;
   min-height: 100vh;
-  background-attachment: fixed;
+  background-attachment: scroll;
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 50px 50px, 0 0;
+  }
 }

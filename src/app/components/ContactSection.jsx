@@ -1,66 +1,97 @@
-'use client';
-import React from 'react';
+"use client";
+import React, { useRef, useState } from "react";
 
-export default function ContactSection() {
+const ContactSection = () => {
+  const formRef = useRef(null);
+  const [showThankYou, setShowThankYou] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setShowThankYou(true);
+
+    // Submit the form after a short delay
+    setTimeout(() => {
+      formRef.current.submit();
+    }, 2000);
+  };
+
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-900 to-black text-white">
-      <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-6">Get In Touch</h2>
-        <p className="text-center text-gray-400 mb-12">
-          I'd love to hear from you! Whether you have a project, question, or just want to say hi.
+    <section id="contact" className="py-20 px-4 text-white relative">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-6 text-blue-400">Let's Connect</h2>
+        <p className="mb-8 text-gray-300">
+          Feel free to reach out for collaborations or just a friendly hello!
         </p>
 
         <form
-          action="https://formcarry.com/s/YOUR_FORM_ID"
+          ref={formRef}
+          action="https://formcarry.com/s/iA3YQgTg3b9"
           method="POST"
-          className="space-y-6"
+          onSubmit={handleSubmit}
+          className="space-y-6 text-left"
         >
+          {/* 👇 Updated to redirect to your /thank-you page */}
+          <input type="hidden" name="_redirect" value="https://anujajay.com/thank-you" />
+
           <div>
-            <label className="block text-sm text-gray-300">Name</label>
+            <label htmlFor="name" className="block mb-1">Name</label>
             <input
               type="text"
               name="name"
               required
-              className="w-full bg-gray-800 border border-gray-700 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div>
-            <label className="block text-sm text-gray-300">Email</label>
+            <label htmlFor="email" className="block mb-1">Email</label>
             <input
               type="email"
               name="email"
               required
-              className="w-full bg-gray-800 border border-gray-700 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div>
-            <label className="block text-sm text-gray-300">Message</label>
+            <label htmlFor="message" className="block mb-1">Message</label>
             <textarea
               name="message"
               rows="5"
               required
-              className="w-full bg-gray-800 border border-gray-700 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
+
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-all"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-all"
           >
             Send Message
           </button>
         </form>
 
-        <div className="mt-10 text-center space-y-3">
-          <p>📧 <a href="mailto:anujajayasinhe@gmail.com" className="text-blue-400">anujajayasinhe@gmail.com</a></p>
-          <div className="flex justify-center gap-4 mt-4 text-xl">
-            <a href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" rel="noreferrer">🔗 LinkedIn</a>
-            <a href="https://twitter.com/anujajayasinhe" target="_blank" rel="noreferrer">🐦 Twitter</a>
-            <a href="https://instagram.com/anu.ja_j" target="_blank" rel="noreferrer">📸 Instagram</a>
-            <a href="https://discordapp.com/users/758840991691046933/" target="_blank" rel="noreferrer">💬 Discord</a>
-            <a href="https://facebook.com/anuja.jayasinghe.75" target="_blank" rel="noreferrer">📘 Facebook</a>
-          </div>
+        <div className="mt-10 flex justify-center space-x-6 text-xl">
+          <a href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" className="hover:text-blue-400">LinkedIn</a>
+          <a href="mailto:anujajayasinhe@gmail.com" className="hover:text-blue-400">Email</a>
+          <a href="https://twitter.com/anujajayasinhe" target="_blank" className="hover:text-blue-400">Twitter</a>
+          <a href="https://instagram.com/anu.ja_j" target="_blank" className="hover:text-pink-500">Instagram</a>
+          <a href="https://discordapp.com/users/758840991691046933/" target="_blank" className="hover:text-indigo-400">Discord</a>
+          <a href="https://www.facebook.com/anuja.jayasinghe.75" target="_blank" className="hover:text-blue-600">Facebook</a>
         </div>
       </div>
+
+      {showThankYou && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-gray-900 p-8 rounded-lg shadow-lg text-center border border-blue-500">
+            <h3 className="text-2xl font-bold text-blue-400 mb-2">Thank you!</h3>
+            <p className="text-gray-300">Redirecting...</p>
+          </div>
+        </div>
+      )}
     </section>
   );
-}
+};
+
+export default ContactSection;

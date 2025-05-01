@@ -5,7 +5,7 @@ import Image from 'next/image'; // We'll use Next.js Image component
 
 const AboutSection = () => {
   return (
-    <section id="about" className="w-full min-h-screen flex items-center justify-center bg-black text-white py-10 px-5">
+    <section id="about" className="w-full min-h-screen flex items-center justify-center text-white py-10 px-5">
       <div className="max-w-6xl w-full flex flex-col md:flex-row items-center justify-between gap-10">
         
         {/* Profile Image */}
