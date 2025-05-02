@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 162, 255;
-  --background-end-rgb: 15, 15, 15;
+  --foreground-rgb: 240, 240, 240;
+  --background-start-rgb: 10, 10, 15;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: 
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 2px, transparent 3px) 0 0/50px 50px,
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 2px, transparent 3px) 0 0/50px 50px,
     linear-gradient(
       to bottom,
       rgb(var(--background-start-rgb)),
@@ -18,6 +18,49 @@ body {
   animation: moveBackground 20s linear infinite;
   min-height: 100vh;
   background-attachment: scroll;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Add animated blobs */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.22;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+body::before {
+  width: 400px;
+  height: 400px;
+  top: 10%;
+  left: -10%;
+  background: linear-gradient(135deg, #181a2a 0%, #23243a 100%);
+  animation: blobMove1 18s ease-in-out infinite alternate;
+}
+
+body::after {
+  width: 350px;
+  height: 350px;
+  bottom: 5%;
+  right: -8%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a223a 100%);
+  animation: blobMove2 22s ease-in-out infinite alternate;
+}
+
+@keyframes blobMove1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(80px, 60px) scale(1.2); }
+}
+
+@keyframes blobMove2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-60px, -40px) scale(1.1); }
 }
 
 @keyframes moveBackground {
@@ -27,4 +70,20 @@ body {
   to {
     background-position: 50px 50px, 0 0;
   }
+}
+
+/* Abstract moving lines - very subtle, dark cyan/purple */
+.background-lines span {
+  position: absolute;
+  display: block;
+  width: 2px;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(40,60,80,0.08) 0%,
+    rgba(80,60,120,0.18) 50%,
+    rgba(40,60,80,0.08) 100%
+  );
+  opacity: 0.25;
+  animation: moveLine 8s linear infinite;
 }

@@ -20,6 +20,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} text-white`}>
+        {/* Abstract moving lines */}
+        <div className="background-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         {children}
       </body>
     </html>
