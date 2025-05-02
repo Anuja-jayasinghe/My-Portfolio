@@ -3,15 +3,21 @@ import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
 import ProjectsSection from "./components/ProjectsSection";
 import ContactSection from "./components/ContactSection";
-import { Metadata } from 'next';
+import CurvyBackground from "./components/BackgroundGraphics";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 
 export default function Home() {
   return (
     <div>
+      <CurvyBackground />
+      <Header/>
       <Hero />
       <AboutSection />
       <ProjectsSection/>
       <ContactSection/>
+      <Footer/>
     </div>
   );
 }
