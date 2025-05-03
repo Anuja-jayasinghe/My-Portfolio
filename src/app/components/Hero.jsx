@@ -56,52 +56,52 @@ export default function Hero() {
   const buttonTransform = `translateY(${scrollY * -0.1}px)`;
   const bounceTransform = `translateY(${scrollY * 0.15}px)`;
 
-  const Particles = () => {
-    const [particles, setParticles] = useState([]);
+  // const Particles = () => {
+  //   const [particles, setParticles] = useState([]);
 
-    useEffect(() => {
-      const generateParticles = () => {
-        const count = 15;
-        const newParticles = [];
+  //   useEffect(() => {
+  //     const generateParticles = () => {
+  //       const count = 15;
+  //       const newParticles = [];
 
-        for (let i = 0; i < count; i++) {
-          newParticles.push({
-            id: i,
-            x: Math.random() * 100,
-            y: Math.random() * 100,
-            size: Math.random() * 8 + 2,
-            speed: Math.random() * 0.6 + 0.2,
-            depth: Math.random() * 0.5 + 0.5,
-            opacity: Math.random() * 0.5 + 0.1
-          });
-        }
+  //       for (let i = 0; i < count; i++) {
+  //         newParticles.push({
+  //           id: i,
+  //           x: Math.random() * 100,
+  //           y: Math.random() * 100,
+  //           size: Math.random() * 8 + 2,
+  //           speed: Math.random() * 0.6 + 0.2,
+  //           depth: Math.random() * 0.5 + 0.5,
+  //           opacity: Math.random() * 0.5 + 0.1
+  //         });
+  //       }
 
-        setParticles(newParticles);
-      };
+  //       setParticles(newParticles);
+  //     };
 
-      generateParticles();
-    }, []);
+  //     generateParticles();
+  //   }, []);
 
-    return (
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full bg-white"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              opacity: particle.opacity,
-              transform: `translateY(${scrollY * particle.speed * particle.depth}px)`,
-              transition: "transform 0.1s ease-out"
-            }}
-          />
-        ))}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="absolute inset-0 overflow-hidden pointer-events-none">
+  //       {particles.map((particle) => (
+  //         <div
+  //           key={particle.id}
+  //           className="absolute rounded-full bg-white"
+  //           style={{
+  //             left: `${particle.x}%`,
+  //             top: `${particle.y}%`,
+  //             width: `${particle.size}px`,
+  //             height: `${particle.size}px`,
+  //             opacity: particle.opacity,
+  //             transform: `translateY(${scrollY * particle.speed * particle.depth}px)`,
+  //             transition: "transform 0.1s ease-out"
+  //           }}
+  //         />
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
@@ -157,8 +157,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Particle Background */}
-        <Particles />
+        {/* Particle Background
+        <Particles /> */}
 
         {/* Extra glow blob */}
         <div
