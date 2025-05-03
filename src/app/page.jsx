@@ -6,19 +6,25 @@ import ContactSection from "./components/ContactSection";
 import CurvyBackground from "./components/BackgroundGraphics";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import SplashCursor from "./components/SplashCursor";
 
 
 export default function Home() {
   return (
-    <div>
-      <CurvyBackground />
-      <Header/>
-      <Hero />
-      <AboutSection />
-      <ProjectsSection/>
-      <ContactSection/>
-      <Footer/>
-    </div>
+    <>
+      <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <CurvyBackground />
+          <SplashCursor />
+          <Header />
+          <Hero />
+          <AboutSection />
+          <ProjectsSection />
+          <ContactSection />
+          <Footer />     
+        </div>
+      </div>
+    </>
   );
 }
 export const metadata = {

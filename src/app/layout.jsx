@@ -18,17 +18,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} text-white`}>
-        {/* Abstract moving lines */}
-        <div className="background-lines">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
+        {/* Your existing background lines */}
+        <div className="background-lines z-40">
           <span></span>
           <span></span>
           <span></span>
           <span></span>
           <span></span>
         </div>
-        {children}
+
+        {/* Main content */}
+        <div className="relative z-50">
+          {children}
+        </div>
       </body>
     </html>
   );
