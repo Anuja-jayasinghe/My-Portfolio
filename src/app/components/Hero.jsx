@@ -161,7 +161,7 @@ export default function Hero() {
         <Particles /> */}
 
         {/* Extra glow blob */}
-        <div
+        {/* <div
           className="absolute w-24 h-24 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-xl"
           style={{
             top: "20%",
@@ -169,7 +169,7 @@ export default function Hero() {
             transform: `translate(${scrollY * 0.1}px, ${scrollY * -0.05}px)`,
             transition: "transform 0.2s ease-out"
           }}
-        />
+        /> */}
 
         {/* Gradient depth overlay */}
         <div

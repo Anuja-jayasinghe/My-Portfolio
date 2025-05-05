@@ -1,65 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import GooeyNav from "./BubleHeader";
+import { Home, User, Mail, FolderKanban } from "lucide-react";
 
-export default function Header() {
-    const [activeNav, setActiveNav] = useState("");
-
-    const handleScroll = (e, section) => {
-        e.preventDefault();
-        setActiveNav(section); // Set active class to the clicked section
-        document.getElementById(section)?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-        });
-    };
+const Header = () => {
+    const items = [
+        { label: "Home", href: "/", icon: <Home className="w-4 h-4" /> },
+        { label: "About", href: "/#about", icon: <User className="w-4 h-4" /> },
+        { label: "Projects", href: "/#projects", icon: <FolderKanban className="w-4 h-4" /> },
+        { label: "Contact", href: "/#contact", icon: <Mail className="w-4 h-4" /> },
+    ];
 
     return (
-        <header className="fixed top-0 w-full z-50 bg-opacity-30 backdrop-filter backdrop-blur-lg">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-white">
-                <a 
-                    href="#" 
-                    onClick={(e) => {
-                        e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        setActiveNav("home");
-                    }}
-                    className="flex items-center hover:opacity-80 transition-opacity duration-300"
-                >
-                    <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
-                    <h1 className="text-xl font-bold text-blue-300 font-sans">Anuja Jayasinghe</h1>
-                </a>
-                <nav className="space-x-14 text-base font-medium">
-                    <a 
-                        href="#home" 
-                        onClick={(e) => handleScroll(e, "home")} 
-                        className={`hover:text-blue-300 transition-colors duration-300 ${activeNav === "home" ? "text-blue-300" : ""}`}
-                    >
-                        Home
-                    </a>
-                    <a 
-                        href="#about" 
-                        onClick={(e) => handleScroll(e, "about")} 
-                        className={`hover:text-blue-300 transition-colors duration-300 ${activeNav === "about" ? "text-blue-300" : ""}`}
-                    >
-                        About
-                    </a>
-                    <a 
-                        href="#projects" 
-                        onClick={(e) => handleScroll(e, "projects")} 
-                        className={`hover:text-blue-300 transition-colors duration-300 ${activeNav === "projects" ? "text-blue-300" : ""}`}
-                    >
-                        Projects
-                    </a>
-                    <a 
-                        href="#contact" 
-                        onClick={(e) => handleScroll(e, "contact")} 
-                        className={`hover:text-blue-300 transition-colors duration-300 ${activeNav === "contact" ? "text-blue-300" : ""}`}
-                    >
-                        Contact
-                    </a>
-                </nav>
+        <header
+            className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-4 
+                    transition-all duration-300 ease-in-out 
+                    bg-transparent hover:bg-black/60 hover:backdrop-blur-md"
+            style={{ zIndex: 100 }}
+        >
+
+            {/* Left: Logo and Name */}
+            <div className="flex items-center space-x-4">
+                <Image
+                    src="/logo.png" 
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                />
+                <h1 className="text-2xl font-bold font-[cursive] text-white">
+                    Anuja Jayasinghe
+                </h1>
+            </div>
+
+            {/* Right: Navigation */}
+            <div className="relative">
+                <GooeyNav
+                    items={items}
+                    particleCount={20}
+                    particleDistances={[90, 10]}
+                    particleR={100}
+                    initialActiveIndex={0}
+                    animationTime={600}
+                    timeVariance={300}
+                    colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+                />
             </div>
         </header>
     );
-}
+};
+
+export default Header;
