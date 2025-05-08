@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from "motion/react"; // Ensure named imports are used explicitly
 import Image from 'next/image'; // We'll use Next.js Image component
 
 const AboutSection = () => {
