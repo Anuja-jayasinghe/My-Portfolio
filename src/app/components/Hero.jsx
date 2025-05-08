@@ -113,6 +113,7 @@ export default function Hero() {
   return (
     <>
       <section
+        id="home"
         ref={heroRef}
         className="relative flex flex-col items-center justify-center h-screen text-center px-4"
       >

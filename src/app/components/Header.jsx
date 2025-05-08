@@ -1,54 +1,71 @@
 "use client";
 
-import Image from "next/image";
-import GooeyNav from "./BubleHeader";
-import { Home, User, Mail, FolderKanban } from "lucide-react";
 
-const Header = () => {
-    const items = [
-        { label: "Home", href: "/", icon: <Home className="w-4 h-4" /> },
-        { label: "About", href: "/#about", icon: <User className="w-4 h-4" /> },
-        { label: "Projects", href: "/#projects", icon: <FolderKanban className="w-4 h-4" /> },
-        { label: "Contact", href: "/#contact", icon: <Mail className="w-4 h-4" /> },
-    ];
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = items.map(item => item.href.substring(1));
+            const scrollPosition = window.scrollY + 100;
+
+            let foundSection = null;
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const { offsetTop, offsetHeight } = element;
+                    if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+                        foundSection = section;
+                        break;
+                    }
+                }
+            }
+            setActiveSection(foundSection);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    // Update indicator position when active section changes
+    useEffect(() => {
+        if (!navRef.current || !indicatorRef.current) return;
+        
+        const activeItem = navRef.current.querySelector(`[data-section="${activeSection}"]`);
+        if (activeItem) {
+            const { offsetLeft, offsetWidth } = activeItem;
+            indicatorRef.current.style.transform = `translateX(${offsetLeft}px)`;
+            indicatorRef.current.style.width = `${offsetWidth}px`;
+        } else {
+            indicatorRef.current.style.width = `0px`;
+        }
+    }, [activeSection]);
+
+    // Focus management for mobile menu
+    useEffect(() => {
+        if (isMobileMenuOpen && mobileNavRef.current) {
+            const focusableElements = mobileNavRef.current.querySelectorAll('a[href], button');
+            const firstElement = focusableElements[0];
+            firstElement?.focus();
+
+            const handleKeyDown = (e) => {
+                if (e.key === 'Escape') {
+                    setIsMobileMenuOpen(false);
+                }
+            };
+
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [isMobileMenuOpen]);
+
+    const handleNavClick = (e, href) => {
+        e.preventDefault();
+        const targetId = href.substring(1);
+        const element = document.getElementById(targetId);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+            setActiveSection(targetId);
+            setIsMobileMenuOpen(false);
+        }
+    };
 
     return (
-        <header
-            className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-4 
-                    transition-all duration-300 ease-in-out 
-                    bg-transparent hover:bg-black/60 hover:backdrop-blur-md"
-            style={{ zIndex: 100 }}
-        >
 
-            {/* Left: Logo and Name */}
-            <div className="flex items-center space-x-4">
-                <Image
-                    src="/logo.png" 
-                    alt="Logo"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                />
-                <h1 className="text-2xl font-bold font-[cursive] text-white">
-                    Anuja Jayasinghe
-                </h1>
-            </div>
-
-            {/* Right: Navigation */}
-            <div className="relative">
-                <GooeyNav
-                    items={items}
-                    particleCount={20}
-                    particleDistances={[90, 10]}
-                    particleR={100}
-                    initialActiveIndex={0}
-                    animationTime={600}
-                    timeVariance={300}
-                    colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-                />
-            </div>
-        </header>
-    );
-};
-
-export default Header;
