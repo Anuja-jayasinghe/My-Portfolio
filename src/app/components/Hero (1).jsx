@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 
 export default function Hero() {
+  const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef(null);
 
   // Typewriter effect setup
