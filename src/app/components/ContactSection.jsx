@@ -21,12 +21,12 @@ const ContactSection = () => {
     >
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-4xl font-bold mb-6 text-blue-400">Let's Connect</h2>
-        <p className="mb-8 text-gray-300">
+        <p className="mb-6 md:mb-8 text-gray-300">
           Feel free to reach out for collaborations or just a friendly hello!
         </p>
 
         {/* Email Display */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <a
             href="mailto:anujajayasinhe@gmail.com"
             className="text-xl text-blue-400 hover:text-blue-300 transition-colors duration-300"
@@ -86,7 +86,7 @@ const ContactSection = () => {
         </form>
       </div>
 
-      <div className="flex flex-col gap-6 items-center mt-10">
+      <div className="flex flex-col gap-6 items-center mt-6 md:mt-10">
         <SocialIconsCircle />
       </div>
 

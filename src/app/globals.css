@@ -87,3 +87,21 @@ body::after {
   opacity: 0.25;
   animation: moveLine 8s linear infinite;
 }
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 6s linear infinite;
+}
+
+@keyframes bounce-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+.animate-bounce-x {
+  animation: bounce-x 1s infinite;
+}
