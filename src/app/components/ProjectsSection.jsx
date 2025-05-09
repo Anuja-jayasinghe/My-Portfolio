@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import "../styles/projectsGlitter.css";
 
 const projects = [
   {
@@ -91,6 +92,31 @@ const ProjectsSection = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-10 text-center">
+          <a
+            href="https://github.com/Anuja-jayasinghe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="more-projects-btn inline-block px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition-all duration-300 relative overflow-hidden"
+          >
+            <span className="relative z-10">
+              More projects
+              <svg
+                className="inline ml-2 align-baseline"
+                width="12"
+                height="12"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ verticalAlign: '-0.25em' }}
+              >
+                <line x1="4" y1="12" x2="12" y2="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <polyline points="8,4 12,4 12,8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span className="glitter-effect" />
+          </a>
         </div>
       </div>
     </section>
