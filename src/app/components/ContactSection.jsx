@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
+import SocialIconsCircle from './SocialIconsHorizontal';
 
 const ContactSection = () => {
   const formRef = useRef(null);
@@ -7,10 +8,7 @@ const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setShowThankYou(true);
-
-    // Submit the form after a short delay
     setTimeout(() => {
       formRef.current.submit();
     }, 2000);
@@ -18,14 +16,24 @@ const ContactSection = () => {
 
   return (
     <section
-  id="contact"
-  className="min-h-[calc(100vh-64px-60px)] px-4 text-white flex flex-col justify-center items-center"
->
+      id="contact"
+      className="min-h-[calc(100vh-64px-60px)] px-4 text-white flex flex-col justify-center items-center relative"
+    >
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-4xl font-bold mb-6 text-blue-400">Let's Connect</h2>
         <p className="mb-8 text-gray-300">
           Feel free to reach out for collaborations or just a friendly hello!
         </p>
+
+        {/* Email Display */}
+        <div className="mb-8">
+          <a
+            href="mailto:anujajayasinhe@gmail.com"
+            className="text-xl text-blue-400 hover:text-blue-300 transition-colors duration-300"
+          >
+            anujajayasinhe@gmail.com
+          </a>
+        </div>
 
         <form
           ref={formRef}
@@ -34,7 +42,6 @@ const ContactSection = () => {
           onSubmit={handleSubmit}
           className="space-y-6 text-left"
         >
-          {/* 👇 Updated to redirect to your /thank-you page */}
           <input type="hidden" name="_redirect" value="https://anujajay.com/thank-you" />
 
           <div>
@@ -77,15 +84,10 @@ const ContactSection = () => {
             Send Message
           </button>
         </form>
+      </div>
 
-        <div className="mt-10 flex justify-center space-x-6 text-xl">
-          <a href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" className="hover:text-blue-400">LinkedIn</a>
-          <a href="mailto:anujajayasinhe@gmail.com" className="hover:text-blue-400">Email</a>
-          <a href="https://twitter.com/anujajayasinhe" target="_blank" className="hover:text-blue-400">Twitter</a>
-          <a href="https://instagram.com/anu.ja_j" target="_blank" className="hover:text-pink-500">Instagram</a>
-          <a href="https://discordapp.com/users/758840991691046933/" target="_blank" className="hover:text-indigo-400">Discord</a>
-          <a href="https://www.facebook.com/anuja.jayasinghe.75" target="_blank" className="hover:text-blue-600">Facebook</a>
-        </div>
+      <div className="flex flex-col gap-6 items-center mt-10">
+        <SocialIconsCircle />
       </div>
 
       {showThankYou && (
