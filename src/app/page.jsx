@@ -6,8 +6,7 @@ import ContactSection from "./components/ContactSection";
 import CurvyBackground from "./components/BackgroundGraphics";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import SplashCursor from "./components/AnimatedCursor";
-
+import SplashCursor from "./components/AnimatedCursor";  
 
 export default function Home() {
   return (
@@ -16,17 +15,18 @@ export default function Home() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <CurvyBackground />
           <Header />
-          <SplashCursor />
           <Hero />
           <AboutSection />
           <ProjectsSection />
           <ContactSection />
-          <Footer />     
+          <Footer />  
+          <SplashCursor />  
         </div>
       </div>
     </>
   );
 }
+
 export const metadata = {
   title: 'Anuja Jayasinghe',
   icons: {
