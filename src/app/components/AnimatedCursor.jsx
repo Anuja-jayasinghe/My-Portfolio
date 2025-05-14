@@ -1,103 +1,24 @@
-/**
- * @component SplashCursor
- * @description A WebGL-based fluid simulation cursor effect that creates an interactive liquid-like animation following the mouse movement.
- * Only active within the hero section boundaries.
- * 
- * @param {Object} props - Component props
- * @param {number} [props.SIM_RESOLUTION=128] - Resolution of the simulation grid
- * @param {number} [props.DYE_RESOLUTION=1440] - Resolution of the dye texture
- * @param {number} [props.CAPTURE_RESOLUTION=512] - Resolution for capturing the effect
- * @param {number} [props.DENSITY_DISSIPATION=4.5] - How quickly the dye fades (higher = faster fade)
- * @param {number} [props.VELOCITY_DISSIPATION=3] - How quickly the velocity fades (higher = faster fade)
- * @param {number} [props.PRESSURE=0.1] - Pressure force in the simulation
- * @param {number} [props.PRESSURE_ITERATIONS=20] - Number of pressure solver iterations
- * @param {number} [props.CURL=2] - Amount of curl in the velocity field
- * @param {number} [props.SPLAT_RADIUS=0.1] - Radius of the splat effect
- * @param {number} [props.SPLAT_FORCE=3000] - Force of the splat effect
- * @param {boolean} [props.SHADING=true] - Whether to enable shading effects
- * @param {number} [props.COLOR_UPDATE_SPEED=10] - Speed at which colors update
- * @param {Object} [props.BACK_COLOR={ r: 0.5, g: 0, b: 0 }] - Background color in RGB format
- * @param {boolean} [props.TRANSPARENT=true] - Whether the background is transparent
- * 
- * @example
- * // Basic usage
- * <SplashCursor />
- * 
- * @example
- * // Custom configuration
- * <SplashCursor
- *   SIM_RESOLUTION={256}
- *   DYE_RESOLUTION={2048}
- *   SPLAT_RADIUS={0.3}
- *   SHADING={false}
- *   BACK_COLOR={{ r: 0, g: 0, b: 0 }}
- * />
- * 
- * @returns {JSX.Element} A canvas element with the fluid simulation effect
- */
-
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 function SplashCursor({
   // Add whatever props you like for customization
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
-  DENSITY_DISSIPATION = 4.5,
-  VELOCITY_DISSIPATION = 3,
+  DENSITY_DISSIPATION = 3.5,
+  VELOCITY_DISSIPATION = 2,
   PRESSURE = 0.1,
   PRESSURE_ITERATIONS = 20,
-  CURL = 2,
-  SPLAT_RADIUS = 0.1,
-  SPLAT_FORCE = 3000,
+  CURL = 3,
+  SPLAT_RADIUS = 0.2,
+  SPLAT_FORCE = 6000,
   SHADING = true,
   COLOR_UPDATE_SPEED = 10,
   BACK_COLOR = { r: 0.5, g: 0, b: 0 },
   TRANSPARENT = true,
 }) {
   const canvasRef = useRef(null);
-  const [isInHeroSection, setIsInHeroSection] = useState(false);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    // Function to check if mouse is in hero section
-    const checkHeroSection = (clientY) => {
-      const heroSection = document.getElementById('home');
-      if (!heroSection) return false;
-      
-      const heroRect = heroSection.getBoundingClientRect();
-      return clientY >= heroRect.top && clientY <= heroRect.bottom;
-    };
-
-    // Update isInHeroSection state on mouse move
-    const handleMouseMove = (e) => {
-      setIsInHeroSection(checkHeroSection(e.clientY));
-    };
-
-    // Update isInHeroSection state on scroll
-    const handleScroll = () => {
-      const heroSection = document.getElementById('home');
-      if (!heroSection) return;
-      
-      const heroRect = heroSection.getBoundingClientRect();
-      const isVisible = heroRect.top <= 0 && heroRect.bottom >= 0;
-      setIsInHeroSection(isVisible);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
-
-    // Initial check
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1278,11 +1199,7 @@ function SplashCursor({
   ]);
 
   return (
-    <div 
-      className={`fixed top-0 left-0 z-50 pointer-events-none w-full h-full transition-opacity duration-300 ${
-        isInHeroSection ? 'opacity-100' : 'opacity-0'
-      }`}
-    >
+    <div className="fixed top-0 left-0 z-50 pointer-events-none w-full h-full">
       <canvas ref={canvasRef} id="fluid" className="w-screen h-screen block"></canvas>
     </div>
   );
