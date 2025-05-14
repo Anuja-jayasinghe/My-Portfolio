@@ -2,12 +2,14 @@
   position: relative;
   overflow: hidden;
   transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+
 }
 
 .glitter-effect {
   pointer-events: none;
   position: absolute;
   top: 0;
+
   left: -100%;
   width: 200%;
   height: 100%;
@@ -22,19 +24,23 @@
   opacity: 0.6;
   transform: skewX(-20deg);
   animation: glitter-move 2.5s linear infinite;
+
 }
 
 @keyframes glitter-move {
   0% {
+
     left: -100%;
   }
   100% {
     left: 100%;
+
   }
 }
 
 .more-projects-btn:hover {
   background: #6e40c9 !important; /* GitHub purple */
+
   box-shadow: 0 0 24px 8px #a259f7, 0 2px 8px rgba(0, 0, 0, 0.15);
   transform: scale(1.08);
 }
@@ -51,3 +57,4 @@
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
+
