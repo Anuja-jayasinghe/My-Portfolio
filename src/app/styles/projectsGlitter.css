@@ -1,47 +1,53 @@
 .more-projects-btn {
   position: relative;
   overflow: hidden;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
 .glitter-effect {
   pointer-events: none;
   position: absolute;
   top: 0;
-  left: -40%;
-  width: 180%;
+  left: -100%;
+  width: 200%;
   height: 100%;
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.3) 40%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 60%, transparent 100%);
-  opacity: 0.7;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.2) 60%,
+    transparent 100%
+  );
+  opacity: 0.6;
   transform: skewX(-20deg);
-  animation: glitter-move 4s cubic-bezier(0.4,0,0.2,1) infinite;
+  animation: glitter-move 2.5s linear infinite;
 }
 
 @keyframes glitter-move {
   0% {
-    left: 100%;
-    opacity: 0.7;
-  }
-  40% {
-    left: -40%;
-    opacity: 0.7;
-  }
-  50% {
-    left: -40%;
-    opacity: 0.7;
-  }
-  90% {
-    left: 100%;
-    opacity: 0.7;
+    left: -100%;
   }
   100% {
     left: 100%;
-    opacity: 0.7;
   }
 }
 
 .more-projects-btn:hover {
   background: #6e40c9 !important; /* GitHub purple */
-  box-shadow: 0 0 24px 8px #a259f7, 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 0 24px 8px #a259f7, 0 2px 8px rgba(0, 0, 0, 0.15);
   transform: scale(1.08);
-  transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
-} 
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
