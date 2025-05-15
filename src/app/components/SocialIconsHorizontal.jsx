@@ -44,15 +44,6 @@ const SocialIconsMarquee = () => {
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const [centeredIndex, setCenteredIndex] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile view
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -69,40 +60,36 @@ const SocialIconsMarquee = () => {
       }
       content.style.transform = `translateX(-${offset}px)`;
 
-      // Center icon logic for mobile
-      if (isMobile) {
-        const containerRect = container.getBoundingClientRect();
-        const centerX = containerRect.left + containerRect.width / 2;
-        let minDist = Infinity;
-        let closestIdx = null;
-        const iconNodes = Array.from(content.children);
-        iconNodes.forEach((node, idx) => {
-          const rect = node.getBoundingClientRect();
-          const iconCenter = rect.left + rect.width / 2;
-          const dist = Math.abs(centerX - iconCenter);
-          if (dist < minDist) {
-            minDist = dist;
-            closestIdx = idx;
-          }
-        });
-        setCenteredIndex(closestIdx);
-      } else {
-        setCenteredIndex(null);
-      }
+      // Center icon logic
+      const containerRect = container.getBoundingClientRect();
+      const centerX = containerRect.left + containerRect.width / 2;
+      let minDist = Infinity;
+      let closestIdx = null;
+      const iconNodes = Array.from(content.children);
+      iconNodes.forEach((node, idx) => {
+        const rect = node.getBoundingClientRect();
+        const iconCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(centerX - iconCenter);
+        if (dist < minDist) {
+          minDist = dist;
+          closestIdx = idx;
+        }
+      });
+      setCenteredIndex(closestIdx);
 
       requestAnimationFrame(scroll);
     };
 
     const animation = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animation);
-  }, [isMobile]);
+  }, []);
 
   const duplicatedLinks = [...socialLinks, ...socialLinks];
 
   return (
     <div
       ref={containerRef}
-      className="overflow-hidden h-20 bg-transparent w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto"
+      className="overflow-hidden h-20 bg-transparent w-full max-w-sm sm:max-w-md mx-auto"
     >
       <div
         ref={contentRef}
@@ -110,26 +97,31 @@ const SocialIconsMarquee = () => {
         style={{ willChange: "transform" }}
       >
         {duplicatedLinks.map((link, index) => {
-          // On mobile, highlight the centered icon
-          const isCenter = isMobile && centeredIndex === index;
+          const isCenter = centeredIndex === index;
           return (
             <a
               key={`${link.label}-${index}`}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`relative w-11 h-11 group/link flex-shrink-0${isCenter ? " mobile-center" : ""}`}
+              className={`relative w-11 h-11 group/link flex-shrink-0${
+                isCenter ? " mobile-center" : ""
+              }`}
               aria-label={link.label}
             >
               <img
                 src={link.blackIcon}
                 alt={`${link.label} icon`}
-                className={`w-full h-full transition-all duration-300 group-hover/link:opacity-0${isCenter ? " opacity-0" : ""}`}
+                className={`w-full h-full transition-all duration-300 group-hover/link:opacity-0${
+                  isCenter ? " opacity-0" : ""
+                }`}
               />
               <img
                 src={link.colorIcon}
                 alt={`${link.label} icon colored`}
-                className={`absolute inset-0 w-full h-full opacity-0 group-hover/link:opacity-100 transition-all duration-300 group-hover/link:scale-110${isCenter ? " opacity-100 scale-110" : ""}`}
+                className={`absolute inset-0 w-full h-full opacity-0 group-hover/link:opacity-100 transition-all duration-300 group-hover/link:scale-110${
+                  isCenter ? " opacity-100 scale-110" : ""
+                }`}
               />
             </a>
           );

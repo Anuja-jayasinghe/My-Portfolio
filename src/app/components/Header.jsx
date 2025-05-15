@@ -11,6 +11,7 @@ const Header = () => {
     const navRef = useRef(null);
     const indicatorRef = useRef(null);
     const mobileNavRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
 
     const items = [
         { label: "Home", href: "#home", icon: <Home className="w-4 h-4" /> },
@@ -73,6 +74,14 @@ const Header = () => {
             return () => document.removeEventListener('keydown', handleKeyDown);
         }
     }, [isMobileMenuOpen]);
+
+    // Detect mobile view (for center effect only)
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     const handleNavClick = (e, href) => {
         e.preventDefault();

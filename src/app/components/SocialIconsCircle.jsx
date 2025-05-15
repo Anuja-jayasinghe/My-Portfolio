@@ -47,9 +47,17 @@ const socialLinks = [
 ];
 
 const SocialIconsCircle = () => {
-  const radius = 100; // px
+  const radius = 80; // Reduced radius to bring icons closer
   const [rotation, setRotation] = useState(0);
   const requestRef = useRef();
+  const [isMobile, setIsMobile] = useState(false); // State to detect mobile view
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     let start = null;
@@ -64,6 +72,8 @@ const SocialIconsCircle = () => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
+
+  if (isMobile) return null; // Hide this component on mobile
 
   return (
     <div className="fixed right-[200px] top-1/2 -translate-y-1/2 z-0 pr-8">

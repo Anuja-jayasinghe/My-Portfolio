@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 function SplashCursor({
   // Add whatever props you like for customization
+  show = true,
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
@@ -18,6 +19,7 @@ function SplashCursor({
   BACK_COLOR = { r: 0.5, g: 0, b: 0 },
   TRANSPARENT = true,
 }) {
+  if (!show) return null;
   const canvasRef = useRef(null);
 
   useEffect(() => {

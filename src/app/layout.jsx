@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
-
+import GoToTopButton from "./components/GoToTopButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Anuja Jayasinghe | Portfolio",
+  title: 'Anuja Jayasinghe',
+  icons: {
+    icon: '/favicon.svg',
+  },
   description: "Welcome to my personal portfolio website.",
 };
 
@@ -39,7 +42,12 @@ export default function RootLayout({ children }) {
         <div className="relative z-50">
           {children}
         </div>
+
+        {/* Go to Top Button */}
+        <GoToTopButton />
       </body>
     </html>
   );
+
 }
+

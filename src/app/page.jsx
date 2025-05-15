@@ -1,3 +1,4 @@
+'use client';
 // src/app/page.js
 import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
@@ -6,11 +7,16 @@ import ContactSection from "./components/ContactSection";
 import CurvyBackground from "./components/BackgroundGraphics";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import SplashCursor from "./components/AnimatedCursor";  
+import SplashCursor from "./components/AnimatedCursor";
+import AnimatedCursorToggle from "./components/AnimatedCursorToggle";
+import { useState } from "react";
 
 export default function Home() {
+  const [showCursor, setShowCursor] = useState(false);
+
   return (
     <>
+      <AnimatedCursorToggle showCursor={showCursor} setShowCursor={setShowCursor} />
       <div style={{ position: 'relative' }}>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <CurvyBackground />
@@ -20,16 +26,9 @@ export default function Home() {
           <ProjectsSection />
           <ContactSection />
           <Footer />  
-          <SplashCursor />  
+          <SplashCursor show={showCursor} />  
         </div>
       </div>
     </>
   );
 }
-
-export const metadata = {
-  title: 'Anuja Jayasinghe',
-  icons: {
-    icon: '/favicon.svg',
-  },
-};
