@@ -78,15 +78,39 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
   const handleDragEnd = (event, info) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
-    let newIndex = current - Math.round((offset + velocity * 0.2) / cardWidth);
+  
+    let newIndex = current - Math.round((offset + velocity * 0.25) / cardWidth);
     newIndex = Math.max(0, Math.min(projects.length - 1, newIndex));
-    setCurrent(newIndex);
-    controls.start({ x: -newIndex * cardWidth, transition: { type: 'spring', stiffness: 300, damping: 35, mass: 0.7 } });
+    
+    if (newIndex !== current) {
+      setCurrent(newIndex);
+    } else {
+      // Recenter even if index doesn't change
+      controls.start({
+        x: -newIndex * cardWidth,
+        transition: {
+          type: 'spring',
+          stiffness: 180,
+          damping: 30,
+          mass: 0.9,
+        },
+      });
+    }
   };
+  
 
-  React.useEffect(() => {
-    controls.start({ x: -current * cardWidth, transition: { type: 'spring', stiffness: 300, damping: 35, mass: 0.7 } });
-  }, [current]);
+  useEffect(() => {
+    controls.start({
+      x: -current * cardWidth,
+      transition: {
+        type: 'spring',
+        stiffness: 180,
+        damping: 30,
+        mass: 0.9,
+      },
+    });
+  }, [current, cardWidth]);
+  
 
   return (
     <>
@@ -111,9 +135,11 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
                   height: cardHeight,
                   transform: 'none',
                   zIndex: isActive ? 2 : 1,
-                  transition: 'transform 0.3s',
                   willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                  perspective: 1000,
                 }}
+                
               >
                 <div className="absolute -inset-8 z-0 pointer-events-none">
                   <div className={`w-full h-full rounded-3xl bg-gradient-to-tr from-blue-400/20 via-purple-400/10 to-white/5 blur-2xl opacity-70 ${isActive ? "animate-spin-slow" : ""}`}></div>
