@@ -20,6 +20,20 @@ export const metadata = {
     icon: '/favicon.svg',
   },
   description: "Welcome to my personal portfolio website.",
+  openGraph: {
+    images: [
+      {
+        url: '/website-preview.png',
+        width: 1200,
+        height: 630,
+        alt: 'Website Preview',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/website-preview.png'],
+  },
 };
 
 export default function RootLayout({ children }) {
