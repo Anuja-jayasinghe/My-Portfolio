@@ -69,14 +69,6 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
   const [cardWidth, setCardWidth] = React.useState(320);
   const cardHeight = 'auto';
 
-  const randomTransforms = React.useRef(
-    projects.map(() => ({
-      rotate: Math.random() * 40 - 20,
-      scale: 0.92 + Math.random() * 0.16,
-      y: Math.random() * 20 - 10,
-    }))
-  );
-
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       setCardWidth(0.8 * window.innerWidth);
@@ -109,7 +101,6 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
         >
           {projects.map((project, idx) => {
             const isActive = idx === activeIndex;
-            const { rotate, scale, y } = randomTransforms.current[idx];
             return (
               <motion.div
                 key={idx}
@@ -118,7 +109,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
                   minWidth: cardWidth,
                   maxWidth: cardWidth,
                   height: cardHeight,
-                  transform: `perspective(800px) rotateY(${rotate}deg) scale(${scale}) translateY(${y}px)`,
+                  transform: 'none',
                   zIndex: isActive ? 2 : 1,
                   transition: 'transform 0.3s',
                   willChange: 'transform',
