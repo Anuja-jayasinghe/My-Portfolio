@@ -1,6 +1,7 @@
+// app/layout.jsx
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
 import GoToTopButton from "./components/GoToTopButton";
 import Script from "next/script";
 
@@ -15,33 +16,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'Anuja Jayasinghe',
+  title: "Anuja Jayasinghe",
   icons: {
-    icon: '/favicon.svg',
+    icon: "/favicon.svg",
   },
   description: "Welcome to my personal portfolio website.",
   openGraph: {
     images: [
       {
-        url: '/website-preview.png',
+        url: "/website-preview.png",
         width: 1200,
         height: 630,
-        alt: 'Website Preview',
+        alt: "Website Preview",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    images: ['/website-preview.png'],
+    card: "summary_large_image",
+    images: ["/website-preview.png"],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* Google Analytics */}
+      <body>
+        {/* ✅ Google Analytics Scripts go here */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-81WWQP8VE4"
           strategy="afterInteractive"
@@ -54,10 +54,8 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-81WWQP8VE4');
           `}
         </Script>
-      </Head>
-      <body>
-        
-        {/* Your existing background lines */}
+
+        {/* Background lines */}
         <div className="background-lines z-40">
           <span></span>
           <span></span>
@@ -76,6 +74,4 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-
 }
-
