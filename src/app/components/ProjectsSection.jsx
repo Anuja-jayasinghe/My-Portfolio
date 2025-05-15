@@ -67,7 +67,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
   const x = useMotionValue(0);
   const controls = useAnimation();
   const [cardWidth, setCardWidth] = React.useState(320);
-  const cardHeight = 240;
+  const cardHeight = 'auto';
 
   const randomTransforms = React.useRef(
     projects.map(() => ({
@@ -79,7 +79,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      setCardWidth(0.85 * window.innerWidth);
+      setCardWidth(0.8 * window.innerWidth);
     }
   }, []);
 
@@ -89,16 +89,16 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
     let newIndex = current - Math.round((offset + velocity * 0.2) / cardWidth);
     newIndex = Math.max(0, Math.min(projects.length - 1, newIndex));
     setCurrent(newIndex);
-    controls.start({ x: -newIndex * cardWidth });
+    controls.start({ x: -newIndex * cardWidth, transition: { type: 'spring', stiffness: 300, damping: 35, mass: 0.7 } });
   };
 
   React.useEffect(() => {
-    controls.start({ x: -current * cardWidth });
+    controls.start({ x: -current * cardWidth, transition: { type: 'spring', stiffness: 300, damping: 35, mass: 0.7 } });
   }, [current]);
 
   return (
     <>
-      <div className="relative w-full overflow-x-hidden" style={{ height: 260 }}>
+      <div className="relative w-full overflow-x-hidden" style={{ height: 'auto', minHeight: 260 }}>
         <motion.div
           className="flex"
           drag="x"
@@ -113,7 +113,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
             return (
               <motion.div
                 key={idx}
-                className="relative overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 border border-blue-500/30 p-8 rounded-3xl shadow-2xl mx-3 flex-shrink-0 flex flex-col items-center justify-between transition-transform duration-300 text-center"
+                className="relative overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 border border-blue-500/30 pt-10 pb-10 px-6 rounded-3xl shadow-2xl mx-3 flex-shrink-0 flex flex-col items-center justify-between transition-transform duration-300 text-center"
                 style={{
                   minWidth: cardWidth,
                   maxWidth: cardWidth,
@@ -121,6 +121,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
                   transform: `perspective(800px) rotateY(${rotate}deg) scale(${scale}) translateY(${y}px)`,
                   zIndex: isActive ? 2 : 1,
                   transition: 'transform 0.3s',
+                  willChange: 'transform',
                 }}
               >
                 <div className="absolute -inset-8 z-0 pointer-events-none">
@@ -137,7 +138,7 @@ const MobileProjectsCarousel = ({ projects, activeIndex }) => {
                       </span>
                     ))}
                   </div>
-                  <div className="flex space-x-4 mt-auto justify-center">
+                  <div className="flex space-x-4 mt-auto justify-center pb-4">
                     <a href={project.github} target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-400 text-base font-semibold transition-colors duration-200">
                       GitHub
                     </a>
