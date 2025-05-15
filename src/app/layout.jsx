@@ -23,7 +23,7 @@ export const metadata = {
   openGraph: {
     images: [
       {
-        url: '/logo.png',
+        url: '/website-preview.png',
         width: 1200,
         height: 630,
         alt: 'Website Preview',
