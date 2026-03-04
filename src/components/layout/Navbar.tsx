@@ -1,0 +1,117 @@
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+
+function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    const navLinks = [
+        { name: "Home", href: "#home" },
+        { name: "Real Me", href: "#about" },
+        { name: "Portfolio", href: "#portfolio" },
+        { name: "Core Arsenal", href: "#resume" },
+        { name: "Contact", href: "#contact" },
+    ];
+
+    if (typeof document === "undefined") return null;
+
+    return createPortal(
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center"
+                    style={{ width: "100vw", height: "100vh", top: 0, left: 0 }}
+                >
+                    {/* Close Button - Top Right */}
+                    <button
+                        onClick={onClose}
+                        className="absolute top-8 right-8 text-white hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-white/10"
+                        aria-label="Close Menu"
+                    >
+                        <X className="w-10 h-10" />
+                    </button>
+
+                    {/* Navigation Links */}
+                    <nav className="flex flex-col gap-8 md:gap-12 text-center">
+                        {navLinks.map((link, i) => (
+                            <motion.div
+                                key={link.name}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.15 + i * 0.1, duration: 0.5, ease: "easeOut" }}
+                            >
+                                <Link href={link.href} onClick={onClose}>
+                                    <motion.span
+                                        whileHover={{ scale: 1.15, x: 15, color: "#1D4ED8" }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                        className="inline-block text-5xl md:text-7xl lg:text-8xl font-bold font-sans text-white tracking-tighter cursor-pointer"
+                                    >
+                                        {link.name}
+                                    </motion.span>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </nav>
+                </motion.div>
+            )}
+        </AnimatePresence>,
+        document.body
+    );
+}
+
+export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    return (
+        <>
+            <header className="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md font-mono">
+                <div className="container mx-auto px-4 h-24 flex items-center justify-between">
+
+                    {/* LEFT: Logo */}
+                    <Link href="/" className="hover:opacity-80 transition-opacity block py-2">
+                        <Image
+                            src="/logo-black.svg"
+                            alt="Anuja Logo"
+                            width={180}
+                            height={60}
+                            className="w-40 md:w-56 h-auto object-contain drop-shadow-sm"
+                            priority
+                        />
+                    </Link>
+
+                    {/* RIGHT: Social Icons + Hamburger */}
+                    <div className="flex items-center gap-6">
+                        <div className="hidden sm:flex items-center gap-6 mr-2">
+                            <Link href="https://github.com/Anuja-jayasinghe" target="_blank" className="text-black hover:text-accent transition-colors">
+                                <Github className="w-6 h-6" />
+                            </Link>
+                            <Link href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" className="text-black hover:text-accent transition-colors">
+                                <Linkedin className="w-6 h-6" />
+                            </Link>
+                            <Link href="mailto:anujajayasinhe@gmail.com" className="text-black hover:text-accent transition-colors">
+                                <Mail className="w-6 h-6" />
+                            </Link>
+                        </div>
+
+                        <button
+                            onClick={() => setIsMenuOpen(true)}
+                            className="text-black hover:text-accent transition-colors p-2 -mr-2 rounded-lg hover:bg-black/5"
+                            aria-label="Open Menu"
+                        >
+                            <Menu className="w-10 h-10" />
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            {/* Fullscreen Menu - rendered via portal to document.body */}
+            <FullscreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+        </>
+    );
+}

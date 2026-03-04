@@ -1,116 +1,62 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background-base: #ffffff;
+  --color-foreground-base: #111111;
+  --color-accent-blue: #1D4ED8;
+  --font-sans: var(--font-numans), Arial, sans-serif;
+  --font-mono: var(--font-turret-road), monospace;
+}
+
 :root {
-  --foreground-rgb: 240, 240, 240;
-  --background-start-rgb: 10, 10, 15;
-  --background-end-rgb: 0, 0, 0;
+  --background: var(--color-background-base);
+  --foreground: var(--color-foreground-base);
+  --accent: var(--color-accent-blue);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 2px, transparent 3px) 0 0/50px 50px,
-    linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    );
-  animation: moveBackground 20s linear infinite;
-  min-height: 100vh;
-  background-attachment: scroll;
-  position: relative;
-  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
 }
 
-/* Add animated blobs */
-body::before,
-body::after {
-  content: '';
-  position: fixed;
-  z-index: 0;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.22;
-  pointer-events: none;
-  transition: opacity 0.3s;
+/* Custom utilities */
+@utility text-accent {
+  color: var(--accent);
 }
 
-body::before {
-  width: 400px;
-  height: 400px;
-  top: 10%;
-  left: -10%;
-  background: linear-gradient(135deg, #181a2a 0%, #23243a 100%);
-  animation: blobMove1 18s ease-in-out infinite alternate;
+@utility bg-accent {
+  background-color: var(--accent);
 }
 
-body::after {
-  width: 350px;
-  height: 350px;
-  bottom: 5%;
-  right: -8%;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a223a 100%);
-  animation: blobMove2 22s ease-in-out infinite alternate;
+@utility border-accent {
+  border-color: var(--accent);
 }
 
-@keyframes blobMove1 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(80px, 60px) scale(1.2); }
-}
-
-@keyframes blobMove2 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-60px, -40px) scale(1.1); }
-}
-
-@keyframes moveBackground {
-  from {
-    background-position: 0 0, 0 0;
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
   }
-  to {
-    background-position: 50px 50px, 0 0;
+
+  100% {
+    transform: translateX(-100%);
   }
 }
 
-/* Abstract moving lines - very subtle, dark cyan/purple */
-.background-lines span {
-  position: absolute;
-  display: block;
-  width: 2px;
-  height: 100vh;
-  background: linear-gradient(
-    180deg,
-    rgba(40,60,80,0.08) 0%,
-    rgba(80,60,120,0.18) 50%,
-    rgba(40,60,80,0.08) 100%
-  );
-  opacity: 0.25;
-  animation: moveLine 8s linear infinite;
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
-@keyframes spin-slow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.animate-marquee {
+  animation: marquee 40s linear infinite;
 }
 
-.animate-spin-slow {
-  animation: spin-slow 6s linear infinite;
-}
-
-@keyframes bounce-x {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
-}
-
-.animate-bounce-x {
-  animation: bounce-x 1s infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 2.5s infinite;
+.animate-marquee-reverse {
+  animation: marquee-reverse 40s linear infinite;
 }
