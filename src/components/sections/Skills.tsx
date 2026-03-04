@@ -47,8 +47,8 @@ export default function Skills() {
                         </p>
                     </div>
 
-                    <a href="/Anuja_CV.pdf" download className="bg-black text-white px-8 py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap">
-                        Download Full Resume
+                    <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-8 py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap">
+                        View Full Resume
                     </a>
                 </div>
             </div>
