@@ -52,10 +52,15 @@ This document acts as the single source of truth for the content, projects, and 
 *   **Project Management System** (Java, MySQL, JDBC) - [GitHub](https://github.com/Anuja-jayasinghe/project-management-system)
 
 ## 4. Design System Notes
-*   **Theme:** Extremely strict dark theme (Not purely absolute black `#000000`, but a very deep, rich dark grey like `#050505` or `#0a0a0a` to give depth to the white space).
+*   **Theme:** Monochrome design. The background of the site should be purely **white** (or very light grey/off-white) with dark text (black/dark grey). It is NOT a dark theme.
 *   **Accent Color:** Dark Blue (`#1D4ED8` or similar). Used for hovers, active states, and glowing accents.
 *   **Typography:** The primary fonts for this portfolio will be **Turret Road** (for headings, components, numbers, or accents) and **Numans** (for body text and paragraphs).
 *   **Animation System:** Infinite marquee scroll (two rows, opposite directions) for tech stack logos in monochrome (grey/white).
+*   **Branding & Assets:** 
+    *   **Logo:** A signature-style text image. We have two versions (`logo-black.svg` for light theme, `logo-white.svg` for dark theme).
+    *   **Favicon:** Will actively switch between the black and white logos based on the user's system theme (`prefers-color-scheme`).
+    *   **Splash Screen:** An initial loading animation featuring the signature logo before revealing the main portfolio.
+    *   **Portrait (About Section):** Skipped for now. The "Real Me" section will be designed without a headshot initially.
 
 ## 5. Exhaustive Tech Stack List (For Logo Marquees)
 *Please review this list and remove anything you are NOT comfortable displaying as a skill. I included everything mentioned in your projects plus adjacent tools you likely use.*
