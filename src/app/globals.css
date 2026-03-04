@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background-base: #ffffff;
+  --color-foreground-base: #111111;
+  --color-accent-blue: #1D4ED8;
+  --font-sans: var(--font-numans), Arial, sans-serif;
+  --font-mono: var(--font-turret-road), monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: var(--color-background-base);
+  --foreground: var(--color-foreground-base);
+  --accent: var(--color-accent-blue);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Custom utilities */
+@utility text-accent {
+  color: var(--accent);
+}
+
+@utility bg-accent {
+  background-color: var(--accent);
+}
+
+@utility border-accent {
+  border-color: var(--accent);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 40s linear infinite;
 }
