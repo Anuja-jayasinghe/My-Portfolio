@@ -9,7 +9,7 @@ This document acts as the single source of truth for the content, projects, and 
 *   **Professional Bio:** 
     *   *General:* "I’m a Computer Science undergrad hooked on technology since childhood. I love architecting clean, purposeful solutions that solve real-world problems. I prioritize clean code, proper formatting, and modern execution in everything I build."
     *   *For Recruiters:* "I’m a highly adaptable developer who thrives on the 'learn by doing' approach. Adept at full-stack development, with a strong interest in exploring new fields like ML and IoT. I consistently deliver disciplined, reliable, and scalable work that gets straight to the point."
-    *   *For Developers/Peers:* "I’m an engineer who values readable code, solid formatting, and robust architectures. I'm always open to collaborating on interesting projects, tackling hackathons, or geeking out over new tools and automation. Hit me up if you want to build something cool!"
+    *   *For Developers/Peers:* "I’m an engineer who values readable code, solid formatting, and robust architectures. I'm always open to collaborating on open-source projects, tackling hackathons, or geeking out over homelab setups and automation scripts. Hit me up if you want to build something cool!"
 
 ## 2. Contact & Socials
 *   **GitHub:** https://github.com/Anuja-jayasinghe
@@ -52,6 +52,63 @@ This document acts as the single source of truth for the content, projects, and 
 *   **Project Management System** (Java, MySQL, JDBC) - [GitHub](https://github.com/Anuja-jayasinghe/project-management-system)
 
 ## 4. Design System Notes
-*   **Theme:** Extremely strict black and white.
+*   **Theme:** Extremely strict dark theme (Not purely absolute black `#000000`, but a very deep, rich dark grey like `#050505` or `#0a0a0a` to give depth to the white space).
 *   **Accent Color:** Dark Blue (`#1D4ED8` or similar). Used for hovers, active states, and glowing accents.
 *   **Typography:** The primary fonts for this portfolio will be **Turret Road** (for headings, components, numbers, or accents) and **Numans** (for body text and paragraphs).
+*   **Animation System:** Infinite marquee scroll (two rows, opposite directions) for tech stack logos in monochrome (grey/white).
+
+## 5. Exhaustive Tech Stack List (For Logo Marquees)
+*Please review this list and remove anything you are NOT comfortable displaying as a skill. I included everything mentioned in your projects plus adjacent tools you likely use.*
+
+**Frontend & UI**
+*   React
+*   Next.js
+*   Vite
+*   Tailwind CSS
+*   Framer Motion
+*   HTML5
+*   CSS3
+*   JavaScript (ES6+)
+*   TypeScript
+
+**Backend & Databases**
+*   Node.js
+*   Supabase
+*   Neon Postgres
+*   Firebase
+*   Java
+*   MySQL
+*   JDBC (Java Database Connectivity)
+*   backblaze
+
+**Python & Machine Learning**
+*   Python
+*   TensorFlow (or PyTorch / Keras)
+*   Pandas / NumPy / Data Analysis tools
+*   PyAutoGUI
+*   Tesseract.js (OCR)
+
+**Hardware & IoT**
+*   C++
+*   Arduino
+*   Raspberry Pi
+*   Hardware integrations & sensors
+*   esp32
+
+**Infrastructure, DevOps & Homelab**
+*   Docker
+*   Proxmox (Virtualization)
+*   Tailscale (Networking)
+*   Bash / Shell Scripting
+*   Linux / Ubuntu
+*   Git
+*   GitHub
+*   Vercel (Deployment)
+*   Netlify
+*   Cloudflare  
+*   Cpanel
+
+**Other Libraries & APIs**
+*   Chart.js / Recharts
+*   REST API Integration (e.g., SolarEdge API)
+*   Postman
