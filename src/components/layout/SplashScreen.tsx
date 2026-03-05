@@ -28,7 +28,7 @@ export default function SplashScreen() {
                     initial={{ opacity: 1 }}
                     animate={{ opacity: phase === "move" ? 0 : 1 }}
                     transition={{ duration: 1.5, delay: phase === "move" ? 0.5 : 0, ease: "easeInOut" }}
-                    className="fixed inset-0 z-[150] pointer-events-none" style={{ backgroundColor: '#000075' }}
+                    className="fixed inset-0 z-[150] pointer-events-none" style={{ backgroundColor: '#00001A' }}
                 >
                     <motion.div
                         initial={{
