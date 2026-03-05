@@ -23,7 +23,7 @@ export default function SplashScreen() {
 
     return (
         <AnimatePresence>
-            {phase !== "done" && (
+            {phase && (
                 <motion.div
                     initial={{ opacity: 1 }}
                     animate={{ opacity: phase === "move" ? 0 : 1 }}
