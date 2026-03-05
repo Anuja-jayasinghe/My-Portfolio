@@ -70,8 +70,8 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md font-mono">
-                <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 md:h-24 flex items-center justify-between">
+            <header className="fixed top-0 z-50 w-full font-mono">
+                <div className="w-full px-4 sm:px-8 md:px-12 h-16 sm:h-20 md:h-24 flex items-center justify-between">
 
                     {/* LEFT: Logo */}
                     <Link href="/" className="hover:opacity-80 transition-opacity block py-2">
