@@ -370,13 +370,17 @@ function DesktopDeck({ projects, hoveredIndex, setHoveredIndex }: {
         ro.observe(node);
     }, []);
 
-    const step = total > 1 ? (containerWidth - CARD_WIDTH) / (total - 1) : 0;
+    const MAX_STEP = 100;
+    const rawStep = total > 1 ? (containerWidth - CARD_WIDTH) / (total - 1) : 0;
+    const step = Math.min(rawStep, MAX_STEP);
+    const deckWidth = (total - 1) * step + CARD_WIDTH;
+    const deckOffset = Math.max(0, (containerWidth - deckWidth) / 2);
 
     return (
         <div ref={containerRef} style={{ position: "relative", width: "100%", height: `${DECK_HEIGHT}px` }}>
             {[...projects].reverse().map((project, reversedIdx) => {
                 const index = total - 1 - reversedIdx;
-                const offsetX = Math.round(index * step);
+                const offsetX = Math.round(deckOffset + index * step);
                 return (
                     <DesktopCard
                         key={project.title}
