@@ -35,25 +35,25 @@ function MarqueeRow({ icons, reverse = false }: { icons: string[], reverse?: boo
 
 export default function Skills() {
     return (
-        <section id="resume" className="py-24 border-y border-black/5 bg-white overflow-hidden">
-            <div className="container mx-auto px-4 mb-20 relative z-10">
+        <section id="resume" className="py-16 sm:py-24 border-y border-black/5 bg-white overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 mb-12 sm:mb-20 relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold font-mono mb-4 flex items-center gap-4 text-black">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono mb-3 sm:mb-4 flex items-center gap-3 sm:gap-4 text-black">
                             <span className="text-accent">03.</span> Core Arsenal
                         </h2>
-                        <p className="text-gray-600 max-w-2xl font-sans text-lg">
+                        <p className="text-gray-600 max-w-2xl font-sans text-base sm:text-lg">
                             A comprehensive stack spanning modern frontend frameworks to robust backend architectures and hardware integrations.
                         </p>
                     </div>
 
-                    <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-8 py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap">
+                    <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap text-sm sm:text-base">
                         View Full Resume
                     </a>
                 </div>
             </div>
 
-            <div className="w-full flex flex-col gap-12 pointer-events-none md:pointer-events-auto">
+            <div className="w-full flex flex-col gap-8 sm:gap-12 pointer-events-none md:pointer-events-auto">
                 <MarqueeRow icons={row1} />
                 <MarqueeRow icons={row2} reverse />
             </div>

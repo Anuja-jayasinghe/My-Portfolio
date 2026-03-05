@@ -1,12 +1,12 @@
 export default function Contact() {
     return (
-        <section id="contact" className="py-24 bg-gray-50">
-            <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold font-mono mb-6 text-black">
+        <section id="contact" className="py-16 sm:py-24 bg-gray-50">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-16">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono mb-4 sm:mb-6 text-black">
                         Let&apos;s build something <span className="text-accent">extraordinary.</span>
                     </h2>
-                    <p className="text-gray-600 text-lg">
+                    <p className="text-gray-600 text-base sm:text-lg px-2">
                         Have an interesting project, a hackathon idea, or just want to geek out over tech?
                         My inbox is always open.
                     </p>

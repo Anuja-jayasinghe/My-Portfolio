@@ -57,7 +57,7 @@ function FeaturedCard({ project, index }: { project: FeaturedProject; index: num
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-8 md:gap-12 items-center group`}
+            className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-6 sm:gap-8 md:gap-12 items-center group`}
         >
             {/* Screenshot */}
             <div className="w-full md:w-3/5 relative overflow-hidden rounded-lg border border-black/10">
@@ -77,10 +77,10 @@ function FeaturedCard({ project, index }: { project: FeaturedProject; index: num
             {/* Details */}
             <div className={`w-full md:w-2/5 ${isEven ? "md:text-left" : "md:text-right"}`}>
                 <p className="text-sm font-mono text-accent mb-2 font-bold">Featured Project</p>
-                <h3 className="text-3xl md:text-4xl font-bold font-mono text-black mb-4 group-hover:text-accent transition-colors">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-black mb-4 group-hover:text-accent transition-colors">
                     {project.title}
                 </h3>
-                <p className="text-gray-500 text-base md:text-lg mb-6 leading-relaxed">
+                <p className="text-gray-500 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed">
                     {project.description}
                 </p>
                 <div className={`flex flex-wrap gap-2 mb-8 ${isEven ? "" : "md:justify-end"}`}>
@@ -129,7 +129,7 @@ const allMiniProjects: MiniProject[] = [
         title: "CEB Management",
         tech: ["JS", "Firebase"],
         desc: "Manages and calculates electricity consumption based on CEB rates.",
-        link: "https://github.com/Anuja-jayasinghe/CEBManagement",
+        link: "https://github.com/Anuja-jayasinghe/CEB_Management",
     },
     {
         title: "JaySync-Lab",
@@ -147,7 +147,7 @@ const allMiniProjects: MiniProject[] = [
         title: "Hangman",
         tech: ["JS", "HTML", "CSS"],
         desc: "Classic word-guessing game built with vanilla JavaScript and DOM manipulation.",
-        link: "https://github.com/Anuja-jayasinghe/hangman",
+        link: "https://github.com/Anuja-jayasinghe/HangMan",
     },
     {
         title: "Ranking Calculator",
@@ -159,7 +159,7 @@ const allMiniProjects: MiniProject[] = [
         title: "JS Calculator",
         tech: ["HTML", "CSS", "JS"],
         desc: "A clean, functional calculator built with vanilla HTML, CSS and JavaScript.",
-        link: "https://github.com/Anuja-jayasinghe/Simple-JS-Calculator",
+        link: "https://github.com/Anuja-jayasinghe/Simple_JS_Calculator",
     },
     {
         title: "EcoAction",
@@ -517,32 +517,32 @@ export default function Portfolio() {
     }, []);
 
     return (
-        <section id="portfolio" className="py-24">
-            <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold font-mono mb-20 flex items-center gap-4 text-black">
+        <section id="portfolio" className="py-16 sm:py-24 overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono mb-12 sm:mb-20 flex items-center gap-3 sm:gap-4 text-black">
                     <span className="text-accent">02.</span> Selected Work
                 </h2>
 
                 {/* Featured Projects - Alternating Layout */}
-                <div className="flex flex-col gap-24 md:gap-32 mb-28">
+                <div className="flex flex-col gap-16 sm:gap-24 md:gap-32 mb-16 sm:mb-28">
                     {featuredProjects.map((project, i) => (
                         <FeaturedCard key={i} project={project} index={i} />
                     ))}
                 </div>
 
                 {/* Mini Projects Header */}
-                <div className="mb-8">
-                    <h3 className="text-2xl font-bold font-mono text-black mb-2">
+                <div className="mb-6 sm:mb-8">
+                    <h3 className="text-xl sm:text-2xl font-bold font-mono text-black mb-2">
                         Mini Projects
                     </h3>
-                    <p className="text-gray-400 text-sm font-mono">
+                    <p className="text-gray-400 text-xs sm:text-sm font-mono">
                         {allMiniProjects.length} projects · {isMobile ? "tap to explore" : "hover to explore"}
                     </p>
                 </div>
             </div>
 
             {/* SSH Card Deck - full width */}
-            <div className="w-full px-8 md:px-16 lg:px-24 pb-8">
+            <div className="w-full px-4 sm:px-8 md:px-16 lg:px-24 pb-8">
                 {isMobile
                     ? <MobileDeck projects={allMiniProjects} />
                     : <DesktopDeck projects={allMiniProjects} hoveredIndex={hoveredIndex} setHoveredIndex={setHoveredIndex} />

@@ -28,17 +28,17 @@ export default function About() {
     const [active, setActive] = useState(0);
 
     return (
-        <section id="about" className="py-24 bg-gray-50 border-y border-black/5">
-            <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold font-mono mb-16 flex items-center gap-4 text-black">
+        <section id="about" className="py-16 sm:py-24 bg-gray-50 border-y border-black/5">
+            <div className="container mx-auto px-4 sm:px-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono mb-10 sm:mb-16 flex items-center gap-3 sm:gap-4 text-black">
                     <span className="text-accent">01.</span> The Real Me
                 </h2>
             </div>
 
             {/* Full-width tab bar with underline */}
-            <div className="w-full border-b border-black/10">
-                <div className="container mx-auto px-4">
-                    <div className="flex gap-8 md:gap-12 relative">
+            <div className="w-full border-b border-black/10 overflow-x-auto">
+                <div className="container mx-auto px-4 sm:px-6">
+                    <div className="flex gap-6 sm:gap-8 md:gap-12 relative min-w-max sm:min-w-0">
                         {perspectives.map((p, i) => {
                             const Icon = p.icon;
                             const isActive = active === i;
@@ -46,7 +46,7 @@ export default function About() {
                                 <button
                                     key={p.id}
                                     onClick={() => setActive(i)}
-                                    className={`relative flex items-center gap-2.5 pb-4 text-sm font-bold font-mono transition-colors duration-300 ${isActive ? "text-black" : "text-black/30 hover:text-black/60"
+                                    className={`relative flex items-center gap-2 sm:gap-2.5 pb-4 text-xs sm:text-sm font-bold font-mono transition-colors duration-300 whitespace-nowrap ${isActive ? "text-black" : "text-black/30 hover:text-black/60"
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -66,8 +66,8 @@ export default function About() {
             </div>
 
             {/* Content */}
-            <div className="container mx-auto px-4 pt-12">
-                <div className="w-full min-h-[100px]">
+            <div className="container mx-auto px-4 sm:px-6 pt-8 sm:pt-12">
+                <div className="w-full min-h-[80px] sm:min-h-[100px]">
                     <AnimatePresence mode="wait">
                         <motion.p
                             key={perspectives[active].id}
@@ -75,7 +75,7 @@ export default function About() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.35, ease: "easeInOut" }}
-                            className="text-gray-600 leading-relaxed text-lg md:text-2xl w-full"
+                            className="text-gray-600 leading-relaxed text-base sm:text-lg md:text-2xl w-full"
                         >
                             {perspectives[active].text}
                         </motion.p>
