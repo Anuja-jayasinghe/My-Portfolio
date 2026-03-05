@@ -48,7 +48,7 @@ function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             >
                                 <Link href={link.href} onClick={onClose}>
                                     <motion.span
-                                        whileHover={{ scale: 1.15, x: 15, color: "#1D4ED8" }}
+                                        whileHover={{ scale: 1.15, x: 15, color: "#000075" }}
                                         transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                         className="inline-block text-5xl md:text-7xl lg:text-8xl font-bold font-sans text-white tracking-tighter cursor-pointer"
                                     >

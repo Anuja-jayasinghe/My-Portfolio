@@ -1,32 +1,85 @@
+"use client";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Briefcase, Code } from "lucide-react";
+
+const perspectives = [
+    {
+        id: "general",
+        label: "General",
+        icon: User,
+        text: "I'm a Computer Science undergrad hooked on technology since childhood. I love architecting clean, purposeful solutions that solve real-world problems. I prioritize clean code, proper formatting, and modern execution in everything I build.",
+    },
+    {
+        id: "recruiters",
+        label: "Recruiters",
+        icon: Briefcase,
+        text: "I'm a highly adaptable developer who thrives on the 'learn by doing' approach. Adept at full-stack development, with a strong interest in exploring new fields like ML and IoT. I consistently deliver disciplined, reliable, and scalable work that gets straight to the point.",
+    },
+    {
+        id: "developers",
+        label: "Developers",
+        icon: Code,
+        text: "I'm an engineer who values readable code, solid formatting, and robust architectures. I'm always open to collaborating on interesting projects, tackling hackathons, or geeking out over new tools and automation. Hit me up if you want to build something cool!",
+    },
+];
+
 export default function About() {
+    const [active, setActive] = useState(0);
+
     return (
         <section id="about" className="py-24 bg-gray-50 border-y border-black/5">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold font-mono mb-12 flex items-center gap-4 text-black">
+                <h2 className="text-3xl md:text-4xl font-bold font-mono mb-16 flex items-center gap-4 text-black">
                     <span className="text-accent">01.</span> The Real Me
                 </h2>
+            </div>
 
-                <div className="grid md:grid-cols-3 gap-12">
-                    <div className="space-y-4">
-                        <h3 className="text-xl font-bold font-mono text-black border-b border-black/10 pb-2">General</h3>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                            I’m a Computer Science undergrad hooked on technology since childhood. I love architecting clean, purposeful solutions that solve real-world problems. I prioritize clean code, proper formatting, and modern execution in everything I build.
-                        </p>
+            {/* Full-width tab bar with underline */}
+            <div className="w-full border-b border-black/10">
+                <div className="container mx-auto px-4">
+                    <div className="flex gap-8 md:gap-12 relative">
+                        {perspectives.map((p, i) => {
+                            const Icon = p.icon;
+                            const isActive = active === i;
+                            return (
+                                <button
+                                    key={p.id}
+                                    onClick={() => setActive(i)}
+                                    className={`relative flex items-center gap-2.5 pb-4 text-sm font-bold font-mono transition-colors duration-300 ${isActive ? "text-black" : "text-black/30 hover:text-black/60"
+                                        }`}
+                                >
+                                    <Icon className="w-4 h-4" />
+                                    {p.label}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="activeUnderline"
+                                            className="absolute bottom-0 left-0 right-0 h-[3px] bg-black"
+                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        />
+                                    )}
+                                </button>
+                            );
+                        })}
                     </div>
+                </div>
+            </div>
 
-                    <div className="space-y-4">
-                        <h3 className="text-xl font-bold font-mono text-black border-b border-black/10 pb-2">For Recruiters</h3>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                            I’m a highly adaptable developer who thrives on the &apos;learn by doing&apos; approach. Adept at full-stack development, with a strong interest in exploring new fields like ML and IoT. I consistently deliver disciplined, reliable, and scalable work that gets straight to the point.
-                        </p>
-                    </div>
-
-                    <div className="space-y-4">
-                        <h3 className="text-xl font-bold font-mono text-black border-b border-black/10 pb-2">For Developers/Peers</h3>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                            I’m an engineer who values readable code, solid formatting, and robust architectures. I&apos;m always open to collaborating on interesting projects, tackling hackathons, or geeking out over new tools and automation. Hit me up if you want to build something cool!
-                        </p>
-                    </div>
+            {/* Content */}
+            <div className="container mx-auto px-4 pt-12">
+                <div className="w-full min-h-[100px]">
+                    <AnimatePresence mode="wait">
+                        <motion.p
+                            key={perspectives[active].id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.35, ease: "easeInOut" }}
+                            className="text-gray-600 leading-relaxed text-lg md:text-2xl w-full"
+                        >
+                            {perspectives[active].text}
+                        </motion.p>
+                    </AnimatePresence>
                 </div>
             </div>
         </section>
