@@ -31,14 +31,14 @@ function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     {/* Close Button - Top Right */}
                     <button
                         onClick={onClose}
-                        className="absolute top-8 right-8 text-white hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-white/10"
+                        className="absolute top-6 right-6 sm:top-8 sm:right-8 text-white hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-white/10"
                         aria-label="Close Menu"
                     >
-                        <X className="w-10 h-10" />
+                        <X className="w-8 h-8 sm:w-10 sm:h-10" />
                     </button>
 
                     {/* Navigation Links */}
-                    <nav className="flex flex-col gap-8 md:gap-12 text-center">
+                    <nav className="flex flex-col gap-6 sm:gap-8 md:gap-12 text-center">
                         {navLinks.map((link, i) => (
                             <motion.div
                                 key={link.name}
@@ -48,9 +48,9 @@ function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                             >
                                 <Link href={link.href} onClick={onClose}>
                                     <motion.span
-                                        whileHover={{ scale: 1.15, x: 15, color: "#1D4ED8" }}
+                                        whileHover={{ scale: 1.15, x: 15, color: "#000075" }}
                                         transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                                        className="inline-block text-5xl md:text-7xl lg:text-8xl font-bold font-sans text-white tracking-tighter cursor-pointer"
+                                        className="inline-block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-sans text-white tracking-tighter cursor-pointer"
                                     >
                                         {link.name}
                                     </motion.span>
@@ -70,8 +70,8 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md font-mono">
-                <div className="container mx-auto px-4 h-24 flex items-center justify-between">
+            <header className="fixed top-0 z-50 w-full font-mono">
+                <div className="w-full px-4 sm:px-8 md:px-12 h-16 sm:h-20 md:h-24 flex items-center justify-between">
 
                     {/* LEFT: Logo */}
                     <Link href="/" className="hover:opacity-80 transition-opacity block py-2">
@@ -80,7 +80,7 @@ export default function Navbar() {
                             alt="Anuja Logo"
                             width={180}
                             height={60}
-                            className="w-40 md:w-56 h-auto object-contain drop-shadow-sm"
+                            className="w-32 sm:w-40 md:w-56 h-auto object-contain drop-shadow-sm"
                             priority
                         />
                     </Link>

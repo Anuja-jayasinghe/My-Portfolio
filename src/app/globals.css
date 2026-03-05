@@ -3,7 +3,7 @@
 @theme {
   --color-background-base: #ffffff;
   --color-foreground-base: #111111;
-  --color-accent-blue: #1D4ED8;
+  --color-accent-blue: #000075;
   --font-sans: var(--font-numans), Arial, sans-serif;
   --font-mono: var(--font-turret-road), monospace;
 }
