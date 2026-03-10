@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anuja Jayasinghe's Portfolio
 
-## Getting Started
+A modern, responsive portfolio website showcasing projects, skills, and professional experience. Built with Next.js 16, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## ✨ Features
 
+- **Splash Screen Animation** - Eye-catching entry animation on initial load
+- **Responsive Navigation** - Mobile-friendly navbar with smooth scrolling
+- **Hero Section** - Engaging introduction with animated elements
+- **About Section** - Personal bio and professional background
+- **Portfolio Showcase** - Featured and mini projects with live demos and GitHub links
+- **Skills Display** - Technical skills organized by category
+- **Contact Form** - Easy way to get in touch
+- **Dark Theme Ready** - Modern, professional dark-themed design
+- **Smooth Animations** - Powered by Framer Motion for fluid interactions
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Linting:** ESLint (Next.js config)
+
+## 📁 Project Structure
+
+```
+My-Portfolio/
+├── public/
+│   └── projects/          # Project images and assets
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx     # Root layout
+│   │   ├── page.tsx       # Main page
+│   │   └── globals.css    # Global styles
+│   └── components/
+│       ├── layout/
+│       │   ├── Footer.tsx
+│       │   ├── Navbar.tsx
+│       │   └── SplashScreen.tsx
+│       └── sections/
+│           ├── About.tsx
+│           ├── Contact.tsx
+│           ├── Hero.tsx
+│           ├── Portfolio.tsx
+│           └── Skills.tsx
+├── portfolio_data.md      # Content and project data
+└── questionnaire.md       # Design requirements
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+ 
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Anuja-jayasinghe/My-Portfolio.git
+cd My-Portfolio
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## Learn More
+## 📦 Featured Projects
 
-To learn more about Next.js, take a look at the following resources:
+- **PayLedger** - Financial tracking system with bill management and automated email summaries
+- **SolarEdge Analytics** - Real-time solar energy monitoring dashboard with OCR integration
+- **ComponentOps** - Motion-enhanced React UI components library
+- **CheckMS** - Professional check portfolio manager for LKR transactions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+View all projects and details in [portfolio_data.md](portfolio_data.md).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Customization
 
-## Deploy on Vercel
+To update portfolio content:
+1. Edit `portfolio_data.md` for content structure
+2. Modify components in `src/components/sections/` for layout changes
+3. Update styles in `src/app/globals.css` or component-level Tailwind classes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS v4](https://tailwindcss.com/docs)
+- [Framer Motion](https://www.framer.com/motion/)
+
+## 📧 Contact
+
+- **Email:** anujajayasinhe@gmail.com
+- **GitHub:** [@Anuja-jayasinghe](https://github.com/Anuja-jayasinghe)
+- **LinkedIn:** [anuja-jayasinghe](https://linkedin.com/in/anuja-jayasinghe)
+
+## 📜 License
+
+This project is open source and available for personal use.
+
+---
+
+Built with ❤️ by Anuja Jayasinghe
