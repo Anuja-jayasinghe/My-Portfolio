@@ -63,10 +63,10 @@ export default function TerminalOne() {
   }, [activeProject]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden border border-black/10 flex flex-col font-mono text-sm shadow-sm bg-white">
+    <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden border border-black/15 flex flex-col font-mono text-sm shadow-sm bg-gray-100">
 
       {/* Window Chrome */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-black/10 shrink-0">
+      <div className="flex items-center gap-2 px-4 py-3 bg-gray-200/50 border-b border-black/15 shrink-0">
         <span className="w-3 h-3 rounded-full bg-black/10" />
         <span className="w-3 h-3 rounded-full bg-black/10" />
         <span className="w-3 h-3 rounded-full bg-black/10" />
@@ -112,7 +112,7 @@ export default function TerminalOne() {
         <div className="flex-1 bg-white flex flex-col min-h-[280px] md:min-h-[420px]">
 
           {/* Active tab */}
-          <div className="flex bg-gray-50 border-b border-black/10 h-9 shrink-0">
+          <div className="flex bg-gray-200/30 border-b border-black/15 h-9 shrink-0">
             <div className="flex items-center gap-2 px-4 border-b-2 border-accent bg-white text-gray-700 text-xs">
               <Terminal className="w-3.5 h-3.5 text-accent" />
               <span>
