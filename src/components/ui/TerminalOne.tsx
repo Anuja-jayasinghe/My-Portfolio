@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { ExternalLink, Github, FolderCode, Terminal, FileCode2 } from "lucide-react";
+import { ExternalLink, Github, FolderCode, Terminal, FileCode2, ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import projectsData from "../../data/projects.json";
+import { getOptimizedImagePath } from "@/lib/image-utils";
 
 interface Project {
   id: string;
@@ -18,14 +19,52 @@ interface Project {
 
 export default function TerminalOne() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [lockedProjectId, setLockedProjectId] = useState<string | null>(null);
   const [typedOutput, setTypedOutput] = useState<string>("");
   const [isTyping, setIsTyping] = useState(false);
+  const [expandedDirs, setExpandedDirs] = useState<Record<string, boolean>>({ "tools": true, "web": true });
+  
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const miniProjects = projectsData.filter((p) => p.type === "mini");
+  
+  // Logical Grouping
+  const TOOLS_IDS = ["nic-detail", "mouse-active", "ceb-management", "ranking-calc", "js-calculator", "project-mgmt"];
+  const WEB_IDS = ["hangman", "ecoaction", "jaysync-lab"];
 
-  const selectProject = useCallback((project: Project) => {
-    setActiveProject(project);
-  }, []);
+  const groupedProjects = {
+    tools: miniProjects.filter(p => TOOLS_IDS.includes(p.id)),
+    web: miniProjects.filter(p => WEB_IDS.includes(p.id))
+  };
+
+  const handleMouseEnter = (project: Project) => {
+    if (lockedProjectId) return;
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    
+    debounceTimer.current = setTimeout(() => {
+      setActiveProject(project);
+    }, 200);
+  };
+
+  const handleMouseLeave = () => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    if (!lockedProjectId) {
+      setActiveProject(null);
+    }
+  };
+
+  const handleClick = (project: Project) => {
+    if (lockedProjectId === project.id) {
+      setLockedProjectId(null);
+    } else {
+      setLockedProjectId(project.id);
+      setActiveProject(project);
+    }
+  };
+
+  const toggleDir = (dir: string) => {
+    setExpandedDirs(prev => ({ ...prev, [dir]: !prev[dir] }));
+  };
 
   useEffect(() => {
     if (!activeProject) {
@@ -37,15 +76,17 @@ export default function TerminalOne() {
     setTypedOutput("");
 
     const payload = [
-      `$ ./describe --target="${activeProject.id}.sh"`,
-      `[INFO] Target acquired: ${activeProject.title}`,
-      `[STAT] Repository: ${activeProject.repoUrl.replace("https://", "")}`,
+      `$ mount /dev/projects/${activeProject.id}.bin /mnt/preview`,
+      `[  OK  ] Mounting filesystem...`,
+      `[SYSTEM] OBJECT_NAME: ${activeProject.title.toUpperCase()}`,
+      `[SOURCE] REPO: github.com/${activeProject.repoUrl.split('github.com/')[1]}`,
       ...(activeProject.liveUrl
-        ? [`[STAT] Live URI:  ${activeProject.liveUrl.replace("https://", "")}`]
+        ? [`[REMOTE] URI:  ${activeProject.liveUrl.replace("https://", "")}`]
         : []),
-      `[TECH] Stack: ${activeProject.techStack.join(" · ")}`,
-      `${"─".repeat(50)}`,
+      `[BINARY] STACK: ${activeProject.techStack.join(" // ")}`,
+      `[MANIFEST_START]`,
       `${activeProject.description}`,
+      `[EOF]`,
       ` `,
     ].join("\n");
 
@@ -57,158 +98,213 @@ export default function TerminalOne() {
         setIsTyping(false);
         clearInterval(interval);
       }
-    }, 12);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [activeProject]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden border border-black/15 flex flex-col font-mono text-sm shadow-sm bg-gray-100">
+    <div className="w-full max-w-[1200px] mx-auto rounded-lg overflow-hidden border border-white/5 flex flex-col font-mono text-sm shadow-2xl bg-[#0a0a0a]">
 
-      {/* Window Chrome */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-gray-200/50 border-b border-black/15 shrink-0">
-        <span className="w-3 h-3 rounded-full bg-black/10" />
-        <span className="w-3 h-3 rounded-full bg-black/10" />
-        <span className="w-3 h-3 rounded-full bg-black/10" />
-        <div className="flex items-center gap-1.5 ml-3 text-xs text-gray-400">
-          <Terminal className="w-3.5 h-3.5" />
-          <span>bash — terminal</span>
+      {/* Window Chrome - Dark Industrial */}
+      <div className="flex items-center justify-between px-4 py-2 bg-[#0a0a0a] border-b border-white/5 shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
+          <div className="flex items-center gap-2 ml-4 text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+            <Terminal className="w-3 h-3" />
+            <span>Project_Terminal_v4.2</span>
+          </div>
         </div>
+        <div className="text-[10px] text-green-500/30 font-bold">MODE: CRT_EMULATION_ON</div>
       </div>
 
-      {/* Body: sidebar + output stacked on mobile, side-by-side on desktop */}
-      <div className="flex flex-col md:flex-row">
-
+      <div className="flex flex-col md:flex-row relative">
+        
         {/* Sidebar: File Explorer */}
-        <div className="w-full md:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-black/10 flex flex-col shrink-0">
-          <div className="p-3 text-[10px] font-bold text-gray-400 tracking-widest flex items-center gap-2 uppercase border-b border-black/10">
+        <div className="w-full md:w-64 bg-[#080808] border-b md:border-b-0 md:border-r border-white/5 flex flex-col shrink-0 z-10">
+          <div className="p-3 text-[10px] font-bold text-gray-500 tracking-widest flex items-center gap-2 uppercase border-b border-white/5">
             <FolderCode className="w-3.5 h-3.5" />
-            EXPLORER: PROJECTS
+            SRC/LAB/PROJECTS
           </div>
 
-          {/* On mobile: horizontal scroll row. On desktop: vertical list */}
-          <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible overflow-y-visible md:overflow-y-auto md:max-h-[420px] py-1.5 md:py-2">
-            {miniProjects.map((project) => (
-              <button
-                key={project.id}
-                onMouseEnter={() => selectProject(project)}
-                onClick={() => selectProject(project)}
-                className={`flex items-center gap-2 px-3 md:px-4 py-2 md:py-1.5 shrink-0 md:w-full text-left transition-all duration-100 group border-b-2 md:border-b-0 md:border-l-2 ${activeProject?.id === project.id
-                    ? "border-accent bg-accent/5 text-accent"
-                    : "border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                  }`}
-              >
-                <FileCode2
-                  className={`w-3.5 h-3.5 shrink-0 ${activeProject?.id === project.id ? "text-accent" : "text-gray-400 group-hover:text-gray-600"
-                    }`}
-                />
-                <span className="truncate text-xs">{project.id.toLowerCase()}.sh</span>
-              </button>
+          {/* Directory Rendering */}
+          <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible py-2">
+            {Object.entries(groupedProjects).map(([dir, items]) => (
+              <div key={dir} className="flex flex-col min-w-[120px] md:min-w-0">
+                <button 
+                  onClick={() => toggleDir(dir)}
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1 text-gray-600 hover:text-gray-400 text-xs transition-colors"
+                >
+                  {expandedDirs[dir] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                  <span className="uppercase tracking-tighter font-bold">📁 {dir}/</span>
+                </button>
+                
+                <AnimatePresence initial={false}>
+                  {(expandedDirs[dir] || typeof window !== 'undefined' && window.innerWidth < 768) && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="flex md:flex-col overflow-hidden"
+                    >
+                      {items.map((project) => (
+                        <button
+                          key={project.id}
+                          onMouseEnter={() => handleMouseEnter(project)}
+                          onMouseLeave={handleMouseLeave}
+                          onClick={() => handleClick(project)}
+                          className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-1.5 shrink-0 text-left transition-all duration-200 group relative ${activeProject?.id === project.id
+                              ? "text-green-400 bg-green-500/5"
+                              : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+                            }`}
+                        >
+                          {lockedProjectId === project.id && (
+                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                          )}
+                          <FileCode2 className={`w-3 h-3 shrink-0 ${activeProject?.id === project.id ? "text-green-500" : "text-gray-700"}`} />
+                          <span className="truncate text-[11px] font-bold">{project.id.toLowerCase()}.bin</span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Main Window: Terminal Output */}
-        <div className="flex-1 bg-white flex flex-col min-h-[280px] md:min-h-[420px]">
-
-          {/* Active tab */}
-          <div className="flex bg-gray-200/30 border-b border-black/15 h-9 shrink-0">
-            <div className="flex items-center gap-2 px-4 border-b-2 border-accent bg-white text-gray-700 text-xs">
-              <Terminal className="w-3.5 h-3.5 text-accent" />
-              <span>
-                {activeProject ? `${activeProject.id}.sh` : "bash — terminal"}
-              </span>
-            </div>
+        <div className="flex-1 bg-black flex flex-col min-h-[350px] md:min-h-[500px] relative overflow-hidden">
+          
+          {/* CRT Overlay Effects */}
+          <div className="absolute inset-0 pointer-events-none z-20">
+            {/* Scanlines */}
+            <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
+            {/* Vignette */}
+            <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]" />
+            {/* Screen Flicker */}
+            <div className="absolute inset-0 opacity-[0.015] bg-white animate-flicker pointer-events-none" />
           </div>
 
-          {/* Terminal Content */}
-          <div className="p-4 md:p-6 flex-1 overflow-y-auto">
+          <div className="p-4 md:p-8 flex-1 overflow-y-auto relative z-10 custom-scrollbar">
             {!activeProject ? (
-              <div className="text-gray-300 italic h-full flex flex-col justify-center items-center select-none gap-3">
-                <Terminal className="w-12 h-12 opacity-20" />
-                <span className="text-xs text-gray-400">
-                  {/* Mobile hint */}
-                  <span className="md:hidden">Tap a file above to run it...</span>
-                  <span className="hidden md:inline">Hover over a file to execute its script...</span>
-                </span>
+              <div className="h-full flex flex-col justify-center items-center select-none gap-4">
+                <Terminal className="w-16 h-16 text-green-500/10 animate-pulse" />
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <span className="text-[10px] text-green-500/30 uppercase tracking-[0.2em] font-bold">System_Idle</span>
+                  <span className="text-[10px] text-gray-700 max-w-[200px]">SELECT A SOURCE BINARY FROM THE LEFT TO INITIATE SEQUENCE</span>
+                </div>
               </div>
             ) : (
-              <>
-                {/* Typed output with syntax colouring */}
-                <pre className="whitespace-pre-wrap font-mono text-xs md:text-sm leading-relaxed pb-4 text-gray-700">
+              <div className="max-w-[800px]">
+                {/* Typed output with industrial syntax colouring */}
+                <pre className="whitespace-pre-wrap font-mono text-[10px] md:text-xs leading-relaxed pb-8 terminal-glow">
                   {typedOutput.split("\n").map((line, i) => {
                     if (line.startsWith("$"))
-                      return <span key={i} className="text-accent font-bold">{line}{"\n"}</span>;
-                    if (line.startsWith("[INFO]"))
-                      return <span key={i} className="text-gray-800 font-semibold">{line}{"\n"}</span>;
-                    if (line.startsWith("[STAT]"))
-                      return <span key={i} className="text-gray-500">{line}{"\n"}</span>;
-                    if (line.startsWith("[TECH]"))
-                      return <span key={i} className="text-gray-600">{line}{"\n"}</span>;
-                    if (line.startsWith("─"))
-                      return <span key={i} className="text-gray-200">{line}{"\n"}</span>;
-                    return <span key={i}>{line}{"\n"}</span>;
+                      return <span key={i} className="text-green-400/90 font-bold">{line}{"\n"}</span>;
+                    if (line.startsWith("[  OK  ]"))
+                       return <span key={i} className="text-green-500 font-bold tracking-tighter "><span className="text-white/20">[</span>  OK  <span className="text-white/20">]</span> {line.split('OK  ] ')[1]}{"\n"}</span>;
+                    if (line.startsWith("[SYSTEM]") || line.startsWith("[BINARY]"))
+                      return <span key={i} className="text-blue-400 font-bold">{line}{"\n"}</span>;
+                    if (line.startsWith("[SOURCE]") || line.startsWith("[REMOTE]"))
+                      return <span key={i} className="text-amber-500/80">{line}{"\n"}</span>;
+                    if (line.startsWith("[MANIFEST"))
+                      return <span key={i} className="text-gray-500 font-black tracking-widest block bg-white/5 px-2 py-0.5 my-2 uppercase">{line}{"\n"}</span>;
+                    if (line.startsWith("[EOF]") || line.startsWith("[EOF]"))
+                      return <span key={i} className="text-gray-600 italic">{line}{"\n"}</span>;
+                    return <span key={i} className="text-green-500/70">{line}{"\n"}</span>;
                   })}
                   {isTyping && (
-                    <span className="inline-block w-2 h-4 ml-0.5 bg-accent animate-pulse align-middle opacity-70" />
+                    <span className="inline-block w-2.5 h-4 ml-1 bg-green-500 animate-terminal-cursor align-middle shadow-[0_0_8px_#22c55e]" />
                   )}
                 </pre>
 
-                {/* Post-typing actions */}
+                {/* Post-typing actions: Assets & Links */}
                 <AnimatePresence>
                   {!isTyping && activeProject && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-2 flex flex-col sm:flex-row gap-4 border-t border-black/5 pt-4"
+                      className="mt-6 flex flex-col md:flex-row gap-8 py-6 border-t border-white/5"
                     >
                       {activeProject.imagePath ? (
-                        <div className="relative w-full sm:w-48 overflow-hidden rounded border border-black/10 shrink-0 aspect-video">
+                        <div className="relative w-full md:w-64 overflow-hidden rounded border border-white/10 shrink-0 aspect-video group/img">
                           <Image
-                            src={activeProject.imagePath}
+                            src={getOptimizedImagePath(activeProject.imagePath)}
                             alt={activeProject.title}
                             fill
-                            className="object-cover"
+                            className="object-cover opacity-60 group-hover/img:opacity-100 transition-opacity duration-500"
                             loading="lazy"
                           />
+                          <div className="absolute inset-0 bg-green-500/5 mix-blend-overlay" />
                         </div>
                       ) : (
-                        <div className="w-full sm:w-48 h-28 bg-gray-50 rounded border border-black/10 flex items-center justify-center text-gray-300 italic text-[10px] shrink-0">
-                          [NO UI ASSET]
+                        <div className="w-full md:w-64 h-36 bg-white/[0.02] rounded border border-white/5 flex items-center justify-center text-gray-700 italic text-[10px] shrink-0 uppercase tracking-widest">
+                          [ Null_Asset_Record ]
                         </div>
                       )}
 
-                      <div className="flex flex-col gap-3 justify-center">
-                        <a
-                          href={activeProject.repoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center gap-2 text-gray-700 hover:text-accent transition-colors text-xs font-mono font-bold"
-                        >
-                          <Github className="w-4 h-4" />
-                          root@github:/{activeProject.id}
-                        </a>
-
-                        {activeProject.liveUrl && (
+                      <div className="flex flex-col gap-4 justify-center">
+                        <div className="space-y-1">
+                          <span className="text-[9px] text-gray-600 uppercase font-black tracking-tighter">Repository_Access</span>
                           <a
-                            href={activeProject.liveUrl}
+                            href={activeProject.repoUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-2 text-accent hover:opacity-70 transition-opacity text-xs font-mono font-bold"
+                            className="flex items-center gap-3 text-gray-400 hover:text-white transition-all text-xs font-bold group/link"
                           >
-                            <ExternalLink className="w-4 h-4" />
-                            curl https://{activeProject.liveUrl.replace("https://", "")}
+                            <Github className="w-4 h-4 text-gray-600 group-hover/link:text-white transition-colors" />
+                            <span className="border-b border-transparent group-hover/link:border-white">
+                              anujajay://repo/{activeProject.id}
+                            </span>
                           </a>
+                        </div>
+
+                        {activeProject.liveUrl && (
+                          <div className="space-y-1">
+                            <span className="text-[9px] text-gray-600 uppercase font-black tracking-tighter">Remote_Deployment</span>
+                            <a
+                              href={activeProject.liveUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-3 text-green-500 hover:text-green-300 transition-all text-xs font-bold group/link"
+                            >
+                              <ExternalLink className="w-4 h-4 text-green-600 group-hover/link:text-green-300 transition-colors" />
+                              <span className="border-b border-transparent group-hover/link:border-green-300">
+                                execute https://{activeProject.liveUrl.replace("https://", "")}
+                              </span>
+                            </a>
+                          </div>
                         )}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </>
+              </div>
             )}
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        .terminal-glow {
+          text-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+        }
+        @keyframes flicker {
+          0% { opacity: 0.015; }
+          5% { opacity: 0.02; }
+          10% { opacity: 0.01; }
+          15% { opacity: 0.03; }
+          25% { opacity: 0.015; }
+          30% { opacity: 0.025; }
+          100% { opacity: 0.015; }
+        }
+        .animate-flicker {
+          animation: flicker 0.15s infinite;
+        }
+      `}</style>
     </div>
   );
 }

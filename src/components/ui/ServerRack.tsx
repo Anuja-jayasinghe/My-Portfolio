@@ -31,17 +31,17 @@ export default function ServerRack() {
       </div>
 
       {/* The Main Chassis - Natural Height (Scroll Trap Fixed) */}
-      <div 
+      <div
         onMouseLeave={() => setActiveBladeId(null)}
         className="relative bg-[#0f0f0f] rounded-lg border-x-[12px] border-gray-800 shadow-2xl shadow-black/60 overflow-hidden"
       >
-        
+
         {/* PART 1: TOP PANEL REDESIGN */}
         <div className="relative h-10 w-full bg-[#0a0a0a] border-b border-black flex items-center px-4 overflow-hidden">
           {/* Brushed Metal Texture Layer */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[repeating-linear-gradient(90deg,#fff,#fff_1px,transparent_1px,transparent_4px)]" />
           <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.1)_0%,transparent_50%,rgba(0,0,0,0.5)_100%)]" />
-          
+
           {/* Unit Markers - Left */}
           <div className="absolute left-[-8px] top-0 bottom-0 w-2 flex flex-col justify-around py-1.5 opacity-40 select-none">
             <span className="text-[6px] font-mono font-bold text-gray-500">1U</span>
@@ -56,7 +56,7 @@ export default function ServerRack() {
                   <div key={`l-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-[inset_0_1px_1px_rgba(0,0,0,0.8)]" />
                 ))}
               </div>
-              
+
               {/* PRIMARY AIR INTAKE - Central Focus */}
               <div className="flex gap-1.5 px-3 py-1 bg-black/40 rounded-full border border-white/5 shadow-inner">
                 {[...Array(6)].map((_, i) => (
@@ -93,27 +93,24 @@ export default function ServerRack() {
                 <motion.div
                   key={cert.id}
                   layout
-                  className={`group relative overflow-hidden rounded-sm transition-all duration-300 border-b border-black/50 ${
-                    isActive ? "z-10 scale-[1.012] md:col-span-2" : "z-0"
-                  }`}
+                  className={`group relative overflow-hidden rounded-sm transition-all duration-300 border-b border-black/50 ${isActive ? "z-10 scale-[1.012] md:col-span-2" : "z-0"
+                    }`}
                 >
                   {/* Blade UI - Button for a11y & interaction */}
                   <button
                     onClick={() => toggleBlade(cert.id)}
                     onMouseEnter={() => setActiveBladeId(cert.id)}
                     onMouseLeave={() => !isActive && setActiveBladeId(null)}
-                    className={`w-full flex items-center h-[42px] px-3 gap-3 text-left transition-colors ${
-                      isActive ? "bg-[#1e1e1e]" : "bg-[#161616] hover:bg-[#1a1a1a]"
-                    }`}
+                    className={`w-full flex items-center h-[42px] px-3 gap-3 text-left transition-colors ${isActive ? "bg-[#1e1e1e]" : "bg-[#161616] hover:bg-[#1a1a1a]"
+                      }`}
                   >
                     {/* Mounting Screw Detail */}
                     <div className="w-1.5 h-1.5 rounded-full bg-black border border-gray-700 shadow-inner shrink-0" />
 
                     {/* Status LED */}
                     <div
-                      className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-500 ${
-                        isActive ? "animate-pulse" : "opacity-20 blur-[0.5px]"
-                      }`}
+                      className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-500 ${isActive ? "animate-pulse" : "opacity-20 blur-[0.5px]"
+                        }`}
                       style={{
                         backgroundColor: cert.ledColor,
                         boxShadow: isActive ? `0 0 10px ${cert.ledColor}` : "none",
@@ -202,7 +199,7 @@ export default function ServerRack() {
         <div className="relative h-7 bg-[#0a0a0a] border-t border-black px-4 flex items-center overflow-hidden">
           {/* Flash Effect on state change */}
           <div key={activeBladeId} className="absolute inset-0 bg-green-500/10 pointer-events-none animate-status-flash" />
-          
+
           <div className="flex items-center justify-between w-full h-full font-mono text-[9px] tracking-tight">
             {/* Status Information */}
             <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
@@ -236,14 +233,14 @@ export default function ServerRack() {
 
             {/* Diagnostic Indicators */}
             <div className="flex items-center gap-3 shrink-0 ml-4 opacity-50 uppercase text-[8px] text-gray-500">
-               <span className="flex items-center gap-1">
-                 <div className="w-1 h-1 rounded-full bg-green-500/50" />
-                 LNK::UP
-               </span>
-               <span className="hidden sm:inline-flex items-center gap-1">
-                 <div className="w-1 h-1 rounded-full bg-blue-500/50" />
-                 CPU::MOD
-               </span>
+              <span className="flex items-center gap-1">
+                <div className="w-1 h-1 rounded-full bg-green-500/50" />
+                LNK::UP
+              </span>
+              <span className="hidden sm:inline-flex items-center gap-1">
+                <div className="w-1 h-1 rounded-full bg-blue-500/50" />
+                CPU::MOD
+              </span>
             </div>
           </div>
         </div>
