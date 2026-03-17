@@ -111,7 +111,7 @@ export default function ServerRack() {
                   >
                     <div className="flex flex-col md:flex-row gap-6 px-4 sm:px-6 py-6 bg-gray-50 border-t border-black/5">
                       {/* Badge/Certificate Image */}
-                      {cert.image ? (
+                      {cert.image && cert.image !== "" && (
                         <div className="w-full md:w-48 shrink-0">
                           <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-black/10 shadow-sm bg-white group-hover:shadow-md transition-shadow">
                             <Image
@@ -121,13 +121,6 @@ export default function ServerRack() {
                               className="object-contain p-2"
                               sizes="(max-width: 768px) 100vw, 192px"
                             />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="w-full md:w-48 shrink-0">
-                          <div className="w-full aspect-[4/3] rounded-lg border border-dashed border-black/10 flex flex-col items-center justify-center bg-white/50">
-                            <Award className="w-8 h-8 text-gray-200" />
-                            <span className="text-[10px] font-mono text-gray-300 mt-2">No Image</span>
                           </div>
                         </div>
                       )}
