@@ -130,15 +130,15 @@ export default function TerminalOne() {
           </div>
 
           {/* Directory Rendering */}
-          <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible py-2">
+          <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible py-2 custom-scrollbar no-scrollbar-md">
             {Object.entries(groupedProjects).map(([dir, items]) => (
-              <div key={dir} className="flex flex-col min-w-[120px] md:min-w-0">
+              <div key={dir} className="flex flex-row md:flex-col shrink-0 md:shrink-1 items-center md:items-stretch border-r md:border-r-0 border-black/5 last:border-r-0">
                 <button 
                   onClick={() => toggleDir(dir)}
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1 text-gray-500 hover:text-gray-700 text-xs transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1 text-gray-500 hover:text-gray-700 text-[10px] md:text-xs transition-colors shrink-0 whitespace-nowrap"
                 >
-                  {expandedDirs[dir] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                  <span className="uppercase tracking-tighter font-bold">📁 {dir}/</span>
+                  {expandedDirs[dir] ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                  <span className="uppercase tracking-tighter font-black">📁 {dir}/</span>
                 </button>
                 
                 <AnimatePresence initial={false}>
@@ -147,7 +147,7 @@ export default function TerminalOne() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="flex md:flex-col overflow-hidden"
+                      className="flex md:flex-col overflow-visible shrink-0"
                     >
                       {items.map((project) => (
                         <button
@@ -155,7 +155,7 @@ export default function TerminalOne() {
                           onMouseEnter={() => handleMouseEnter(project)}
                           onMouseLeave={handleMouseLeave}
                           onClick={() => handleClick(project)}
-                          className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-1.5 shrink-0 text-left transition-all duration-200 group relative ${activeProject?.id === project.id
+                          className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-1.5 shrink-0 text-left transition-all duration-200 group relative min-w-fit ${activeProject?.id === project.id
                               ? "text-blue-600 bg-blue-500/5 shadow-inner"
                               : "text-gray-600 hover:text-gray-900 hover:bg-black/5"
                             }`}
@@ -164,7 +164,7 @@ export default function TerminalOne() {
                             <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
                           )}
                           <FileCode2 className={`w-3 h-3 shrink-0 ${activeProject?.id === project.id ? "text-blue-500" : "text-gray-400"}`} />
-                          <span className="truncate text-[11px] font-bold">{project.id.toLowerCase()}.bin</span>
+                          <span className="text-[11px] font-bold whitespace-nowrap">{project.id.toLowerCase()}.bin</span>
                         </button>
                       ))}
                     </motion.div>
@@ -291,6 +291,14 @@ export default function TerminalOne() {
       <style jsx global>{`
         .terminal-glow {
           text-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
+        }
+        .no-scrollbar-md::-webkit-scrollbar {
+          display: block;
+        }
+        @media (min-width: 768px) {
+          .no-scrollbar-md::-webkit-scrollbar {
+            display: none;
+          }
         }
         @keyframes flicker {
           0% { opacity: 0.015; }
