@@ -47,7 +47,7 @@ export default function Skills() {
                         </p>
                     </div>
 
-                    <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap text-sm sm:text-base">
+                    <a href="/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap text-sm sm:text-base">
                         View Full Resume
                     </a>
                 </div>
