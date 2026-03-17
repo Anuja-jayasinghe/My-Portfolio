@@ -1,3 +1,4 @@
+import ServerRack from "../ui/ServerRack";
 const row1 = [
     "react/react-original", "nextjs/nextjs-original", "tailwindcss/tailwindcss-original",
     "html5/html5-original", "css3/css3-original", "javascript/javascript-original",
@@ -56,6 +57,11 @@ export default function Skills() {
             <div className="w-full flex flex-col gap-8 sm:gap-12 pointer-events-none md:pointer-events-auto">
                 <MarqueeRow icons={row1} />
                 <MarqueeRow icons={row2} reverse />
+            </div>
+
+            {/* Certifications Server Rack */}
+            <div className="mt-16 sm:mt-24 w-full flex justify-center">
+                <ServerRack />
             </div>
         </section>
     );

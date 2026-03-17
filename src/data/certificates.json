@@ -1,0 +1,155 @@
+[
+  {
+    "id": "cert-typescript",
+    "title": "Learning TypeScript",
+    "issuer": "LinkedIn",
+    "category": "Frontend",
+    "ledColor": "#0077B5",
+    "image": "/assets/certs/linkedin-typescript.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/5ae3ee099718442a54388836557e5e63e28d87f15bfb7d3bcf4a551add201a5041ebbebb7"
+  },
+  {
+    "id": "cert-java-ds",
+    "title": "Java: Data Structures",
+    "issuer": "LinkedIn",
+    "category": "Algorithms",
+    "ledColor": "#f89820",
+    "image": "/assets/certs/java-ds.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/c8227651c6c943188554032d1840855c615e5340f5d655339bac996a320515c9a4d1b0e0718f1a"
+  },
+  {
+    "id": "cert-js-bootcamp",
+    "title": "JavaScript Bootcamp",
+    "issuer": "LetsUpgrade",
+    "category": "Fullstack",
+    "ledColor": "#FFD600",
+    "image": "/assets/certs/letsupgrade-js.webp",
+    "verifyUrl": "https://verify.letsupgrade.in/certificate/LUEJSMAY1251087"
+  },
+  {
+    "id": "cert-python-bootcamp",
+    "title": "Python Bootcamp",
+    "issuer": "LetsUpgrade",
+    "category": "Backend",
+    "ledColor": "#3776AB",
+    "image": "/assets/certs/letsupgrade-python.webp",
+    "verifyUrl": "https://verify.letsupgrade.in/certificate/LUEPYTMAY1251341"
+  },
+  {
+    "id": "cert-nextjs",
+    "title": "Learning Next.js",
+    "issuer": "LinkedIn",
+    "category": "Frontend",
+    "ledColor": "#000000",
+    "image": "/assets/certs/linkedin-nextjs.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/9dc61580971261678129598858ed968aa98cc1dc7c5070a678554bda83ca3f24d5b3de65236"
+  },
+  {
+    "id": "cert-dsa-java",
+    "title": "DSA with Java Bootcamp",
+    "issuer": "LetsUpgrade",
+    "category": "Algorithms",
+    "ledColor": "#f89820",
+    "image": "/assets/certs/letsupgrade-dsa.webp",
+    "verifyUrl": "https://verify.letsupgrade.in/certificate/LUEDSAMAY125381"
+  },
+  {
+    "id": "cert-java-bootcamp",
+    "title": "Java Bootcamp",
+    "issuer": "LetsUpgrade",
+    "category": "Backend",
+    "ledColor": "#f89820",
+    "image": "/assets/certs/letsupgrade-java.webp",
+    "verifyUrl": "https://verify.letsupgrade.in/certificate/LUEJAVAAPR12599"
+  },
+  {
+    "id": "cert-python-crash",
+    "title": "Crash Course on Python",
+    "issuer": "Coursera",
+    "category": "Programming",
+    "ledColor": "#0056D2",
+    "image": "/assets/certs/coursera-python.webp",
+    "verifyUrl": "https://www.linkedin.com/in/anuja-jayasinghe/details/certifications/"
+  },
+  {
+    "id": "cert-quantum",
+    "title": "Introduction to quantum computing with Azure Quantum",
+    "issuer": "Microsoft Learning",
+    "category": "Quantum",
+    "ledColor": "#00a4ef",
+    "image": "/assets/certs/microsoft-quantum.webp",
+    "verifyUrl": "https://www.linkedin.com/in/anuja-jayasinghe/details/certifications/"
+  },
+  {
+    "id": "cert-responsive-ai",
+    "title": "Introduction to Responsible AI",
+    "issuer": "Google",
+    "category": "AI",
+    "ledColor": "#34A853",
+    "image": "/assets/certs/google-ai.webp",
+    "verifyUrl": "https://www.linkedin.com/in/anuja-jayasinghe/details/certifications/"
+  },
+  {
+    "id": "cert-postman",
+    "title": "Postman API Fundamentals Student Expert",
+    "issuer": "Canvas Credentials (Badgr)",
+    "category": "Backend",
+    "ledColor": "#FF6C37",
+    "image": "/assets/certs/postman-api.webp",
+    "verifyUrl": "https://www.linkedin.com/in/anuja-jayasinghe/details/certifications/"
+  },
+  {
+    "id": "cert-cybersecurity",
+    "title": "Introduction to Cybersecurity Awareness",
+    "issuer": "HP LIFE",
+    "category": "Security",
+    "ledColor": "#0096D6",
+    "image": "/assets/certs/hp-cyber.webp",
+    "verifyUrl": "https://www.life-global.org/certificate/58c0f0f4-27d4-4548-9031-30618fe27eed"
+  },
+  {
+    "id": "cert-ai-beginners",
+    "title": "AI for Beginners",
+    "issuer": "HP LIFE",
+    "category": "AI",
+    "ledColor": "#0096D6",
+    "image": "/assets/certs/hp-ai.webp",
+    "verifyUrl": "https://www.life-global.org/certificate/e3d16390-fe7e-4738-9666-dabca50049d7"
+  },
+  {
+    "id": "cert-github-actions",
+    "title": "Practical GitHub Actions",
+    "issuer": "LinkedIn",
+    "category": "DevOps",
+    "ledColor": "#2088FF",
+    "image": "/assets/certs/linkedin-github.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/683e33f38699703466a341303713f26a7b74adade64d310f0c11fcabab775d9c4"
+  },
+  {
+    "id": "cert-java11",
+    "title": "Learning Java 11",
+    "issuer": "LinkedIn",
+    "category": "Backend",
+    "ledColor": "#f89820",
+    "image": "/assets/certs/linkedin-java11.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/8359556336e11894d337d0a74a1787c015b2608eb002b47d97b80675d6e74090e9"
+  },
+  {
+    "id": "cert-linux-cmd",
+    "title": "Learning Linux Command Line",
+    "issuer": "LinkedIn",
+    "category": "Infrastructure",
+    "ledColor": "#FCC624",
+    "image": "/assets/certs/linkedin-linux.webp",
+    "verifyUrl": "https://www.linkedin.com/learning/certificates/09da7584f1837494f3ee940caf886d13c391c4eb3f51717d981882d8f4f0d108ba"
+  },
+  {
+    "id": "cert-python-mrt",
+    "title": "Python for Biginners",
+    "issuer": "University of Moratuwa",
+    "category": "Programming",
+    "ledColor": "#800000",
+    "image": "/assets/certs/mora-python.webp",
+    "verifyUrl": "https://open.uom.lk/verify"
+  }
+]
