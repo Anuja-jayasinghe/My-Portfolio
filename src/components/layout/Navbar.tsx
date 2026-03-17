@@ -9,7 +9,7 @@ import { createPortal } from "react-dom";
 function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const navLinks = [
         { name: "Home", href: "#home" },
-        { name: "Real Me", href: "#about" },
+        { name: "RealMe", href: "#about" },
         { name: "Portfolio", href: "#portfolio" },
         { name: "Core Arsenal", href: "#resume" },
         { name: "Contact", href: "#contact" },
