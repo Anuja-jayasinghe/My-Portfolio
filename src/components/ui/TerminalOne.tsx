@@ -104,15 +104,15 @@ export default function TerminalOne() {
   }, [activeProject]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto rounded-lg overflow-hidden border border-white/5 flex flex-col font-mono text-sm shadow-2xl bg-[#0a0a0a]">
+    <div className="w-full max-w-[1200px] mx-auto rounded-lg overflow-hidden border border-black/10 flex flex-col font-mono text-sm shadow-2xl bg-gray-100">
 
-      {/* Window Chrome - Dark Industrial */}
-      <div className="flex items-center justify-between px-4 py-2 bg-[#0a0a0a] border-b border-white/5 shrink-0">
+      {/* Window Chrome - Light Industrial */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-200 border-b border-black/10 shrink-0">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#1a1a1a] border border-white/5" />
-          <div className="flex items-center gap-2 ml-4 text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+          <span className="w-2.5 h-2.5 rounded-full bg-gray-400 border border-black/10" />
+          <span className="w-2.5 h-2.5 rounded-full bg-gray-400 border border-black/10" />
+          <span className="w-2.5 h-2.5 rounded-full bg-gray-400 border border-black/10" />
+          <div className="flex items-center gap-2 ml-4 text-[10px] text-gray-500 uppercase tracking-widest font-bold">
             <Terminal className="w-3 h-3" />
             <span>Project_Terminal_v4.2</span>
           </div>
@@ -123,8 +123,8 @@ export default function TerminalOne() {
       <div className="flex flex-col md:flex-row relative">
         
         {/* Sidebar: File Explorer */}
-        <div className="w-full md:w-64 bg-[#080808] border-b md:border-b-0 md:border-r border-white/5 flex flex-col shrink-0 z-10">
-          <div className="p-3 text-[10px] font-bold text-gray-500 tracking-widest flex items-center gap-2 uppercase border-b border-white/5">
+        <div className="w-full md:w-64 bg-gray-200 border-b md:border-b-0 md:border-r border-black/10 flex flex-col shrink-0 z-10">
+          <div className="p-3 text-[10px] font-bold text-gray-400 tracking-widest flex items-center gap-2 uppercase border-b border-black/10">
             <FolderCode className="w-3.5 h-3.5" />
             SRC/LAB/PROJECTS
           </div>
@@ -135,7 +135,7 @@ export default function TerminalOne() {
               <div key={dir} className="flex flex-col min-w-[120px] md:min-w-0">
                 <button 
                   onClick={() => toggleDir(dir)}
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1 text-gray-600 hover:text-gray-400 text-xs transition-colors"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1 text-gray-500 hover:text-gray-700 text-xs transition-colors"
                 >
                   {expandedDirs[dir] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                   <span className="uppercase tracking-tighter font-bold">📁 {dir}/</span>
@@ -156,14 +156,14 @@ export default function TerminalOne() {
                           onMouseLeave={handleMouseLeave}
                           onClick={() => handleClick(project)}
                           className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-1.5 shrink-0 text-left transition-all duration-200 group relative ${activeProject?.id === project.id
-                              ? "text-green-400 bg-green-500/5"
-                              : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+                              ? "text-blue-600 bg-blue-500/5 shadow-inner"
+                              : "text-gray-600 hover:text-gray-900 hover:bg-black/5"
                             }`}
                         >
                           {lockedProjectId === project.id && (
-                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
                           )}
-                          <FileCode2 className={`w-3 h-3 shrink-0 ${activeProject?.id === project.id ? "text-green-500" : "text-gray-700"}`} />
+                          <FileCode2 className={`w-3 h-3 shrink-0 ${activeProject?.id === project.id ? "text-blue-500" : "text-gray-400"}`} />
                           <span className="truncate text-[11px] font-bold">{project.id.toLowerCase()}.bin</span>
                         </button>
                       ))}
@@ -176,7 +176,7 @@ export default function TerminalOne() {
         </div>
 
         {/* Main Window: Terminal Output */}
-        <div className="flex-1 bg-black flex flex-col min-h-[350px] md:min-h-[500px] relative overflow-hidden">
+        <div className="flex-1 bg-gray-900 flex flex-col min-h-[350px] md:min-h-[500px] relative overflow-hidden">
           
           {/* CRT Overlay Effects */}
           <div className="absolute inset-0 pointer-events-none z-20">
@@ -203,21 +203,21 @@ export default function TerminalOne() {
                 <pre className="whitespace-pre-wrap font-mono text-[10px] md:text-xs leading-relaxed pb-8 terminal-glow">
                   {typedOutput.split("\n").map((line, i) => {
                     if (line.startsWith("$"))
-                      return <span key={i} className="text-green-400/90 font-bold">{line}{"\n"}</span>;
-                    if (line.startsWith("[  OK  ]"))
-                       return <span key={i} className="text-green-500 font-bold tracking-tighter "><span className="text-white/20">[</span>  OK  <span className="text-white/20">]</span> {line.split('OK  ] ')[1]}{"\n"}</span>;
-                    if (line.startsWith("[SYSTEM]") || line.startsWith("[BINARY]"))
                       return <span key={i} className="text-blue-400 font-bold">{line}{"\n"}</span>;
+                    if (line.startsWith("[  OK  ]"))
+                       return <span key={i} className="text-green-400 font-bold tracking-tighter "><span className="text-white/10">[</span>  OK  <span className="text-white/20">]</span> {line.split('OK  ] ')[1]}{"\n"}</span>;
+                    if (line.startsWith("[SYSTEM]") || line.startsWith("[BINARY]"))
+                      return <span key={i} className="text-cyan-400 font-bold">{line}{"\n"}</span>;
                     if (line.startsWith("[SOURCE]") || line.startsWith("[REMOTE]"))
-                      return <span key={i} className="text-amber-500/80">{line}{"\n"}</span>;
+                      return <span key={i} className="text-blue-300/80">{line}{"\n"}</span>;
                     if (line.startsWith("[MANIFEST"))
-                      return <span key={i} className="text-gray-500 font-black tracking-widest block bg-white/5 px-2 py-0.5 my-2 uppercase">{line}{"\n"}</span>;
+                      return <span key={i} className="text-gray-400 font-black tracking-widest block bg-white/5 px-2 py-0.5 my-2 uppercase">{line}{"\n"}</span>;
                     if (line.startsWith("[EOF]") || line.startsWith("[EOF]"))
-                      return <span key={i} className="text-gray-600 italic">{line}{"\n"}</span>;
-                    return <span key={i} className="text-green-500/70">{line}{"\n"}</span>;
+                      return <span key={i} className="text-gray-500 italic">{line}{"\n"}</span>;
+                    return <span key={i} className="text-blue-200/70">{line}{"\n"}</span>;
                   })}
                   {isTyping && (
-                    <span className="inline-block w-2.5 h-4 ml-1 bg-green-500 animate-terminal-cursor align-middle shadow-[0_0_8px_#22c55e]" />
+                    <span className="inline-block w-2.5 h-4 ml-1 bg-blue-500 animate-terminal-cursor align-middle shadow-[0_0_8px_#3b82f6]" />
                   )}
                 </pre>
 
@@ -235,13 +235,13 @@ export default function TerminalOne() {
                             src={getOptimizedImagePath(activeProject.imagePath)}
                             alt={activeProject.title}
                             fill
-                            className="object-cover opacity-60 group-hover/img:opacity-100 transition-opacity duration-500"
+                            className="object-cover opacity-70 group-hover/img:opacity-100 transition-opacity duration-500"
                             loading="lazy"
                           />
-                          <div className="absolute inset-0 bg-green-500/5 mix-blend-overlay" />
+                          <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay" />
                         </div>
                       ) : (
-                        <div className="w-full md:w-64 h-36 bg-white/[0.02] rounded border border-white/5 flex items-center justify-center text-gray-700 italic text-[10px] shrink-0 uppercase tracking-widest">
+                        <div className="w-full md:w-64 h-36 bg-white/[0.05] rounded border border-white/5 flex items-center justify-center text-gray-500 italic text-[10px] shrink-0 uppercase tracking-widest">
                           [ Null_Asset_Record ]
                         </div>
                       )}
@@ -264,15 +264,15 @@ export default function TerminalOne() {
 
                         {activeProject.liveUrl && (
                           <div className="space-y-1">
-                            <span className="text-[9px] text-gray-600 uppercase font-black tracking-tighter">Remote_Deployment</span>
+                            <span className="text-[9px] text-gray-500 uppercase font-black tracking-tighter">Remote_Deployment</span>
                             <a
                               href={activeProject.liveUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="flex items-center gap-3 text-green-500 hover:text-green-300 transition-all text-xs font-bold group/link"
+                              className="flex items-center gap-3 text-blue-400 hover:text-blue-200 transition-all text-xs font-bold group/link"
                             >
-                              <ExternalLink className="w-4 h-4 text-green-600 group-hover/link:text-green-300 transition-colors" />
-                              <span className="border-b border-transparent group-hover/link:border-green-300">
+                              <ExternalLink className="w-4 h-4 text-blue-500 group-hover/link:text-blue-200 transition-colors" />
+                              <span className="border-b border-transparent group-hover/link:border-blue-200">
                                 execute https://{activeProject.liveUrl.replace("https://", "")}
                               </span>
                             </a>
@@ -290,7 +290,7 @@ export default function TerminalOne() {
 
       <style jsx global>{`
         .terminal-glow {
-          text-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+          text-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
         }
         @keyframes flicker {
           0% { opacity: 0.015; }

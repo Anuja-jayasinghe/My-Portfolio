@@ -33,14 +33,14 @@ export default function ServerRack() {
       {/* The Main Chassis - Natural Height (Scroll Trap Fixed) */}
       <div
         onMouseLeave={() => setActiveBladeId(null)}
-        className="relative bg-[#0f0f0f] rounded-lg border-x-[12px] border-gray-800 shadow-2xl shadow-black/60 overflow-hidden"
+        className="relative bg-gray-100 rounded-lg border-x-[12px] border-gray-200 shadow-2xl flex flex-col overflow-hidden"
       >
 
         {/* PART 1: TOP PANEL REDESIGN */}
-        <div className="relative h-10 w-full bg-[#0a0a0a] border-b border-black flex items-center px-4 overflow-hidden">
+        <div className="relative h-10 w-full bg-gray-200 border-b border-gray-300 flex items-center px-4 overflow-hidden">
           {/* Brushed Metal Texture Layer */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[repeating-linear-gradient(90deg,#fff,#fff_1px,transparent_1px,transparent_4px)]" />
-          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.1)_0%,transparent_50%,rgba(0,0,0,0.5)_100%)]" />
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[repeating-linear-gradient(90deg,#000,#000_1px,transparent_1px,transparent_4px)]" />
+          <div className="absolute inset-0 opacity-5 pointer-events-none bg-[linear-gradient(180deg,rgba(0,0,0,0.05)_0%,transparent_50%,rgba(0,0,0,0.1)_100%)]" />
 
           {/* Unit Markers - Left */}
           <div className="absolute left-[-8px] top-0 bottom-0 w-2 flex flex-col justify-around py-1.5 opacity-40 select-none">
@@ -51,29 +51,29 @@ export default function ServerRack() {
           <div className="flex-1 flex flex-col gap-1 z-10">
             {/* Industrial Vent Grille Pattern */}
             <div className="flex items-center justify-between gap-4">
-              <div className="flex-1 flex gap-[3px] opacity-40 h-1.5">
+              <div className="flex-1 flex gap-[3px] opacity-20 h-1.5">
                 {[...Array(15)].map((_, i) => (
-                  <div key={`l-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-[inset_0_1px_1px_rgba(0,0,0,0.8)]" />
+                  <div key={`l-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-inner" />
                 ))}
               </div>
 
               {/* PRIMARY AIR INTAKE - Central Focus */}
-              <div className="flex gap-1.5 px-3 py-1 bg-black/40 rounded-full border border-white/5 shadow-inner">
+              <div className="flex gap-1.5 px-3 py-1 bg-gray-300 rounded-full border border-gray-400 shadow-inner">
                 {[...Array(6)].map((_, i) => (
-                  <div key={`intake-${i}`} className="w-1.5 h-1.5 rounded-full bg-black shadow-[inset_0_1px_2px_rgba(0,0,0,0.9)] flex items-center justify-center">
-                    <div className="w-[1px] h-[1px] bg-blue-500/20 rounded-full" />
+                  <div key={`intake-${i}`} className="w-1.5 h-1.5 rounded-full bg-black shadow-inner flex items-center justify-center">
+                    <div className="w-[1px] h-[1px] bg-blue-500/30 rounded-full" />
                   </div>
                 ))}
               </div>
 
-              <div className="flex-1 flex gap-[3px] opacity-40 h-1.5 justify-end">
+              <div className="flex-1 flex gap-[3px] opacity-20 h-1.5 justify-end">
                 {[...Array(15)].map((_, i) => (
-                  <div key={`r-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-[inset_0_1px_1px_rgba(0,0,0,0.8)]" />
+                  <div key={`r-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-inner" />
                 ))}
               </div>
             </div>
             {/* Cable Management Bar Detail */}
-            <div className="h-0.5 w-full bg-gray-900 border-y border-black/50 opacity-50" />
+            <div className="h-0.5 w-full bg-gray-400 border-y border-gray-500 opacity-30" />
           </div>
 
           {/* Unit Markers - Right */}
@@ -93,7 +93,7 @@ export default function ServerRack() {
                 <motion.div
                   key={cert.id}
                   layout
-                  className={`group relative overflow-hidden rounded-sm transition-all duration-300 border-b border-black/50 ${isActive ? "z-10 scale-[1.012] md:col-span-2" : "z-0"
+                  className={`group relative overflow-hidden rounded-sm transition-all duration-300 border-b border-gray-200 ${isActive ? "z-10 scale-[1.012] md:col-span-2 shadow-xl" : "z-0"
                     }`}
                 >
                   {/* Blade UI - Button for a11y & interaction */}
@@ -101,11 +101,11 @@ export default function ServerRack() {
                     onClick={() => toggleBlade(cert.id)}
                     onMouseEnter={() => setActiveBladeId(cert.id)}
                     onMouseLeave={() => !isActive && setActiveBladeId(null)}
-                    className={`w-full flex items-center h-[42px] px-3 gap-3 text-left transition-colors ${isActive ? "bg-[#1e1e1e]" : "bg-[#161616] hover:bg-[#1a1a1a]"
+                    className={`w-full flex items-center h-[42px] px-3 gap-3 text-left transition-colors ${isActive ? "bg-white" : "bg-gray-50 hover:bg-white"
                       }`}
                   >
                     {/* Mounting Screw Detail */}
-                    <div className="w-1.5 h-1.5 rounded-full bg-black border border-gray-700 shadow-inner shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-300 border border-gray-400 shadow-inner shrink-0" />
 
                     {/* Status LED */}
                     <div
@@ -119,14 +119,14 @@ export default function ServerRack() {
 
                     {/* Blade Title Block */}
                     <div className="flex-1 flex items-center justify-between min-w-0">
-                      <p className="font-mono text-[10px] font-bold text-gray-400 tracking-tight truncate">
-                        <span className="text-gray-600 mr-1.5">
+                      <p className="font-mono text-[10px] font-bold text-gray-700 tracking-tight truncate">
+                        <span className="text-gray-400 mr-1.5">
                           SLOT_{String(certificatesData.length - index).padStart(2, "0")}
                         </span>
                         {cert.issuer.toUpperCase()}::{cert.title.replace(/\s+/g, "_").toUpperCase()}
                       </p>
                       <div className="flex gap-2 shrink-0 ml-2">
-                        <span className="text-[8px] font-mono text-gray-700 group-hover:text-blue-500 transition-colors uppercase">
+                        <span className="text-[8px] font-mono text-gray-400 group-hover:text-blue-600 transition-colors uppercase">
                           {isActive ? "Reading..." : "STBY"}
                         </span>
                       </div>
@@ -140,11 +140,11 @@ export default function ServerRack() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="bg-[#1c1c1c] border-t border-blue-500/30"
+                        className="bg-gray-200 border-t border-blue-500/20"
                       >
                         <div className="p-5 flex flex-col md:flex-row gap-6 items-start">
                           {/* Image Preview with CRT Filter */}
-                          <div className="relative w-full md:w-56 aspect-video rounded border border-white/10 overflow-hidden bg-black shrink-0">
+                          <div className="relative w-full md:w-56 aspect-video rounded border border-gray-300 overflow-hidden bg-white shrink-0 shadow-inner">
                             {cert.image && (
                               <Image
                                 src={cert.image}
@@ -163,7 +163,7 @@ export default function ServerRack() {
                                 Verified_Credential_Metadata
                               </span>
                             </div>
-                            <h4 className="text-sm font-bold text-white leading-tight uppercase tracking-wide">
+                            <h4 className="text-sm font-bold text-gray-900 leading-tight uppercase tracking-wide">
                               {cert.title}
                             </h4>
 
@@ -172,14 +172,14 @@ export default function ServerRack() {
                                 href={cert.verifyUrl}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-black font-mono px-4 py-2 rounded-sm transition-all shadow-lg shadow-blue-900/20"
+                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black font-mono px-4 py-2 rounded-sm transition-all shadow-lg shadow-blue-900/10"
                               >
                                 <ExternalLink size={10} />
                                 PUSH_TO_VERIFY
                               </a>
                               <div className="flex flex-col">
-                                <span className="text-[8px] font-mono text-gray-600 uppercase">Category</span>
-                                <span className="text-[10px] font-mono text-gray-400 font-bold uppercase">
+                                <span className="text-[8px] font-mono text-gray-500 uppercase">Category</span>
+                                <span className="text-[10px] font-mono text-gray-700 font-bold uppercase">
                                   {cert.category}
                                 </span>
                               </div>
@@ -196,16 +196,16 @@ export default function ServerRack() {
         </div>
 
         {/* PART 2: BOTTOM PANEL REDESIGN */}
-        <div className="relative h-7 bg-[#0a0a0a] border-t border-black px-4 flex items-center overflow-hidden">
+        <div className="relative h-7 bg-gray-200 border-t border-gray-300 px-4 flex items-center overflow-hidden">
           {/* Flash Effect on state change */}
-          <div key={activeBladeId} className="absolute inset-0 bg-green-500/10 pointer-events-none animate-status-flash" />
+          <div key={activeBladeId} className="absolute inset-0 bg-blue-500/5 pointer-events-none animate-status-flash" />
 
           <div className="flex items-center justify-between w-full h-full font-mono text-[9px] tracking-tight">
             {/* Status Information */}
             <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
               {activeBladeId ? (
-                <div className="flex items-center gap-1.5 text-green-400">
-                  <span className="text-green-500/50">{">"}</span>
+                <div className="flex items-center gap-1.5 text-blue-600">
+                  <span className="text-blue-400/50">{">"}</span>
                   <div className="flex gap-1 overflow-hidden">
                     <span className="font-bold">READING:</span>
                     {certificatesData.find(c => c.id === activeBladeId) && (
@@ -214,17 +214,17 @@ export default function ServerRack() {
                       </span>
                     )}
                   </div>
-                  <span className="w-1.5 h-3 bg-green-400 animate-terminal-cursor ml-0.5" />
+                  <span className="w-1.5 h-3 bg-blue-500 animate-terminal-cursor ml-0.5" />
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5 text-green-600/40">
+                <div className="flex items-center gap-1.5 text-gray-500">
                   <span className="animate-marquee whitespace-nowrap">
                     {">"} CERT_VAULT_v2 — ALL SYSTEMS NOMINAL —— {">"} CERT_VAULT_v2 — ALL SYSTEMS NOMINAL ——
                   </span>
                   <div className="flex gap-0.5 ml-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-600/20 animate-pulse" />
-                    <span className="w-3 h-1 bg-green-600/10 rounded-full overflow-hidden relative">
-                      <div className="absolute inset-0 bg-green-600/30 animate-scan-bar" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500/20 animate-pulse" />
+                    <span className="w-3 h-1 bg-blue-500/10 rounded-full overflow-hidden relative">
+                      <div className="absolute inset-0 bg-blue-500/30 animate-scan-bar" />
                     </span>
                   </div>
                 </div>
@@ -252,14 +252,14 @@ export default function ServerRack() {
           width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #000;
+          background: #f1f1f1;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #333;
+          background: #ccc;
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #444;
+          background: #bbb;
         }
 
         @keyframes marquee {
