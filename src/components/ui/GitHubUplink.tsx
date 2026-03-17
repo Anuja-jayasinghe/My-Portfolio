@@ -11,19 +11,34 @@ interface ContributionDay {
 
 export default function GitHubUplink() {
     const [data, setData] = useState<ContributionDay[]>([]);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Using the requested v4 API endpoint
-                const response = await fetch('https://github-contributions-api.jogruber.de/v4/Anuja-jayasinghe');
+                // Pointing to our new internal Next.js API route
+                const response = await fetch('/api/github');
                 const result = await response.json();
                 
-                // Extract last ~30 weeks (last 210 days)
-                const contributions = result.contributions.slice(-210);
-                setData(contributions);
+                if (result.error) throw new Error(result.error);
+
+                // Map GraphQL string levels to numeric system
+                const mappedData = result.map((day: any) => ({
+                    ...day,
+                    level: day.level === "FOURTH_QUARTILE" ? 4 :
+                           day.level === "THIRD_QUARTILE" ? 3 :
+                           day.level === "SECOND_QUARTILE" ? 2 :
+                           day.level === "FIRST_QUARTILE" ? 1 : 0
+                }));
+
+                // Calculate total manifest count for the year
+                const total = mappedData.reduce((acc: number, day: any) => acc + day.count, 0);
+                setTotalCount(total);
+
+                // Extract last 365 days (Full Year Manifest)
+                setData(mappedData.slice(-365));
                 setLoading(false);
             } catch (err) {
                 console.error("Failed to fetch GitHub data:", err);
@@ -41,7 +56,7 @@ export default function GitHubUplink() {
             case 1: return "bg-blue-400/30";
             case 2: return "bg-blue-500/50";
             case 3: return "bg-accent/70";
-            case 4: return "bg-accent shadow-[0_0_10px_rgba(0,0,117,0.4)]";
+            case 4: return "bg-accent shadow-[0_0_15px_rgba(0,0,117,0.6)] border border-blue-400/50 scale-110 z-10"; // High-Voltage Glow
             default: return "bg-gray-200/40";
         }
     };
@@ -77,7 +92,17 @@ export default function GitHubUplink() {
                             <span className="font-mono text-[8px] font-extrabold text-blue-600/50 uppercase block">Activity_Feed</span>
                             <div className="flex items-center gap-2">
                                 <Zap size={14} className="text-accent" />
-                                <span className="font-mono text-xs font-black text-black">LIVE_PULSE</span>
+                                <span className="font-mono text-xs font-black text-black uppercase">LIVE_PULSE</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1">
+                            <span className="font-mono text-[8px] font-extrabold text-blue-600/50 uppercase block">System_Sync</span>
+                            <div className="flex items-center gap-2">
+                                <Activity size={12} className="text-blue-500" />
+                                <span className="font-mono text-[11px] font-black text-black">
+                                    {loading ? "---" : totalCount.toLocaleString()} <span className="text-[8px] text-gray-400">UNITS</span>
+                                </span>
                             </div>
                         </div>
                         
