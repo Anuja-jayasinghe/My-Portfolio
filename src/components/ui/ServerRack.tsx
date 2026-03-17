@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { ExternalLink, Award, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import certificatesData from "../../data/certificates.json";
 
 interface Certificate {
@@ -43,9 +44,8 @@ export default function ServerRack() {
             <div key={cert.id}>
               {/* Row / Blade */}
               <button
-                className={`w-full flex items-center gap-3 sm:gap-5 px-4 sm:px-6 py-3.5 text-left transition-all duration-200 group ${
-                  isActive ? "bg-gray-50" : "bg-white hover:bg-gray-50/80"
-                }`}
+                className={`w-full flex items-center gap-3 sm:gap-5 px-4 sm:px-6 py-3.5 text-left transition-all duration-200 group ${isActive ? "bg-gray-50" : "bg-white hover:bg-gray-50/80"
+                  }`}
                 onMouseEnter={() => setActiveBladeId(cert.id)}
                 onMouseLeave={() => !isActive && setActiveBladeId(null)}
                 onClick={() => toggleBlade(cert.id)}
@@ -57,9 +57,8 @@ export default function ServerRack() {
 
                 {/* Activity LED */}
                 <span
-                  className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
-                    isActive ? "animate-pulse" : "opacity-30"
-                  }`}
+                  className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${isActive ? "animate-pulse" : "opacity-30"
+                    }`}
                   style={{
                     backgroundColor: cert.ledColor,
                     boxShadow: isActive ? `0 0 8px ${cert.ledColor}aa` : "none",
@@ -95,9 +94,8 @@ export default function ServerRack() {
 
                 {/* Expand indicator */}
                 <ChevronDown
-                  className={`w-4 h-4 text-gray-300 shrink-0 transition-transform duration-200 ${
-                    isActive ? "rotate-180 text-accent" : ""
-                  }`}
+                  className={`w-4 h-4 text-gray-300 shrink-0 transition-transform duration-200 ${isActive ? "rotate-180 text-accent" : ""
+                    }`}
                 />
               </button>
 
@@ -111,28 +109,55 @@ export default function ServerRack() {
                     transition={{ duration: 0.22, ease: "easeOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-6 py-4 bg-gray-50 border-t border-black/5">
-                      <div>
-                        <p
-                          className="text-[10px] font-mono mb-1 uppercase tracking-widest"
-                          style={{ color: cert.ledColor }}
-                        >
-                          {cert.category}
-                        </p>
-                        <h4 className="text-base font-bold text-black">{cert.title}</h4>
-                        <p className="text-sm text-gray-500 mt-0.5">By {cert.issuer}</p>
-                      </div>
+                    <div className="flex flex-col md:flex-row gap-6 px-4 sm:px-6 py-6 bg-gray-50 border-t border-black/5">
+                      {/* Badge/Certificate Image */}
+                      {cert.image ? (
+                        <div className="w-full md:w-48 shrink-0">
+                          <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-black/10 shadow-sm bg-white group-hover:shadow-md transition-shadow">
+                            <Image
+                              src={cert.image}
+                              alt={cert.title}
+                              fill
+                              className="object-contain p-2"
+                              sizes="(max-width: 768px) 100vw, 192px"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-full md:w-48 shrink-0">
+                          <div className="w-full aspect-[4/3] rounded-lg border border-dashed border-black/10 flex flex-col items-center justify-center bg-white/50">
+                            <Award className="w-8 h-8 text-gray-200" />
+                            <span className="text-[10px] font-mono text-gray-300 mt-2">No Image</span>
+                          </div>
+                        </div>
+                      )}
 
-                      <a
-                        href={cert.verifyUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-2 text-xs font-mono font-bold border border-black/10 px-4 py-2 rounded hover:bg-black hover:text-white transition-colors shrink-0 text-gray-700"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        Verify Credential
-                      </a>
+                      {/* Info & Action */}
+                      <div className="flex-1 flex flex-col justify-between py-1">
+                        <div>
+                          <p
+                            className="text-[10px] font-mono mb-1 uppercase tracking-widest"
+                            style={{ color: cert.ledColor }}
+                          >
+                            {cert.category}
+                          </p>
+                          <h4 className="text-base sm:text-lg font-bold text-black leading-tight">{cert.title}</h4>
+                          <p className="text-sm text-gray-500 mt-1 italic">Issued by {cert.issuer}</p>
+                        </div>
+
+                        <div className="mt-6 flex flex-wrap items-center gap-4">
+                          <a
+                            href={cert.verifyUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-xs font-mono font-bold border border-black/10 px-5 py-2.5 rounded hover:bg-black hover:text-white transition-all shadow-sm active:scale-95 shrink-0 text-gray-700"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Verify Credential
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 )}

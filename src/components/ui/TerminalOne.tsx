@@ -93,16 +93,14 @@ export default function TerminalOne() {
                 key={project.id}
                 onMouseEnter={() => selectProject(project)}
                 onClick={() => selectProject(project)}
-                className={`flex items-center gap-2 px-3 md:px-4 py-2 md:py-1.5 shrink-0 md:w-full text-left transition-all duration-100 group border-b-2 md:border-b-0 md:border-l-2 ${
-                  activeProject?.id === project.id
+                className={`flex items-center gap-2 px-3 md:px-4 py-2 md:py-1.5 shrink-0 md:w-full text-left transition-all duration-100 group border-b-2 md:border-b-0 md:border-l-2 ${activeProject?.id === project.id
                     ? "border-accent bg-accent/5 text-accent"
                     : "border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                }`}
+                  }`}
               >
                 <FileCode2
-                  className={`w-3.5 h-3.5 shrink-0 ${
-                    activeProject?.id === project.id ? "text-accent" : "text-gray-400 group-hover:text-gray-600"
-                  }`}
+                  className={`w-3.5 h-3.5 shrink-0 ${activeProject?.id === project.id ? "text-accent" : "text-gray-400 group-hover:text-gray-600"
+                    }`}
                 />
                 <span className="truncate text-xs">{project.id.toLowerCase()}.sh</span>
               </button>
