@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ExternalLink, Github, FolderCode, Terminal, FileCode2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,6 +23,10 @@ export default function TerminalOne() {
 
   const miniProjects = projectsData.filter((p) => p.type === "mini");
 
+  const selectProject = useCallback((project: Project) => {
+    setActiveProject(project);
+  }, []);
+
   useEffect(() => {
     if (!activeProject) {
       setTypedOutput("");
@@ -31,17 +35,19 @@ export default function TerminalOne() {
 
     setIsTyping(true);
     setTypedOutput("");
-    
+
     const payload = [
       `$ ./describe --target="${activeProject.id}.sh"`,
       `[INFO] Target acquired: ${activeProject.title}`,
-      `[STAT] Repository: ${activeProject.repoUrl.replace('https://', '')}`,
-      ...(activeProject.liveUrl ? [`[STAT] Live URI:  ${activeProject.liveUrl.replace('https://', '')}`] : []),
-      `[TECH] Stack: ${activeProject.techStack.join(' • ')}`,
-      `==================================================`,
+      `[STAT] Repository: ${activeProject.repoUrl.replace("https://", "")}`,
+      ...(activeProject.liveUrl
+        ? [`[STAT] Live URI:  ${activeProject.liveUrl.replace("https://", "")}`]
+        : []),
+      `[TECH] Stack: ${activeProject.techStack.join(" · ")}`,
+      `${"─".repeat(50)}`,
       `${activeProject.description}`,
-      ` `
-    ].join('\n');
+      ` `,
+    ].join("\n");
 
     let currentIdx = 0;
     const interval = setInterval(() => {
@@ -51,127 +57,160 @@ export default function TerminalOne() {
         setIsTyping(false);
         clearInterval(interval);
       }
-    }, 15); // incredibly fast typing speed for smooth UX
+    }, 12);
 
     return () => clearInterval(interval);
   }, [activeProject]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden shadow-2xl bg-[#1e1e1e] border border-gray-700/50 flex flex-col md:flex-row h-[500px] md:h-[600px] font-mono text-sm">
-      
-      {/* Sidebar: File Explorer */}
-      <div className="w-full md:w-64 bg-[#252526] border-r border-[#333] flex flex-col shrink-0 overflow-y-auto">
-        <div className="p-3 text-[11px] font-bold text-gray-400 tracking-wider flex items-center gap-2 uppercase border-b border-[#333]">
-          <FolderCode className="w-4 h-4" /> EXPLORER: PROJECTS
-        </div>
-        
-        <div className="py-2 flex flex-col">
-          {miniProjects.map((project) => (
-            <button
-              key={project.id}
-              onMouseEnter={() => setActiveProject(project)}
-              onClick={() => {
-                if (project.liveUrl) window.open(project.liveUrl, '_blank');
-                else window.open(project.repoUrl, '_blank');
-              }}
-              className={`flex items-center gap-2 px-4 py-1.5 w-full text-left transition-colors duration-100 group ${
-                activeProject?.id === project.id 
-                ? 'bg-[#37373d] text-blue-400' 
-                : 'text-gray-400 hover:bg-[#2a2d2e] hover:text-gray-200'
-              }`}
-            >
-              <FileCode2 className={`w-4 h-4 shrink-0 ${activeProject?.id === project.id ? 'text-blue-500' : 'text-gray-500 group-hover:text-gray-300'}`} />
-              <span className="truncate">{project.id.toLowerCase()}.sh</span>
-              
-              {/* Type Badge */}
-              <span className="ml-auto text-[10px] bg-[#333] px-1.5 rounded text-gray-500 hidden md:block">
-                {project.type.substring(0, 4)}
-              </span>
-            </button>
-          ))}
+    <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden border border-black/10 flex flex-col font-mono text-sm shadow-sm bg-white">
+
+      {/* Window Chrome */}
+      <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-black/10 shrink-0">
+        <span className="w-3 h-3 rounded-full bg-black/10" />
+        <span className="w-3 h-3 rounded-full bg-black/10" />
+        <span className="w-3 h-3 rounded-full bg-black/10" />
+        <div className="flex items-center gap-1.5 ml-3 text-xs text-gray-400">
+          <Terminal className="w-3.5 h-3.5" />
+          <span>bash — terminal</span>
         </div>
       </div>
 
-      {/* Main Window: Terminal Output */}
-      <div className="flex-1 bg-[#1e1e1e] flex flex-col relative overflow-hidden">
-        {/* Editor Tabs */}
-        <div className="flex bg-[#2d2d2d] h-10 shrink-0 overflow-x-auto no-scrollbar">
-          <div className="flex items-center gap-2 px-4 border-t-2 border-blue-500 bg-[#1e1e1e] text-white min-w-[140px]">
-            <Terminal className="w-4 h-4 text-blue-400" />
-            <span>bash — terminal</span>
+      {/* Body: sidebar + output stacked on mobile, side-by-side on desktop */}
+      <div className="flex flex-col md:flex-row">
+
+        {/* Sidebar: File Explorer */}
+        <div className="w-full md:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-black/10 flex flex-col shrink-0">
+          <div className="p-3 text-[10px] font-bold text-gray-400 tracking-widest flex items-center gap-2 uppercase border-b border-black/10">
+            <FolderCode className="w-3.5 h-3.5" />
+            EXPLORER: PROJECTS
+          </div>
+
+          {/* On mobile: horizontal scroll row. On desktop: vertical list */}
+          <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible overflow-y-visible md:overflow-y-auto md:max-h-[420px] py-1.5 md:py-2">
+            {miniProjects.map((project) => (
+              <button
+                key={project.id}
+                onMouseEnter={() => selectProject(project)}
+                onClick={() => selectProject(project)}
+                className={`flex items-center gap-2 px-3 md:px-4 py-2 md:py-1.5 shrink-0 md:w-full text-left transition-all duration-100 group border-b-2 md:border-b-0 md:border-l-2 ${
+                  activeProject?.id === project.id
+                    ? "border-accent bg-accent/5 text-accent"
+                    : "border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                }`}
+              >
+                <FileCode2
+                  className={`w-3.5 h-3.5 shrink-0 ${
+                    activeProject?.id === project.id ? "text-accent" : "text-gray-400 group-hover:text-gray-600"
+                  }`}
+                />
+                <span className="truncate text-xs">{project.id.toLowerCase()}.sh</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Terminal Content Area */}
-        <div className="p-4 md:p-6 flex-1 overflow-y-auto relative">
-          
-          {!activeProject ? (
-              <div className="text-gray-500 italic h-full flex flex-col justify-center items-center opacity-50 select-none">
-                <Terminal className="w-16 h-16 mb-4 opacity-20" />
-                <span>Hover over a file in the explorer to execute script...</span>
+        {/* Main Window: Terminal Output */}
+        <div className="flex-1 bg-white flex flex-col min-h-[280px] md:min-h-[420px]">
+
+          {/* Active tab */}
+          <div className="flex bg-gray-50 border-b border-black/10 h-9 shrink-0">
+            <div className="flex items-center gap-2 px-4 border-b-2 border-accent bg-white text-gray-700 text-xs">
+              <Terminal className="w-3.5 h-3.5 text-accent" />
+              <span>
+                {activeProject ? `${activeProject.id}.sh` : "bash — terminal"}
+              </span>
+            </div>
+          </div>
+
+          {/* Terminal Content */}
+          <div className="p-4 md:p-6 flex-1 overflow-y-auto">
+            {!activeProject ? (
+              <div className="text-gray-300 italic h-full flex flex-col justify-center items-center select-none gap-3">
+                <Terminal className="w-12 h-12 opacity-20" />
+                <span className="text-xs text-gray-400">
+                  {/* Mobile hint */}
+                  <span className="md:hidden">Tap a file above to run it...</span>
+                  <span className="hidden md:inline">Hover over a file to execute its script...</span>
+                </span>
               </div>
-          ) : (
-            <>
-              {/* Output log */}
-              <pre className="text-gray-300 whitespace-pre-wrap font-mono leading-relaxed pb-8">
-                {typedOutput}
-                {isTyping && <span className="inline-block w-2.5 h-4 ml-1 bg-gray-400 animate-pulse align-middle" />}
-              </pre>
+            ) : (
+              <>
+                {/* Typed output with syntax colouring */}
+                <pre className="whitespace-pre-wrap font-mono text-xs md:text-sm leading-relaxed pb-4 text-gray-700">
+                  {typedOutput.split("\n").map((line, i) => {
+                    if (line.startsWith("$"))
+                      return <span key={i} className="text-accent font-bold">{line}{"\n"}</span>;
+                    if (line.startsWith("[INFO]"))
+                      return <span key={i} className="text-gray-800 font-semibold">{line}{"\n"}</span>;
+                    if (line.startsWith("[STAT]"))
+                      return <span key={i} className="text-gray-500">{line}{"\n"}</span>;
+                    if (line.startsWith("[TECH]"))
+                      return <span key={i} className="text-gray-600">{line}{"\n"}</span>;
+                    if (line.startsWith("─"))
+                      return <span key={i} className="text-gray-200">{line}{"\n"}</span>;
+                    return <span key={i}>{line}{"\n"}</span>;
+                  })}
+                  {isTyping && (
+                    <span className="inline-block w-2 h-4 ml-0.5 bg-accent animate-pulse align-middle opacity-70" />
+                  )}
+                </pre>
 
-              {/* Once typed, show asset & quick action buttons if it has one */}
-              <AnimatePresence>
-                {!isTyping && activeProject && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-6 flex flex-col md:flex-row gap-6 border-t border-[#333] pt-6"
-                  >
-                    {activeProject.imagePath ? (
-                      <div className="relative w-full md:w-56 overflow-hidden rounded-md border border-[#444] shadow-lg shrink-0 aspect-video md:aspect-auto md:h-32">
-                        <Image 
-                          src={activeProject.imagePath} 
-                          alt={activeProject.title}
-                          fill
-                          className="object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full md:w-56 h-32 bg-[#252526] rounded-md border border-[#333] flex items-center justify-center text-gray-600 italic text-[10px] shrink-0">
-                        [NO UI ASSET]
-                      </div>
-                    )}
-
-                    <div className="flex flex-col gap-3 justify-center">
-                      <a 
-                        href={activeProject.repoUrl} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors w-max"
-                      >
-                        <Github className="w-4 h-4" /> root@github:/{activeProject.id}
-                      </a>
-                      
-                      {activeProject.liveUrl && (
-                        <a 
-                          href={activeProject.liveUrl} 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors w-max"
-                        >
-                          <ExternalLink className="w-4 h-4" /> curl https://{activeProject.liveUrl.replace('https://', '')}
-                        </a>
+                {/* Post-typing actions */}
+                <AnimatePresence>
+                  {!isTyping && activeProject && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 flex flex-col sm:flex-row gap-4 border-t border-black/5 pt-4"
+                    >
+                      {activeProject.imagePath ? (
+                        <div className="relative w-full sm:w-48 overflow-hidden rounded border border-black/10 shrink-0 aspect-video">
+                          <Image
+                            src={activeProject.imagePath}
+                            alt={activeProject.title}
+                            fill
+                            className="object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-full sm:w-48 h-28 bg-gray-50 rounded border border-black/10 flex items-center justify-center text-gray-300 italic text-[10px] shrink-0">
+                          [NO UI ASSET]
+                        </div>
                       )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </>
-          )}
 
+                      <div className="flex flex-col gap-3 justify-center">
+                        <a
+                          href={activeProject.repoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-2 text-gray-700 hover:text-accent transition-colors text-xs font-mono font-bold"
+                        >
+                          <Github className="w-4 h-4" />
+                          root@github:/{activeProject.id}
+                        </a>
+
+                        {activeProject.liveUrl && (
+                          <a
+                            href={activeProject.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-2 text-accent hover:opacity-70 transition-opacity text-xs font-mono font-bold"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            curl https://{activeProject.liveUrl.replace("https://", "")}
+                          </a>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+          </div>
         </div>
       </div>
-
     </div>
   );
 }
