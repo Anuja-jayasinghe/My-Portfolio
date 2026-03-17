@@ -31,14 +31,59 @@ export default function ServerRack() {
       </div>
 
       {/* The Main Chassis - Natural Height (Scroll Trap Fixed) */}
-      <div className="relative bg-[#0f0f0f] rounded-lg border-x-[12px] border-gray-800 shadow-2xl shadow-black/60 overflow-hidden">
+      <div 
+        onMouseLeave={() => setActiveBladeId(null)}
+        className="relative bg-[#0f0f0f] rounded-lg border-x-[12px] border-gray-800 shadow-2xl shadow-black/60 overflow-hidden"
+      >
+        
+        {/* PART 1: TOP PANEL REDESIGN */}
+        <div className="relative h-10 w-full bg-[#0a0a0a] border-b border-black flex items-center px-4 overflow-hidden">
+          {/* Brushed Metal Texture Layer */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[repeating-linear-gradient(90deg,#fff,#fff_1px,transparent_1px,transparent_4px)]" />
+          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.1)_0%,transparent_50%,rgba(0,0,0,0.5)_100%)]" />
+          
+          {/* Unit Markers - Left */}
+          <div className="absolute left-[-8px] top-0 bottom-0 w-2 flex flex-col justify-around py-1.5 opacity-40 select-none">
+            <span className="text-[6px] font-mono font-bold text-gray-500">1U</span>
+            <span className="text-[6px] font-mono font-bold text-gray-500">2U</span>
+          </div>
 
-        {/* Top Vent Detail */}
-        <div className="h-4 w-full bg-gradient-to-b from-gray-900 to-transparent flex justify-center gap-1 py-1">
-          {[...Array(20)].map((_, i) => (
-            <div key={i} className="w-1 h-full bg-black/40 rounded-full" />
-          ))}
-        </div>        {/* Blades Container - Grows to fit all 17, now in 2 columns on desktop */}
+          <div className="flex-1 flex flex-col gap-1 z-10">
+            {/* Industrial Vent Grille Pattern */}
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex-1 flex gap-[3px] opacity-40 h-1.5">
+                {[...Array(15)].map((_, i) => (
+                  <div key={`l-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-[inset_0_1px_1px_rgba(0,0,0,0.8)]" />
+                ))}
+              </div>
+              
+              {/* PRIMARY AIR INTAKE - Central Focus */}
+              <div className="flex gap-1.5 px-3 py-1 bg-black/40 rounded-full border border-white/5 shadow-inner">
+                {[...Array(6)].map((_, i) => (
+                  <div key={`intake-${i}`} className="w-1.5 h-1.5 rounded-full bg-black shadow-[inset_0_1px_2px_rgba(0,0,0,0.9)] flex items-center justify-center">
+                    <div className="w-[1px] h-[1px] bg-blue-500/20 rounded-full" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex-1 flex gap-[3px] opacity-40 h-1.5 justify-end">
+                {[...Array(15)].map((_, i) => (
+                  <div key={`r-${i}`} className="flex-1 max-w-[4px] h-full bg-black rounded-sm shadow-[inset_0_1px_1px_rgba(0,0,0,0.8)]" />
+                ))}
+              </div>
+            </div>
+            {/* Cable Management Bar Detail */}
+            <div className="h-0.5 w-full bg-gray-900 border-y border-black/50 opacity-50" />
+          </div>
+
+          {/* Unit Markers - Right */}
+          <div className="absolute right-[-8px] top-0 bottom-0 w-2 flex flex-col justify-around py-1.5 opacity-40 select-none">
+            <span className="text-[6px] font-mono font-bold text-gray-500">1U</span>
+            <span className="text-[6px] font-mono font-bold text-gray-500">2U</span>
+          </div>
+        </div>
+
+        {/* Blades Container - Grows to fit all 17, now in 2 columns on desktop */}
         <div className="py-2 px-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-0.5">
             {certificatesData.map((cert, index) => {
@@ -153,23 +198,58 @@ export default function ServerRack() {
           </div>
         </div>
 
-        {/* Bottom Panel Detail */}
-        <div className="h-8 bg-gray-900 rounded-b-lg border-t border-black flex items-center justify-between px-6">
-          <div className="flex gap-1">
-            <div className="w-1 h-1 rounded-full bg-red-600 animate-ping" />
-            <div className="w-1 h-1 rounded-full bg-red-600" />
-          </div>
-          <div className="w-24 h-1.5 bg-black rounded-full overflow-hidden">
-            <motion.div
-              animate={{ x: [-100, 100] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-              className="w-1/2 h-full bg-blue-500/40"
-            />
+        {/* PART 2: BOTTOM PANEL REDESIGN */}
+        <div className="relative h-7 bg-[#0a0a0a] border-t border-black px-4 flex items-center overflow-hidden">
+          {/* Flash Effect on state change */}
+          <div key={activeBladeId} className="absolute inset-0 bg-green-500/10 pointer-events-none animate-status-flash" />
+          
+          <div className="flex items-center justify-between w-full h-full font-mono text-[9px] tracking-tight">
+            {/* Status Information */}
+            <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+              {activeBladeId ? (
+                <div className="flex items-center gap-1.5 text-green-400">
+                  <span className="text-green-500/50">{">"}</span>
+                  <div className="flex gap-1 overflow-hidden">
+                    <span className="font-bold">READING:</span>
+                    {certificatesData.find(c => c.id === activeBladeId) && (
+                      <span className="animate-typing-active">
+                        {certificatesData.find(c => c.id === activeBladeId)?.issuer.toUpperCase()}::{certificatesData.find(c => c.id === activeBladeId)?.title.replace(/\s+/g, '_').toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <span className="w-1.5 h-3 bg-green-400 animate-terminal-cursor ml-0.5" />
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 text-green-600/40">
+                  <span className="animate-marquee whitespace-nowrap">
+                    {">"} CERT_VAULT_v2 — ALL SYSTEMS NOMINAL —— {">"} CERT_VAULT_v2 — ALL SYSTEMS NOMINAL ——
+                  </span>
+                  <div className="flex gap-0.5 ml-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-600/20 animate-pulse" />
+                    <span className="w-3 h-1 bg-green-600/10 rounded-full overflow-hidden relative">
+                      <div className="absolute inset-0 bg-green-600/30 animate-scan-bar" />
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Diagnostic Indicators */}
+            <div className="flex items-center gap-3 shrink-0 ml-4 opacity-50 uppercase text-[8px] text-gray-500">
+               <span className="flex items-center gap-1">
+                 <div className="w-1 h-1 rounded-full bg-green-500/50" />
+                 LNK::UP
+               </span>
+               <span className="hidden sm:inline-flex items-center gap-1">
+                 <div className="w-1 h-1 rounded-full bg-blue-500/50" />
+                 CPU::MOD
+               </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Global CSS for the scrollbar to keep it looking industrial */}
+      {/* Global CSS for the scrollbar and industrial effects */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
@@ -183,6 +263,49 @@ export default function ServerRack() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #444;
+        }
+
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 20s linear infinite;
+        }
+
+        @keyframes status-flash {
+          0% { opacity: 0.8; }
+          100% { opacity: 0; }
+        }
+        .animate-status-flash {
+          animation: status-flash 0.4s ease-out forwards;
+        }
+
+        @keyframes terminal-cursor {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        .animate-terminal-cursor {
+          animation: terminal-cursor 0.8s step-end infinite;
+        }
+
+        @keyframes scan-bar {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .animate-scan-bar {
+          animation: scan-bar 2s linear infinite;
+        }
+
+        @keyframes typing-active {
+          from { width: 0; }
+          to { width: 100%; }
+        }
+        .animate-typing-active {
+          display: inline-block;
+          overflow: hidden;
+          white-space: nowrap;
+          animation: typing-active 0.3s steps(30, end);
         }
       `}</style>
     </div>
