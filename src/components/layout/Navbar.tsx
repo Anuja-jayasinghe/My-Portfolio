@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -7,11 +7,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
 function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    // Lock body scroll when menu is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isOpen]);
+
     const navLinks = [
         { name: "Home", href: "#home" },
         { name: "RealMe", href: "#about" },
-        { name: "Portfolio", href: "#portfolio" },
-        { name: "Core Arsenal", href: "#resume" },
+        { name: "Projects", href: "#portfolio" },
+        { name: "Mini Projects", href: "#mini-projects" },
+        { name: "Certifications", href: "#certifications" },
         { name: "Contact", href: "#contact" },
     ];
 
@@ -38,7 +51,7 @@ function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     </button>
 
                     {/* Navigation Links */}
-                    <nav className="flex flex-col gap-6 sm:gap-8 md:gap-12 text-center">
+                    <nav className="flex flex-col gap-4 sm:gap-6 md:gap-8 text-center px-4 max-h-[85vh] overflow-y-auto no-scrollbar">
                         {navLinks.map((link, i) => (
                             <motion.div
                                 key={link.name}
@@ -50,7 +63,7 @@ function FullscreenMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                                     <motion.span
                                         whileHover={{ scale: 1.15, x: 15, color: "#000075" }}
                                         transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                                        className="inline-block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-sans text-white tracking-tighter cursor-pointer"
+                                        className="inline-block text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-sans text-white tracking-tighter cursor-pointer uppercase"
                                     >
                                         {link.name}
                                     </motion.span>
@@ -112,6 +125,16 @@ export default function Navbar() {
 
             {/* Fullscreen Menu - rendered via portal to document.body */}
             <FullscreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
+            <style jsx global>{`
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
         </>
     );
 }

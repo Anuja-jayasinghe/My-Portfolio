@@ -203,7 +203,7 @@ export default function Contact() {
                                                         name="name"
                                                         required
                                                         disabled={status === "sending"}
-                                                        className="w-full bg-gray-900 border border-white/5 rounded-sm px-4 py-4 text-blue-400 font-mono text-xs focus:outline-none focus:border-blue-500/50 transition-all placeholder:text-gray-700 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]"
+                                                        className="w-full bg-gray-200 border border-gray-300 rounded-sm px-4 py-4 text-accent font-mono font-bold text-xs focus:outline-none focus:border-accent transition-all placeholder:text-gray-400 shadow-inner"
                                                         placeholder="ENTER_SENDER_IDENTITY..."
                                                     />
                                                     <div className="absolute inset-x-0 bottom-0 h-[1px] bg-blue-500 scale-x-0 group-focus-within/field:scale-x-100 transition-transform duration-500" />
@@ -220,7 +220,7 @@ export default function Contact() {
                                                         name="email"
                                                         required
                                                         disabled={status === "sending"}
-                                                        className="w-full bg-gray-900 border border-white/5 rounded-sm px-4 py-4 text-blue-400 font-mono text-xs focus:outline-none focus:border-blue-500/50 transition-all placeholder:text-gray-700 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]"
+                                                        className="w-full bg-gray-200 border border-gray-300 rounded-sm px-4 py-4 text-accent font-mono font-bold text-xs focus:outline-none focus:border-accent transition-all placeholder:text-gray-400 shadow-inner"
                                                         placeholder="ENTER_CONTACT_UPLINK..."
                                                     />
                                                     <div className="absolute inset-x-0 bottom-0 h-[1px] bg-blue-500 scale-x-0 group-focus-within/field:scale-x-100 transition-transform duration-500" />
@@ -239,7 +239,7 @@ export default function Contact() {
                                                     rows={5}
                                                     required
                                                     disabled={status === "sending"}
-                                                    className="w-full bg-gray-900 border border-white/5 rounded-sm px-4 py-4 text-blue-400 font-mono text-xs focus:outline-none focus:border-blue-500/50 transition-all resize-none placeholder:text-gray-700 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]"
+                                                    className="w-full bg-gray-200 border border-gray-300 rounded-sm px-4 py-4 text-accent font-mono font-bold text-xs focus:outline-none focus:border-accent transition-all resize-none placeholder:text-gray-400 shadow-inner"
                                                     placeholder="ENCODE_YOUR_MESSAGE_HERE..."
                                                 />
                                                 <div className="absolute inset-x-0 bottom-0 h-[1px] bg-blue-500 scale-x-0 group-focus-within/field:scale-x-100 transition-transform duration-500" />

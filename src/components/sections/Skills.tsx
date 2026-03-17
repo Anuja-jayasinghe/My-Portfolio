@@ -60,7 +60,7 @@ export default function Skills() {
             </div>
 
             {/* Certifications Server Rack */}
-            <div className="mt-16 sm:mt-24 w-full flex justify-center">
+            <div id="certifications" className="mt-16 sm:mt-24 w-full flex justify-center">
                 <ServerRack />
             </div>
         </section>

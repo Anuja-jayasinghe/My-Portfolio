@@ -111,7 +111,7 @@ export default function Portfolio() {
             </div>
 
             {/* Terminal One Container - full width on mobile, constrained on desktop */}
-            <div className="w-full px-4 sm:px-8 md:px-16 lg:px-24 pb-8">
+            <div id="mini-projects" className="w-full px-4 sm:px-8 md:px-16 lg:px-24 pb-8">
                 <TerminalOne />
             </div>
         </section>
