@@ -1,0 +1,114 @@
+[
+    {
+        "id": "payledger",
+        "title": "PayLedger",
+        "type": "featured",
+        "description": "A comprehensive financial tracking system featuring bill management, public dashboards, and automated email summaries.",
+        "techStack": ["Next.js", "Supabase", "TypeScript", "Tailwind CSS"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/PayLedger",
+        "liveUrl": "https://payledger.anujajay.com",
+        "imagePath": "/projects/payledger1.png"
+    },
+    {
+        "id": "solaredge",
+        "title": "SolarEdge Analytics",
+        "type": "featured",
+        "description": "Real-time solar energy monitoring dashboard with OCR-based CEB bill management and API integration.",
+        "techStack": ["Vite", "Supabase", "Chart.js", "SolarEdge API", "Tesseract.js"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/Solar-Analytics-Dashboard",
+        "liveUrl": "https://solaredge.anujajay.com",
+        "imagePath": "/projects/solaredge1.png"
+    },
+    {
+        "id": "componentops",
+        "title": "ComponentOps",
+        "type": "featured",
+        "description": "A collection of reusable, motion-enhanced UI components for rapid frontend development.",
+        "techStack": ["React", "Tailwind CSS", "Framer Motion", "JavaScript"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/React-Components-Library",
+        "liveUrl": "https://componentops.anujajay.com",
+        "imagePath": "/projects/componentops1.png"
+    },
+    {
+        "id": "checkms",
+        "title": "CheckMS",
+        "type": "featured",
+        "description": "A professional check portfolio manager for tracking and organizing LKR financial transactions.",
+        "techStack": ["Next.js", "Neon Postgres", "Tailwind CSS", "TypeScript"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/CheckMS",
+        "liveUrl": "https://checkms.anujajay.com",
+        "imagePath": "/projects/checkms1.png"
+    },
+    {
+        "id": "nic-detail",
+        "title": "NIC Detail Extractor",
+        "type": "mini",
+        "description": "Extracts birthdate, gender, and age from SL NIC numbers using custom regex logic.",
+        "techStack": ["Python", "JS"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/NIC-detailExtracter"
+    },
+    {
+        "id": "mouse-active",
+        "title": "Mouse Auto-Active",
+        "type": "mini",
+        "description": "Keeps computer sessions active by simulating periodic mouse movement.",
+        "techStack": ["Python", "PyAutoGUI"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/Mouse-auto-active"
+    },
+    {
+        "id": "ceb-management",
+        "title": "CEB Management",
+        "type": "mini",
+        "description": "Manages and calculates electricity consumption based on CEB rates.",
+        "techStack": ["JS", "Firebase"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/CEB_Management"
+    },
+    {
+        "id": "jaysync-lab",
+        "title": "JaySync-Lab",
+        "type": "mini",
+        "description": "Home lab for media automation and network security via Pi-hole and tunneling.",
+        "techStack": ["Proxmox", "Docker"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/JaySync-Lab"
+    },
+    {
+        "id": "project-mgmt",
+        "title": "Project Management",
+        "type": "mini",
+        "description": "Backend system for managing software development lifecycles and tasks.",
+        "techStack": ["Java", "MySQL"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/Project-manegement-system"
+    },
+    {
+        "id": "hangman",
+        "title": "Hangman",
+        "type": "mini",
+        "description": "Classic word-guessing game built with vanilla JavaScript and DOM manipulation.",
+        "techStack": ["JS", "HTML", "CSS"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/HangMan"
+    },
+    {
+        "id": "ranking-calc",
+        "title": "Ranking Calculator",
+        "type": "mini",
+        "description": "Calculates and sorts student rankings based on weighted module scores.",
+        "techStack": ["Python"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/Python-ranking-calculator"
+    },
+    {
+        "id": "js-calculator",
+        "title": "JS Calculator",
+        "type": "mini",
+        "description": "A clean, functional calculator built with vanilla HTML, CSS and JavaScript.",
+        "techStack": ["HTML", "CSS", "JS"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/Simple_JS_Calculator"
+    },
+    {
+        "id": "ecoaction",
+        "title": "EcoAction",
+        "type": "mini",
+        "description": "Environmental awareness platform promoting sustainable community actions.",
+        "techStack": ["HTML", "CSS", "JS"],
+        "repoUrl": "https://github.com/Anuja-jayasinghe/EcoAction"
+    }
+]

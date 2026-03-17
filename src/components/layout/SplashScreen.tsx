@@ -1,34 +1,31 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import AnimatedLogo from "./AnimatedLogo";
 
-type Phase = "intro" | "move" | "done";
+type Phase = "intro" | "done";
 
 export default function SplashScreen() {
     const [phase, setPhase] = useState<Phase>("intro");
 
     useEffect(() => {
-        // Phase 1: Show logo centered for 2s
-        const moveTimer = setTimeout(() => setPhase("move"), 2000);
-        // Phase 2: Logo moves toward navbar and fades out, done after 4s total
-        const doneTimer = setTimeout(() => setPhase("done"), 4500);
+        // Logo animation takes about ~3 seconds total (1.5 pathLength, 0.8 fill delay starts at 1.2)
+        // Keep splash screen for 3.5s total before unmounting
+        const doneTimer = setTimeout(() => setPhase("done"), 3500);
         return () => {
-            clearTimeout(moveTimer);
             clearTimeout(doneTimer);
         };
     }, []);
 
-    if (phase === "done") return null;
-
     return (
         <AnimatePresence>
-            {phase && (
+            {phase === "intro" && (
                 <motion.div
-                    initial={{ opacity: 1 }}
-                    animate={{ opacity: phase === "move" ? 0 : 1 }}
-                    transition={{ duration: 1.5, delay: phase === "move" ? 0.5 : 0, ease: "easeInOut" }}
-                    className="fixed inset-0 z-[150] pointer-events-none" style={{ backgroundColor: '#00001A' }}
+                    initial={{ y: 0 }}
+                    exit={{ y: "-100%" }}
+                    transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }} // Elegant ease out curtain effect
+                    className="fixed inset-0 z-[150] pointer-events-none flex flex-col justify-center items-center" 
+                    style={{ backgroundColor: '#00001A' }}
                 >
                     <motion.div
                         initial={{
@@ -37,42 +34,27 @@ export default function SplashScreen() {
                             left: "50%",
                             x: "-50%",
                             y: "-50%",
-                            scale: 0.8,
-                            opacity: 0,
+                            scale: 0.9,
+                            opacity: 1,
                         }}
-                        animate={
-                            phase === "intro"
-                                ? {
-                                    top: "50%",
-                                    left: "50%",
-                                    x: "-50%",
-                                    y: "-50%",
-                                    scale: 1,
-                                    opacity: 1,
-                                }
-                                : {
-                                    top: "20%",
-                                    left: "30%",
-                                    x: "-50%",
-                                    y: "-50%",
-                                    scale: 0.45,
-                                    opacity: 0,
-                                }
-                        }
-                        transition={
-                            phase === "intro"
-                                ? { duration: 1.2, ease: "easeOut" }
-                                : { duration: 2.0, ease: [0.25, 0.1, 0.25, 1] }
-                        }
-                        className="z-[151]"
+                        animate={{
+                            scale: 1,
+                        }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="z-[151] w-[300px] md:w-[450px]"
                     >
-                        <Image
-                            src="/logo-white.svg"
-                            alt="Anuja Logo"
-                            width={400}
-                            height={130}
-                            priority
-                            className="object-contain"
+                        <AnimatedLogo className="w-full h-auto drop-shadow-2xl" />
+                    </motion.div>
+
+                    {/* Loading indicator line optional, elegant */}
+                    <motion.div
+                        className="absolute bottom-20 w-48 h-[2px] bg-white/20 rounded-full overflow-hidden"
+                    >
+                        <motion.div 
+                            className="h-full bg-white/80"
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 3.2, ease: "easeInOut" }}
                         />
                     </motion.div>
                 </motion.div>

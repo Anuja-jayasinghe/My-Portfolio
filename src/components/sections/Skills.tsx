@@ -1,3 +1,4 @@
+import ServerRack from "../ui/ServerRack";
 const row1 = [
     "react/react-original", "nextjs/nextjs-original", "tailwindcss/tailwindcss-original",
     "html5/html5-original", "css3/css3-original", "javascript/javascript-original",
@@ -47,7 +48,7 @@ export default function Skills() {
                         </p>
                     </div>
 
-                    <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap text-sm sm:text-base">
+                    <a href="/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded hover:bg-accent transition-colors font-bold font-mono whitespace-nowrap text-sm sm:text-base">
                         View Full Resume
                     </a>
                 </div>
@@ -56,6 +57,11 @@ export default function Skills() {
             <div className="w-full flex flex-col gap-8 sm:gap-12 pointer-events-none md:pointer-events-auto">
                 <MarqueeRow icons={row1} />
                 <MarqueeRow icons={row2} reverse />
+            </div>
+
+            {/* Certifications Server Rack */}
+            <div id="certifications" className="mt-16 sm:mt-24 w-full flex justify-center">
+                <ServerRack />
             </div>
         </section>
     );

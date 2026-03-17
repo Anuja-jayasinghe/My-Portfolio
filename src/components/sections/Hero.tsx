@@ -14,7 +14,7 @@ export default function Hero() {
                         <a href="#portfolio" className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded hover:bg-accent hover:text-white transition-colors font-bold font-mono">
                             View Work
                         </a>
-                        <a href="/dir/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="border border-black text-black px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded hover:border-accent hover:text-accent transition-colors font-bold font-mono">
+                        <a href="/Anuja_CV.pdf" target="_blank" rel="noopener noreferrer" className="border border-black text-black px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded hover:border-accent hover:text-accent transition-colors font-bold font-mono">
                             Resume
                         </a>
                     </div>
