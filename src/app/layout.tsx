@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "Anuja Jayasinghe Portfolio",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Anuja Jayasinghe portfolio preview",
