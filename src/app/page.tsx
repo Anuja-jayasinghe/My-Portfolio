@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import SplashScreen from "@/components/layout/SplashScreen";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
@@ -6,6 +7,19 @@ import Portfolio from "@/components/sections/Portfolio";
 import Skills from "@/components/sections/Skills";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
+
+export function generateMetadata(): Metadata {
+  return {
+    title: {
+      absolute: "Anuja Jayasinghe | Software Engineer",
+    },
+    description:
+      "Explore Anuja Jayasinghe's portfolio featuring software projects, technical skills, and professional achievements.",
+    alternates: {
+      canonical: "/",
+    },
+  };
+}
 
 export default function Home() {
   return (

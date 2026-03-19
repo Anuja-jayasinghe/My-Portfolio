@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-    title: "Anuja Jayasinghe | Resume",
-    description: "Download or view the resume of Anuja Jayasinghe.",
-    icons: [
-        {
-            media: "(prefers-color-scheme: light)",
-            url: "/logo-black.svg",
-            href: "/logo-black.svg",
-            type: "image/svg+xml",
+export function generateMetadata(): Metadata {
+    return {
+        title: "Resume",
+        description: "Download or view the resume of Anuja Jayasinghe.",
+        alternates: {
+            canonical: "/dir/Anuja_CV.pdf",
         },
-        {
-            media: "(prefers-color-scheme: dark)",
-            url: "/logo-white.svg",
-            href: "/logo-white.svg",
-            type: "image/svg+xml",
-        },
-    ],
-};
+    };
+}
 
 export default function ResumeRenderer() {
     return (
