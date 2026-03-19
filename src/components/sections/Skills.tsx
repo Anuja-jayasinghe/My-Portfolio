@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ServerRack from "../ui/ServerRack";
 const row1 = [
     "react/react-original", "nextjs/nextjs-original", "tailwindcss/tailwindcss-original",
@@ -15,10 +16,12 @@ function MarqueeRow({ icons, reverse = false }: { icons: string[], reverse?: boo
     const content = (
         <div className={`flex gap-16 items-center justify-around min-w-full shrink-0 ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
             {icons.map((icon, idx) => (
-                <img
+                <Image
                     key={idx}
                     src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}.svg`}
                     alt="Tech Logo"
+                    width={80}
+                    height={80}
                     className="w-16 h-16 md:w-20 md:h-20 object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
             ))}
