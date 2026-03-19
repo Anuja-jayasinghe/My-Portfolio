@@ -10,7 +10,9 @@ import Footer from "@/components/layout/Footer";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Portfolio",
+    title: {
+      absolute: "Anuja Jayasinghe | Software Engineer",
+    },
     description:
       "Explore Anuja Jayasinghe's portfolio featuring software projects, technical skills, and professional achievements.",
     alternates: {
