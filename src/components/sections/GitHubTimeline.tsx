@@ -210,11 +210,11 @@ export function GitHubTimeline({
       {/* Header */}
       <div className="space-y-2">
         <h3 className="text-2xl font-bold text-foreground">
-          GitHub Contributions
+          Development Activity
         </h3>
         <p className="text-sm text-gray-600">
           {new Date(contributions[0]?.date).getFullYear()} - today{" "}
-          — Your contribution heatmap over time
+          — Contribution heatmap showing my GitHub activity
         </p>
       </div>
 
