@@ -227,6 +227,20 @@ export function GitHubTimeline({
           ref={innerRef}
           className="inline-flex gap-[3px]"
         >
+          {/* Day labels column */}
+          <div className="flex flex-col pr-1 select-none">
+            <div className="h-3.5" /> {/* Month label row spacer */}
+            <div className="flex flex-col gap-[3px] text-[8px] text-gray-400">
+              <span className="h-[10px] flex items-center"></span> {/* Sun */}
+              <span className="h-[10px] flex items-center">Mon</span>
+              <span className="h-[10px] flex items-center"></span> {/* Tue */}
+              <span className="h-[10px] flex items-center">Wed</span>
+              <span className="h-[10px] flex items-center"></span> {/* Thu */}
+              <span className="h-[10px] flex items-center">Fri</span>
+              <span className="h-[10px] flex items-center"></span> {/* Sat */}
+            </div>
+          </div>
+
           {weeks.map((week, weekIdx) => (
             <div key={weekIdx} className="flex flex-col" style={{ gap: "3px" }}>
               {/* Month / Year label row */}
