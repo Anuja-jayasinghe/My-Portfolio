@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, useMotionValue, useAnimation } from "framer-motion";
 import { getContributionLevel } from "@/lib/github-contributions";
 
 interface ContributionDay {
@@ -34,37 +34,96 @@ const ACCENT_COLORS = {
   4: "#000075",
 };
 
+const MONTH_NAMES = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+interface WeekWithMeta {
+  days: ContributionDay[];
+  monthLabel?: string;
+  yearLabel?: string;
+  isFirstWeekOfYear?: boolean;
+}
+
 /**
  * Organizes contributions into weeks (Sunday-Saturday)
  */
-function organizeIntoWeeks(contributions: ContributionDay[]): ContributionDay[][] {
+function organizeIntoWeeks(contributions: ContributionDay[]): WeekWithMeta[] {
   if (!contributions.length) return [];
 
-  const weeks: ContributionDay[][] = [];
+  const weeks: WeekWithMeta[] = [];
   let currentWeek: ContributionDay[] = [];
-  let currentWeekStart: number | null = null;
+  let lastWeekKey: string | null = null;
+  let lastSeenMonth = -1;
+  let lastSeenYear = -1;
+
+  const flush = (monthLabel?: string, yearLabel?: string, isFirstWeekOfYear?: boolean) => {
+    if (currentWeek.length > 0) {
+      weeks.push({ days: currentWeek, monthLabel, yearLabel, isFirstWeekOfYear });
+      currentWeek = [];
+    }
+  };
 
   contributions.forEach((day) => {
     const date = new Date(day.date);
-    const weekStart = date.getDate() - date.getDay();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const startOfYear = new Date(year, 0, 1);
+    const weekNum = Math.ceil(
+      ((date.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7
+    );
+    const weekKey = `${year}-${weekNum}`;
 
-    if (currentWeekStart === null) {
-      currentWeekStart = weekStart;
+    if (lastWeekKey === null) {
+      lastWeekKey = weekKey;
+      lastSeenMonth = month;
+      lastSeenYear = year;
     }
 
-    // If we've moved to a new week, save the current one
-    if (weekStart !== currentWeekStart && currentWeek.length > 0) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-      currentWeekStart = weekStart;
+    if (weekKey !== lastWeekKey) {
+      const firstDay = currentWeek[0] ? new Date(currentWeek[0].date) : null;
+      let monthLabel: string | undefined;
+      let yearLabel: string | undefined;
+      let isFirstWeekOfYear: boolean | undefined;
+
+      if (firstDay) {
+        const fm = firstDay.getMonth();
+        const fy = firstDay.getFullYear();
+        if (fy !== lastSeenYear) {
+          yearLabel = String(fy);
+          isFirstWeekOfYear = true;
+          lastSeenYear = fy;
+          lastSeenMonth = fm;
+          monthLabel = MONTH_NAMES[fm];
+        } else if (fm !== lastSeenMonth) {
+          monthLabel = MONTH_NAMES[fm];
+          lastSeenMonth = fm;
+        }
+      }
+
+      flush(monthLabel, yearLabel, isFirstWeekOfYear);
+      lastWeekKey = weekKey;
     }
 
     currentWeek.push(day);
   });
 
-  // Add the last week
   if (currentWeek.length > 0) {
-    weeks.push(currentWeek);
+    const firstDay = new Date(currentWeek[0]!.date);
+    const fm = firstDay.getMonth();
+    const fy = firstDay.getFullYear();
+    let monthLabel: string | undefined;
+    let yearLabel: string | undefined;
+    let isFirstWeekOfYear: boolean | undefined;
+    if (fy !== lastSeenYear) {
+      yearLabel = String(fy);
+      isFirstWeekOfYear = true;
+      monthLabel = MONTH_NAMES[fm];
+    } else if (fm !== lastSeenMonth) {
+      monthLabel = MONTH_NAMES[fm];
+    }
+    flush(monthLabel, yearLabel, isFirstWeekOfYear);
   }
 
   return weeks;
@@ -75,7 +134,7 @@ function organizeIntoWeeks(contributions: ContributionDay[]): ContributionDay[][
  */
 function ContributionSquare({ day }: { day?: ContributionDay }) {
   if (!day) {
-    return <div className="h-3 w-3 rounded-sm bg-gray-50" />;
+    return <div className="h-5 w-5 rounded-sm bg-gray-50" />;
   }
 
   const level = getContributionLevel(day.contributionCount);
@@ -93,7 +152,7 @@ function ContributionSquare({ day }: { day?: ContributionDay }) {
 
   return (
     <div
-      className={`group relative h-3 w-3 cursor-pointer rounded-sm ${color} ${hoverColor}`}
+      className={`group relative h-5 w-5 cursor-pointer rounded-sm ${color} ${hoverColor}`}
       title={`${day.contributionCount} contributions on ${formattedDate}`}
     >
       {/* Tooltip */}
@@ -114,10 +173,18 @@ export function GitHubTimeline({
 }: GitHubTimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
+  const x = useMotionValue(0);
+  const controls = useAnimation();
+  const [dragBounds, setDragBounds] = useState({ left: 0, right: 0 });
+  const isDragging = useRef(false);
 
-  // Organize contributions into weeks
-  const weeks = organizeIntoWeeks(contributions);
+  // Filter out future contributions
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  const nonFutureContributions = contributions.filter(
+    (d) => new Date(d.date) <= today
+  );
+  const weeks = organizeIntoWeeks(nonFutureContributions);
 
   // Calculate stats
   const totalContributions = contributions.reduce(
@@ -127,23 +194,42 @@ export function GitHubTimeline({
   const maxStreak = calculateMaxStreak(contributions);
   const currentStreak = calculateCurrentStreak(contributions);
 
-  // Scroll to the right on mount (most recent data) and calculate constraints
+  // Update bounds and jump to right end on load
   useEffect(() => {
-    if (containerRef.current && innerRef.current) {
-      const scrollWidth =
-        innerRef.current.scrollWidth - containerRef.current.clientWidth;
-      containerRef.current.scrollLeft = scrollWidth;
+    const updateBounds = () => {
+      if (containerRef.current && innerRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const contentWidth = innerRef.current.scrollWidth;
+        const maxLeft = -(contentWidth - containerWidth + 32);
+        const bounds = { left: maxLeft, right: 0 };
+        setDragBounds(bounds);
+        x.set(maxLeft); // jump to right end on load
+      }
+    };
+    updateBounds();
+    window.addEventListener("resize", updateBounds);
+    return () => window.removeEventListener("resize", updateBounds);
+  }, [weeks, x]);
 
-      // Calculate drag constraints
-      const containerWidth = containerRef.current.offsetWidth;
-      const contentWidth = innerRef.current.offsetWidth;
-
-      setDragConstraints({
-        left: -(contentWidth - containerWidth),
-        right: 0,
-      });
+  const handleDragEnd = useCallback(() => {
+    isDragging.current = false;
+    const currentX = x.get();
+    const clamped = Math.min(0, Math.max(dragBounds.left, currentX));
+    if (clamped !== currentX) {
+      controls.start({ x: clamped, transition: { type: "spring", stiffness: 300, damping: 30 } });
     }
-  }, [weeks]);
+  }, [x, dragBounds, controls]);
+
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        const next = Math.min(0, Math.max(dragBounds.left, x.get() - e.deltaX));
+        x.set(next);
+      }
+    },
+    [x, dragBounds]
+  );
 
   return (
     <div className="w-full space-y-6">
@@ -162,28 +248,60 @@ export function GitHubTimeline({
       {/* Draggable contribution grid */}
       <div
         ref={containerRef}
-        className="w-full overflow-x-hidden rounded-lg border border-gray-200 bg-white p-4 cursor-grab active:cursor-grabbing"
+        className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white px-4 pb-4 pt-2 cursor-grab active:cursor-grabbing select-none"
+        onWheel={handleWheel}
       >
         <motion.div
           ref={innerRef}
           drag="x"
-          dragConstraints={dragConstraints}
-          dragElastic={0.2}
-          dragTransition={{
-            power: 0.3,
-            restDelta: 10,
-          }}
-          className="inline-flex gap-1 will-change-transform"
+          dragConstraints={dragBounds}
+          dragElastic={0.08}
+          dragMomentum={true}
+          dragTransition={{ power: 0.2, timeConstant: 180, restDelta: 0.5 }}
+          style={{ x }}
+          animate={controls}
+          onDragStart={() => { isDragging.current = true; }}
+          onDragEnd={handleDragEnd}
+          className="inline-flex gap-2 will-change-transform"
         >
           {weeks.map((week, weekIdx) => (
-            <div key={weekIdx} className="flex flex-col gap-1">
-              {/* Ensure 7 days per week */}
-              {Array.from({ length: 7 }).map((_, dayIdx) => (
-                <ContributionSquare
-                  key={`${weekIdx}-${dayIdx}`}
-                  day={week[dayIdx]}
+            <div key={weekIdx} className="flex flex-col" style={{ gap: "0.5rem" }}>
+              {/* Month / Year label row */}
+              <div className="h-5 flex items-end pb-1">
+                {week.yearLabel ? (
+                  <span className="text-[9px] font-bold text-blue-700 tracking-wide leading-none whitespace-nowrap">
+                    {week.yearLabel}
+                  </span>
+                ) : week.monthLabel ? (
+                  <span className="text-[9px] font-semibold text-gray-500 leading-none whitespace-nowrap">
+                    {week.monthLabel}
+                  </span>
+                ) : null}
+              </div>
+
+              {/* Year divider line */}
+              {week.isFirstWeekOfYear && weekIdx !== 0 && (
+                <div
+                  className="absolute"
+                  style={{
+                    width: 1,
+                    height: 7 * 20 + 6 * 8 + 20,
+                    backgroundColor: "#93c5fd",
+                    opacity: 0.6,
+                    marginTop: 20,
+                  }}
                 />
-              ))}
+              )}
+
+              {/* Day squares */}
+              <div className="flex flex-col gap-2">
+                {Array.from({ length: 7 }).map((_, dayIdx) => (
+                  <ContributionSquare
+                    key={`${weekIdx}-${dayIdx}`}
+                    day={week.days[dayIdx]}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </motion.div>

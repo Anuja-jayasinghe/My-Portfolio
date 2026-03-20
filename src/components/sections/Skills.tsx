@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ServerRack from "../ui/ServerRack";
+import { GitHubTimelineServer } from "./GitHubTimelineServer";
 const row1 = [
     "react/react-original", "nextjs/nextjs-original", "tailwindcss/tailwindcss-original",
     "html5/html5-original", "css3/css3-original", "javascript/javascript-original",
@@ -60,6 +61,13 @@ export default function Skills() {
             <div className="w-full flex flex-col gap-8 sm:gap-12 pointer-events-none md:pointer-events-auto">
                 <MarqueeRow icons={row1} />
                 <MarqueeRow icons={row2} reverse />
+            </div>
+
+            {/* GitHub Contribution Timeline */}
+            <div className="mt-16 sm:mt-24 w-full px-4 sm:px-6">
+                <div className="container mx-auto">
+                    <GitHubTimelineServer username="Anuja-jayasinghe" years={[2024, 2025, 2026]} />
+                </div>
             </div>
 
             {/* Certifications Server Rack */}

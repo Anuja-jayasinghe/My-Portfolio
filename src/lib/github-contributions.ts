@@ -27,10 +27,18 @@ interface GitHubContributionResponse {
 }
 
 const GITHUB_API_URL = "https://api.github.com/graphql";
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-if (!GITHUB_TOKEN) {
-  throw new Error("GITHUB_TOKEN environment variable is not set");
+/**
+ * Gets GitHub token from environment, throws if not found
+ */
+function getGitHubToken(): string {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    throw new Error(
+      "GITHUB_TOKEN environment variable is not set. Please add it to .env.local"
+    );
+  }
+  return token;
 }
 
 /**
@@ -68,12 +76,13 @@ async function fetchYearContributions(
   username: string
 ): Promise<ContributionDay[]> {
   const query = buildContributionQuery(year, username);
+  const token = getGitHubToken();
 
   const response = await fetch(GITHUB_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ query }),
     next: { revalidate: 3600 }, // Cache for 1 hour

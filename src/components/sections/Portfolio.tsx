@@ -1,6 +1,5 @@
 import projectsData from "../../data/projects.json";
 import TerminalOne from "../ui/TerminalOne";
-import { GitHubTimelineServer } from "./GitHubTimelineServer";
 import PortfolioFeaturedCard from "./PortfolioFeaturedCard";
 
 
@@ -15,11 +14,6 @@ export default function Portfolio() {
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono mb-12 sm:mb-20 flex items-center gap-3 sm:gap-4 text-black">
                     <span className="text-accent">02.</span> Selected Work
                 </h2>
-
-                {/* GitHub Contribution Timeline */}
-                <div className="mb-16 sm:mb-24 md:mb-32 pb-8 border-b border-gray-200">
-                    <GitHubTimelineServer username="Anuja-jayasinghe" years={[2024, 2025, 2026]} />
-                </div>
 
                 {/* Featured Projects - Alternating Layout */}
                 <div className="flex flex-col gap-16 sm:gap-24 md:gap-32 mb-16 sm:mb-28">
