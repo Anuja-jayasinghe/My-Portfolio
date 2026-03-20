@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, useMotionValue, useAnimation } from "framer-motion";
+import { useRef, useEffect } from "react";
 import { getContributionLevel } from "@/lib/github-contributions";
 
 interface ContributionDay {
@@ -12,6 +11,8 @@ interface ContributionDay {
 
 interface GitHubTimelineProps {
   contributions: ContributionDay[];
+  totalCommits?: number;
+  totalStars?: number;
 }
 
 /**
@@ -170,13 +171,11 @@ function ContributionSquare({ day }: { day?: ContributionDay }) {
  */
 export function GitHubTimeline({
   contributions,
+  totalCommits: passedTotalCommits,
+  totalStars: passedTotalStars,
 }: GitHubTimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const controls = useAnimation();
-  const [dragBounds, setDragBounds] = useState({ left: 0, right: 0 });
-  const isDragging = useRef(false);
 
   // Filter out future contributions
   const today = new Date();
@@ -187,49 +186,24 @@ export function GitHubTimeline({
   const weeks = organizeIntoWeeks(nonFutureContributions);
 
   // Calculate stats
-  const totalContributions = contributions.reduce(
+  const totalCommits = passedTotalCommits ?? contributions.reduce(
     (sum, day) => sum + day.contributionCount,
     0
   );
   const maxStreak = calculateMaxStreak(contributions);
-  const currentStreak = calculateCurrentStreak(contributions);
+  const totalStars = passedTotalStars ?? 0;
 
-  // Update bounds and jump to right end on load
+  // Scroll to the right (most recent) on mount
   useEffect(() => {
-    const updateBounds = () => {
-      if (containerRef.current && innerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        const contentWidth = innerRef.current.scrollWidth;
-        const maxLeft = -(contentWidth - containerWidth + 32);
-        const bounds = { left: maxLeft, right: 0 };
-        setDragBounds(bounds);
-        x.set(maxLeft); // jump to right end on load
-      }
-    };
-    updateBounds();
-    window.addEventListener("resize", updateBounds);
-    return () => window.removeEventListener("resize", updateBounds);
-  }, [weeks, x]);
-
-  const handleDragEnd = useCallback(() => {
-    isDragging.current = false;
-    const currentX = x.get();
-    const clamped = Math.min(0, Math.max(dragBounds.left, currentX));
-    if (clamped !== currentX) {
-      controls.start({ x: clamped, transition: { type: "spring", stiffness: 300, damping: 30 } });
+    if (containerRef.current && innerRef.current) {
+      // Use setTimeout to ensure DOM is fully painted
+      setTimeout(() => {
+        if (containerRef.current && innerRef.current) {
+          containerRef.current.scrollLeft = innerRef.current.scrollWidth;
+        }
+      }, 0);
     }
-  }, [x, dragBounds, controls]);
-
-  const handleWheel = useCallback(
-    (e: React.WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        e.preventDefault();
-        const next = Math.min(0, Math.max(dragBounds.left, x.get() - e.deltaX));
-        x.set(next);
-      }
-    },
-    [x, dragBounds]
-  );
+  }, []);
 
   return (
     <div className="w-full space-y-6">
@@ -239,30 +213,19 @@ export function GitHubTimeline({
           GitHub Contributions
         </h3>
         <p className="text-sm text-gray-600">
-          {new Date(contributions[0]?.date).getFullYear()} -{" "}
-          {new Date(contributions[contributions.length - 1]?.date).getFullYear()}{" "}
-          — Drag to explore your contribution history
+          {new Date(contributions[0]?.date).getFullYear()} - today{" "}
+          — Your contribution heatmap over time
         </p>
       </div>
 
-      {/* Draggable contribution grid */}
+      {/* Contribution grid */}
       <div
         ref={containerRef}
-        className="w-full overflow-hidden rounded-lg border border-gray-200 bg-white px-4 pb-4 pt-2 cursor-grab active:cursor-grabbing select-none"
-        onWheel={handleWheel}
+        className="w-full overflow-x-auto rounded-lg border border-gray-200 bg-white px-4 pb-4 pt-2 contribution-scrollbar"
       >
-        <motion.div
+        <div
           ref={innerRef}
-          drag="x"
-          dragConstraints={dragBounds}
-          dragElastic={0.08}
-          dragMomentum={true}
-          dragTransition={{ power: 0.2, timeConstant: 180, restDelta: 0.5 }}
-          style={{ x }}
-          animate={controls}
-          onDragStart={() => { isDragging.current = true; }}
-          onDragEnd={handleDragEnd}
-          className="inline-flex gap-2 will-change-transform"
+          className="inline-flex gap-2"
         >
           {weeks.map((week, weekIdx) => (
             <div key={weekIdx} className="flex flex-col" style={{ gap: "0.5rem" }}>
@@ -304,17 +267,17 @@ export function GitHubTimeline({
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Stats section */}
       <div className="grid grid-cols-3 gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
         <div className="space-y-1">
           <p className="text-xs font-semibold uppercase text-gray-600 tracking-wide">
-            Total
+            Total Contributions
           </p>
           <p className="text-2xl font-bold text-accent">
-            {totalContributions.toLocaleString()}
+            {totalCommits.toLocaleString()}
           </p>
         </div>
         <div className="space-y-1">
@@ -325,9 +288,9 @@ export function GitHubTimeline({
         </div>
         <div className="space-y-1">
           <p className="text-xs font-semibold uppercase text-gray-600 tracking-wide">
-            Current Streak
+            Total Stars
           </p>
-          <p className="text-2xl font-bold text-accent">{currentStreak}</p>
+          <p className="text-2xl font-bold text-accent">{totalStars}</p>
         </div>
       </div>
 
@@ -366,22 +329,4 @@ function calculateMaxStreak(contributions: ContributionDay[]): number {
   });
 
   return maxStreak;
-}
-
-/**
- * Calculate current contribution streak (from most recent date)
- */
-function calculateCurrentStreak(contributions: ContributionDay[]): number {
-  let streak = 0;
-
-  // Iterate from the end (most recent)
-  for (let i = contributions.length - 1; i >= 0; i--) {
-    if (contributions[i]!.contributionCount > 0) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
 }

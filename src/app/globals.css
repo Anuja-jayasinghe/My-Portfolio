@@ -14,10 +14,15 @@
   --accent: var(--color-accent-blue);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
 /* Custom utilities */
@@ -59,4 +64,30 @@ body {
 
 .animate-marquee-reverse {
   animation: marquee-reverse 40s linear infinite;
+}
+
+/* Scrollbar styling for GitHub contribution chart */
+.contribution-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.contribution-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.contribution-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 2px;
+}
+
+.contribution-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  min-width: 20px;
+}
+
+.contribution-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #0000a3;
 }

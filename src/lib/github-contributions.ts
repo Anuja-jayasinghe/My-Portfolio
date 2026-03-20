@@ -155,6 +155,74 @@ export async function fetchGitHubContributions(
 }
 
 /**
+ * Fetches user stats including total contributions and starred repositories
+ * Total contributions calculated from commit contributions
+ */
+export async function fetchGitHubStats(username: string): Promise<{
+  totalCommits: number;
+  totalStars: number;
+}> {
+  const query = `
+    query {
+      user(login: "${username}") {
+        contributionsCollection {
+          totalCommitContributions
+        }
+        repositories(first: 100, isFork: false) {
+          nodes {
+            stargazerCount
+          }
+        }
+      }
+    }
+  `;
+
+  const token = getGitHubToken();
+  const response = await fetch(GITHUB_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ query }),
+    next: { revalidate: 3600 }, // Cache for 1 hour
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `GitHub API error: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data = (await response.json()) as {
+    data?: {
+      user: {
+        contributionsCollection: { totalCommitContributions: number };
+        repositories: { nodes: Array<{ stargazerCount: number }> };
+      };
+    };
+    errors?: Array<{ message: string }>;
+  };
+
+  if (data.errors) {
+    throw new Error(`GitHub GraphQL error: ${data.errors[0]?.message}`);
+  }
+
+  const user = data.data?.user;
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const totalCommits = user.contributionsCollection.totalCommitContributions;
+  const totalStars = user.repositories.nodes.reduce(
+    (sum, repo) => sum + repo.stargazerCount,
+    0
+  );
+
+  return { totalCommits, totalStars };
+}
+
+/**
  * Get contribution intensity level (0-4) for color coding
  */
 export function getContributionLevel(count: number): number {

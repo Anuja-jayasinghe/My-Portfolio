@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { fetchGitHubContributions } from "@/lib/github-contributions";
+import { fetchGitHubContributions, fetchGitHubStats } from "@/lib/github-contributions";
 import { GitHubTimeline } from "./GitHubTimeline";
 import { GitHubTimelineSkeleton } from "../ui/GitHubTimelineSkeleton";
 
@@ -45,10 +45,14 @@ async function GitHubTimelineContent({
   years = [2024, 2025, 2026],
 }: GitHubTimelineServerProps) {
   let contributions;
+  let stats;
   let error: Error | null = null;
 
   try {
-    contributions = await fetchGitHubContributions(username, years);
+    [contributions, stats] = await Promise.all([
+      fetchGitHubContributions(username, years),
+      fetchGitHubStats(username),
+    ]);
   } catch (err) {
     error = err instanceof Error ? err : new Error(String(err));
   }
@@ -61,7 +65,13 @@ async function GitHubTimelineContent({
     return <EmptyState />;
   }
 
-  return <GitHubTimeline contributions={contributions} />;
+  return (
+    <GitHubTimeline
+      contributions={contributions}
+      totalCommits={stats?.totalCommits}
+      totalStars={stats?.totalStars}
+    />
+  );
 }
 
 /**

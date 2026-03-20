@@ -170,7 +170,7 @@ Desktop (1024px+):   Full width with constraints
 ```tsx
 <GitHubTimelineServer 
   username="Anuja-jayasinghe"
-  years={[2023, 2024, 2025, 2026]}  // ← Add years as needed
+  years={[2024, 2025, 2026]}  // ← Add years as needed
 />
 ```
 
