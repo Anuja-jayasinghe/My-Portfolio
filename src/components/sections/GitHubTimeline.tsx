@@ -135,7 +135,7 @@ function organizeIntoWeeks(contributions: ContributionDay[]): WeekWithMeta[] {
  */
 function ContributionSquare({ day }: { day?: ContributionDay }) {
   if (!day) {
-    return <div className="h-5 w-5 rounded-sm bg-gray-50" />;
+    return <div className="h-[10px] w-[10px] rounded-[2px] bg-gray-50" />;
   }
 
   const level = getContributionLevel(day.contributionCount);
@@ -153,11 +153,11 @@ function ContributionSquare({ day }: { day?: ContributionDay }) {
 
   return (
     <div
-      className={`group relative h-5 w-5 cursor-pointer rounded-sm ${color} ${hoverColor}`}
+      className={`group relative h-[10px] w-[10px] cursor-pointer rounded-[2px] ${color} ${hoverColor} hover:z-50`}
       title={`${day.contributionCount} contributions on ${formattedDate}`}
     >
       {/* Tooltip */}
-      <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 z-10">
+      <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[9px] text-white opacity-0 transition-opacity group-hover:opacity-100 z-10 shadow-lg">
         {day.contributionCount} {day.contributionCount === 1 ? "contribution" : "contributions"}
         <br />
         <span className="text-gray-300">{formattedDate}</span>
@@ -225,12 +225,12 @@ export function GitHubTimeline({
       >
         <div
           ref={innerRef}
-          className="inline-flex gap-2"
+          className="inline-flex gap-[3px]"
         >
           {weeks.map((week, weekIdx) => (
-            <div key={weekIdx} className="flex flex-col" style={{ gap: "0.5rem" }}>
+            <div key={weekIdx} className="flex flex-col" style={{ gap: "3px" }}>
               {/* Month / Year label row */}
-              <div className="h-5 flex items-end pb-1">
+              <div className="h-3.5 flex items-end pb-0.5">
                 {week.yearLabel ? (
                   <span className="text-[9px] font-bold text-blue-700 tracking-wide leading-none whitespace-nowrap">
                     {week.yearLabel}
@@ -248,16 +248,16 @@ export function GitHubTimeline({
                   className="absolute"
                   style={{
                     width: 1,
-                    height: 7 * 20 + 6 * 8 + 20,
+                    height: 7 * 10 + 6 * 3 + 14,
                     backgroundColor: "#93c5fd",
                     opacity: 0.6,
-                    marginTop: 20,
+                    marginTop: 14,
                   }}
                 />
               )}
 
               {/* Day squares */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-[3px]">
                 {Array.from({ length: 7 }).map((_, dayIdx) => (
                   <ContributionSquare
                     key={`${weekIdx}-${dayIdx}`}
