@@ -48,9 +48,12 @@ interface Project {
 - `videoPath` — if present, the featured card renders a muted, looped,
   autoplay `<video>` in place of the static image. If absent, behavior is
   unchanged (falls back to `imagePath`, then the existing "[No Image]"
-  state). No video assets are produced in this round — this is schema +
-  component support only, so videos can be dropped in later per project
-  without further code changes.
+  state). This applies to **all** featured cards, not just JaySync-Lab — a
+  static screenshot isn't enough to represent this level of work, and every
+  featured project should eventually get a short video intro. No video
+  assets are produced in this round — this is schema + component support
+  only, so videos can be dropped in later per project without further code
+  changes.
 - `secondaryLink` — renders as a third icon/button on featured cards
   (alongside the existing Code/Live icons), for projects that have more than
   one meaningful destination. Generic and reusable, not JaySync-Lab-specific.
@@ -165,8 +168,8 @@ used elsewhere in `TerminalOne.tsx`).
   silently.
 - Confirm the Maporia SL repo URL to link if `MaporaSL_Mobile` isn't the
   preferred one.
-- Supply video clips for featured projects at some point after this ships
-  (schema/component will already support them).
+- Supply video clips for all 5 featured projects at some point after this
+  ships (schema/component will already support them).
 
 ## 9. Explicitly out of scope
 
