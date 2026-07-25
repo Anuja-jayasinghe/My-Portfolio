@@ -26,11 +26,21 @@ fixes needed to ship it at a professional-grade bar.
 
 ## 2. Data schema changes
 
-`src/data/projects.json` entries (and the `Project` interface duplicated in
-`PortfolioFeaturedCard.tsx` and `TerminalOne.tsx`) gain two new optional
-fields:
+A static screenshot isn't enough to represent this level of work. Featured
+projects move from a single `imagePath` to an ordered **media gallery** that
+can mix images and videos, browsable via a thumbnail strip / prev-next
+controls on the card. Mini projects (Terminal One) keep the existing
+single-asset model — a gallery UI doesn't fit that hover/click panel, and
+`imagePath` there already gets the GitHub-banner fallback (§6.1).
 
 ```ts
+interface MediaItem {
+  type: "image" | "video";
+  src: string;
+  poster?: string;   // video only — still frame shown before playback/load
+  alt: string;
+}
+
 interface Project {
   id: string;
   title: string;
@@ -39,21 +49,25 @@ interface Project {
   techStack: string[];
   repoUrl: string;
   liveUrl?: string;
-  imagePath?: string;
-  videoPath?: string;                              // NEW
-  secondaryLink?: { label: string; url: string };   // NEW
+  imagePath?: string;                                // mini projects only
+  media?: MediaItem[];                                // NEW — featured projects
+  secondaryLink?: { label: string; url: string };     // NEW
 }
 ```
 
-- `videoPath` — if present, the featured card renders a muted, looped,
-  autoplay `<video>` in place of the static image. If absent, behavior is
-  unchanged (falls back to `imagePath`, then the existing "[No Image]"
-  state). This applies to **all** featured cards, not just JaySync-Lab — a
-  static screenshot isn't enough to represent this level of work, and every
-  featured project should eventually get a short video intro. No video
-  assets are produced in this round — this is schema + component support
-  only, so videos can be dropped in later per project without further code
-  changes.
+- `media` — ordered list of gallery items for a featured card. First item is
+  shown by default. Videos render muted/looped/autoplay/`playsInline` with
+  `preload="metadata"` and their `poster` frame shown immediately (no
+  waiting on video download for first paint); images render via `next/image`
+  with a `sizes` attribute tuned to the card's actual rendered width at each
+  breakpoint, so the browser fetches an appropriately-sized file rather than
+  the full source. If a project has only one media item, the card renders it
+  without gallery controls (no dead UI for the common case). If `media` is
+  absent, the card falls back to the existing "[No Image]" state.
+- At ship time, every featured project gets a `media` array with exactly one
+  image item (the existing screenshots, reshaped into the new format) —
+  the gallery UI is built and ready, but multi-item galleries and video
+  clips are populated by the user afterward, project by project.
 - `secondaryLink` — renders as a third icon/button on featured cards
   (alongside the existing Code/Live icons), for projects that have more than
   one meaningful destination. Generic and reusable, not JaySync-Lab-specific.
@@ -75,8 +89,8 @@ interface Project {
    - Description covers the homelab (Proxmox, Docker, Tailscale, Pi-hole,
      Jellyfin, ArrStack) and calls out that visitors can interact with real
      hardware via the playground.
-   - `imagePath`: to be supplied by the user before ship; component already
-     falls back gracefully if absent.
+   - `media`: single-image item to be supplied by the user before ship; the
+     card already falls back gracefully if absent.
 
 ## 4. Mini projects ("Terminal One")
 
@@ -127,6 +141,10 @@ asset work and applies automatically to all current and future mini
 projects that lack a screenshot. A custom `imagePath`, when present,
 still takes priority over the GitHub banner.
 
+Requires adding `opengraph.githubassets.com` to `images.remotePatterns` in
+`next.config.ts` (currently only `cdn.jsdelivr.net` is allowlisted) —
+otherwise `next/image` rejects the remote URL at request time.
+
 Additionally, polish the true-empty-state (banner fails to load, e.g. a
 private repo) into an intentional terminal-styled placeholder, replacing
 the current plain "[Null_Asset_Record]" box with something more designed
@@ -141,7 +159,58 @@ used elsewhere in `TerminalOne.tsx`).
   10ms step so the default (non-skipped) animation resolves noticeably
   faster, especially for longer manifests.
 
-## 7. SEO layer
+## 7. Sitewide performance optimization
+
+The user asked for this to cover the *entire* site, not just the new project
+media, so it's audited as a distinct pass. Current-state findings (via
+direct inspection):
+
+- Four existing project screenshots are large source PNGs (208KB–648KB).
+  `next/image` re-encodes to AVIF/WebP and resizes per-request, but a
+  smaller, properly-compressed source still reduces origin bandwidth and
+  the worst-case first-load size before the optimizer cache is warm.
+- No component on the site uses `next/dynamic` — everything, including
+  heavy below-the-fold interactive pieces (`TerminalOne`'s CRT/typewriter
+  effects, `ServerRack`), ships in the initial JS bundle even though users
+  may never scroll to them.
+- The logo SVGs are unusually heavy for "signature-style text" assets
+  (`logo-black2.svg` / `logo-white2.svg` at 104KB each, others at ~40KB) —
+  almost certainly unoptimized editor exports (embedded metadata, excess
+  path precision) rather than genuinely complex artwork.
+- `next/font/google` is already in use for both typefaces (self-hosted,
+  subsetted automatically by Next) — this is already best-practice, no
+  change needed.
+
+Planned work:
+
+- **Image compression**: re-export the 4 existing project screenshots at
+  reasonable dimensions/compression before committing new ones alongside
+  them (this becomes the baseline for all future project screenshots too).
+- **Responsive `sizes`**: audit every `next/image` usage (featured cards,
+  Terminal One, gallery items) and set a `sizes` attribute matching the
+  actual rendered width at each breakpoint, so the browser/CDN never
+  fetches a desktop-sized file on mobile.
+- **Video delivery discipline**: compressed H.264 mp4 (short clips), always
+  paired with a `poster` image, `preload="metadata"`, and mounted only when
+  the containing card is in/near the viewport (avoid N autoplaying videos
+  loading simultaneously on initial page load).
+- **Code-splitting**: dynamically import `TerminalOne` (and any other
+  heavy, below-the-fold, non-critical-for-LCP component) via `next/dynamic`
+  so its JS isn't part of the initial bundle for a visitor who never
+  scrolls that far.
+- **SVG cleanup**: run the logo SVGs through an optimizer (SVGO) to strip
+  editor cruft and reduce file size — same visual output, faster fetch.
+- **Lazy-loading consistency**: confirm every below-the-fold image
+  explicitly uses `loading="lazy"` (already true in some places) and that
+  only genuinely above-the-fold assets are eager/`priority`.
+- **OG/Twitter image check**: verify `opengraph-image.png` /
+  `twitter-image.tsx` still reflect current branding/content — quick
+  correctness check, not a redesign.
+
+Out of scope for this pass: CDN/hosting migration, font strategy changes
+(already optimal), and any framework/build-tool changes.
+
+## 8. SEO layer
 
 - **JSON-LD structured data**: add `Person` schema (name, jobTitle, url,
   sameAs → GitHub + LinkedIn profile URLs) and `WebSite` schema, rendered on
@@ -157,7 +226,7 @@ used elsewhere in `TerminalOne.tsx`).
 - **Out of scope**: no new sitemap URLs — the site remains a single page
   with no per-project routes, so no additional sitemap entries are needed.
 
-## 8. Action items for the user (outside this codebase)
+## 9. Action items for the user (outside this codebase)
 
 - Make `check-management-system` public (or confirm a different final URL)
   so the CheckMS GitHub link resolves.
@@ -168,13 +237,18 @@ used elsewhere in `TerminalOne.tsx`).
   silently.
 - Confirm the Maporia SL repo URL to link if `MaporaSL_Mobile` isn't the
   preferred one.
-- Supply video clips for all 5 featured projects at some point after this
-  ships (schema/component will already support them).
+- Supply additional gallery items (more images, video clips) for featured
+  projects at some point after this ships — the gallery UI and schema will
+  already support them, one item at a time, no further code changes needed.
 
-## 9. Explicitly out of scope
+## 10. Explicitly out of scope
 
-- Producing actual video assets for featured projects (schema/component
-  support only).
+- Producing actual video assets or additional gallery images for featured
+  projects (schema/component support only — ships with one image per
+  project).
+- Device-specific image crops (mobile vs. desktop) — one crop, scaled
+  responsively.
 - Splitting Maporia SL into two separate project cards.
 - Featuring Medicare-Project or DueMate.
 - Any new routed pages / sitemap URLs.
+- CDN/hosting migration, font-loading strategy changes, build-tool changes.
