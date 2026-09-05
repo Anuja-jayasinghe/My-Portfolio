@@ -66,9 +66,11 @@ export const metadata: Metadata = {
     images: ["/twitter-image"],
   },
   icons: {
+    // .ico first: Vercel's dashboard favicon and most link-preview crawlers
+    // don't reliably render SVG favicons and just take the first icon link.
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
     apple: [{ url: "/apple-icon" }],
     other: [
