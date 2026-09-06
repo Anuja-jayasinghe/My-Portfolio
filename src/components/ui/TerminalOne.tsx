@@ -5,17 +5,7 @@ import { ExternalLink, Github, FolderCode, Terminal, FileCode2, ChevronRight, Ch
 import { motion, AnimatePresence } from "framer-motion";
 import projectsData from "../../data/projects.json";
 import { getOptimizedImagePath } from "@/lib/image-utils";
-
-interface Project {
-  id: string;
-  title: string;
-  type: string;
-  description: string;
-  techStack: string[];
-  repoUrl: string;
-  liveUrl?: string;
-  imagePath?: string;
-}
+import type { Project } from "@/types/project";
 
 export default function TerminalOne() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);

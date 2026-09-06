@@ -3,17 +3,7 @@
 import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
 import { motion } from "framer-motion";
-
-interface Project {
-  id: string;
-  title: string;
-  type: string;
-  description: string;
-  techStack: string[];
-  repoUrl: string;
-  liveUrl?: string;
-  imagePath?: string;
-}
+import type { Project } from "@/types/project";
 
 export default function PortfolioFeaturedCard({
   project,
