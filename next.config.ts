@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
       },
+      {
+        protocol: "https",
+        hostname: "opengraph.githubassets.com",
+      },
     ],
   },
   async redirects() {
