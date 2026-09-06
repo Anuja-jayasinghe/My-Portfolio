@@ -3,6 +3,7 @@ import { Turret_Road, Numans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import GoToTopButton from "@/components/ui/GoToTopButton";
+import { getPersonJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 const siteUrl =
@@ -36,6 +37,11 @@ export const metadata: Metadata = {
     "Web Development",
     "Next.js",
     "React",
+    "Flutter",
+    "Dart",
+    "Homelab",
+    "Proxmox",
+    "IoT",
   ],
   authors: [{ name: "Anuja Jayasinghe" }],
   creator: "Anuja Jayasinghe",
@@ -93,11 +99,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = [getPersonJsonLd(siteUrl), getWebsiteJsonLd(siteUrl)];
+
   return (
     <html lang="en" className="scroll-smooth">
       <body
         className={`${numans.variable} ${turretRoad.variable} font-sans antialiased bg-white text-black min-h-screen flex flex-col`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
         <Analytics />
         <SpeedInsights />
