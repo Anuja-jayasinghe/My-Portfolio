@@ -49,7 +49,7 @@ export default function PortfolioFeaturedCard({
                 href={project.liveUrl || project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full h-full"
+                className="relative block w-full h-full"
               >
                 <Image
                   src={activeMedia.src}
