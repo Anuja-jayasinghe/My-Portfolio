@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl.replace(/\/$/, "");
   // Use a fixed date rather than new Date() so lastModified only changes
   // when content actually changes — prevents unnecessary recrawls.
-  const siteLastModified = new Date("2026-06-26");
+  const siteLastModified = new Date("2026-09-06");
 
   return [
     {

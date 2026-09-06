@@ -1,6 +1,12 @@
 import Image from "next/image";
-import ServerRack from "../ui/ServerRack";
+import dynamic from "next/dynamic";
 import { GitHubTimelineServer } from "./GitHubTimelineServer";
+
+const ServerRack = dynamic(() => import("../ui/ServerRack"), {
+    loading: () => (
+        <div className="w-full h-64 rounded-lg bg-gray-100 border border-black/10 animate-pulse" />
+    ),
+});
 const row1 = [
     "react/react-original", "nextjs/nextjs-original", "tailwindcss/tailwindcss-original",
     "html5/html5-original", "css3/css3-original", "javascript/javascript-original",

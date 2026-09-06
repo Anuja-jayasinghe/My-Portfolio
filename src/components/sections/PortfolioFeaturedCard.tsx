@@ -1,19 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Link2 } from "lucide-react";
 import { motion } from "framer-motion";
-
-interface Project {
-  id: string;
-  title: string;
-  type: string;
-  description: string;
-  techStack: string[];
-  repoUrl: string;
-  liveUrl?: string;
-  imagePath?: string;
-}
+import type { Project } from "@/types/project";
 
 export default function PortfolioFeaturedCard({
   project,
@@ -23,6 +14,9 @@ export default function PortfolioFeaturedCard({
   index: number;
 }) {
   const isEven = index % 2 === 0;
+  const media = project.media ?? [];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeMedia = media[activeIndex];
 
   return (
     <motion.div
@@ -34,31 +28,64 @@ export default function PortfolioFeaturedCard({
         isEven ? "md:flex-row" : "md:flex-row-reverse"
       } gap-6 sm:gap-8 md:gap-12 items-center group`}
     >
-      {/* Screenshot */}
+      {/* Media gallery */}
       <div className="w-full md:w-3/5 relative overflow-hidden rounded-lg border border-black/10">
-        <a
-          href={project.liveUrl || project.repoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block"
-        >
-          <div className="relative aspect-video overflow-hidden">
-            {project.imagePath ? (
-              <Image
-                src={project.imagePath}
-                alt={`${project.title} screenshot`}
-                fill
-                className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
+        <div className="relative aspect-video overflow-hidden">
+          {activeMedia ? (
+            activeMedia.type === "video" ? (
+              <video
+                key={activeMedia.src}
+                src={activeMedia.src}
+                poster={activeMedia.poster}
+                className="absolute inset-0 w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
               />
             ) : (
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center font-mono text-gray-400">
-                [No Image]
-              </div>
-            )}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+              <a
+                href={project.liveUrl || project.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block w-full h-full"
+              >
+                <Image
+                  src={activeMedia.src}
+                  alt={activeMedia.alt}
+                  fill
+                  sizes="(min-width: 768px) 60vw, 100vw"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  priority={index === 0}
+                  loading={index === 0 ? undefined : "lazy"}
+                />
+              </a>
+            )
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center font-mono text-gray-400">
+              [No Image]
+            </div>
+          )}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
+        </div>
+
+        {media.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            {media.map((item, i) => (
+              <button
+                key={item.src}
+                type="button"
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Show media ${i + 1} of ${media.length}`}
+                aria-current={i === activeIndex}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  i === activeIndex ? "bg-white" : "bg-white/40"
+                }`}
+              />
+            ))}
           </div>
-        </a>
+        )}
       </div>
 
       {/* Details */}
@@ -107,6 +134,16 @@ export default function PortfolioFeaturedCard({
               className="text-black hover:text-accent transition-colors flex items-center gap-2 text-sm font-bold font-mono"
             >
               <ExternalLink className="w-5 h-5" /> Live
+            </a>
+          )}
+          {project.secondaryLink && (
+            <a
+              href={project.secondaryLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black hover:text-accent transition-colors flex items-center gap-2 text-sm font-bold font-mono"
+            >
+              <Link2 className="w-5 h-5" /> {project.secondaryLink.label}
             </a>
           )}
         </div>

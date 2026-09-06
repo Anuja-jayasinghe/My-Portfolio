@@ -1,31 +1,24 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ExternalLink, Github, FolderCode, Terminal, FileCode2, ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import projectsData from "../../data/projects.json";
-import { getOptimizedImagePath } from "@/lib/image-utils";
-
-interface Project {
-  id: string;
-  title: string;
-  type: string;
-  description: string;
-  techStack: string[];
-  repoUrl: string;
-  liveUrl?: string;
-  imagePath?: string;
-}
+import type { Project } from "@/types/project";
+import { getGithubBannerUrl } from "./terminal-one-helpers";
 
 export default function TerminalOne() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [lockedProjectId, setLockedProjectId] = useState<string | null>(null);
   const [typedOutput, setTypedOutput] = useState<string>("");
   const [isTyping, setIsTyping] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const [expandedDirs, setExpandedDirs] = useState<Record<string, boolean>>({ "tools": true, "web": true });
   const [isMobile, setIsMobile] = useState(false);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const currentPayloadRef = useRef<string>("");
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
@@ -35,10 +28,10 @@ export default function TerminalOne() {
   }, []);
 
   const miniProjects = projectsData.filter((p) => p.type === "mini");
-  
+
   // Logical Grouping
-  const TOOLS_IDS = ["nic-detail", "mouse-active", "ceb-management", "ranking-calc", "js-calculator", "project-mgmt"];
-  const WEB_IDS = ["hangman", "ecoaction", "jaysync-lab"];
+  const TOOLS_IDS = ["nic-detail", "mouse-active", "ceb-management", "ranking-calc", "js-calculator", "project-mgmt", "chess-academy"];
+  const WEB_IDS = ["hangman", "ecoaction", "maporia-sl", "jaysync-playground"];
 
   const groupedProjects = {
     tools: miniProjects.filter(p => TOOLS_IDS.includes(p.id)),
@@ -48,7 +41,7 @@ export default function TerminalOne() {
   const handleMouseEnter = (project: Project) => {
     if (lockedProjectId) return;
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    
+
     debounceTimer.current = setTimeout(() => {
       setActiveProject(project);
     }, 200);
@@ -74,7 +67,16 @@ export default function TerminalOne() {
     setExpandedDirs(prev => ({ ...prev, [dir]: !prev[dir] }));
   };
 
+  const handleSkipTyping = () => {
+    if (!isTyping) return;
+    if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
+    setTypedOutput(currentPayloadRef.current);
+    setIsTyping(false);
+  };
+
   useEffect(() => {
+    setImageFailed(false);
+
     if (!activeProject) {
       setTypedOutput("");
       return;
@@ -97,6 +99,7 @@ export default function TerminalOne() {
       `[EOF]`,
       ` `,
     ].join("\n");
+    currentPayloadRef.current = payload;
 
     let currentIdx = 0;
     const interval = setInterval(() => {
@@ -106,10 +109,15 @@ export default function TerminalOne() {
         setIsTyping(false);
         clearInterval(interval);
       }
-    }, 10);
+    }, 4);
+    typingIntervalRef.current = interval;
 
     return () => clearInterval(interval);
   }, [activeProject]);
+
+  const resolvedImageSrc = activeProject
+    ? activeProject.imagePath ?? getGithubBannerUrl(activeProject.repoUrl)
+    : null;
 
   return (
     <div className="w-full max-w-[1200px] mx-auto rounded-lg overflow-hidden border border-black/10 flex flex-col font-mono text-sm shadow-2xl bg-gray-100">
@@ -129,7 +137,7 @@ export default function TerminalOne() {
       </div>
 
       <div className="flex flex-col md:flex-row relative">
-        
+
         {/* Sidebar: File Explorer */}
         <div className="w-full md:w-64 bg-gray-200 border-b md:border-b-0 md:border-r border-black/10 flex flex-col shrink-0 z-10">
           <div className="p-3 text-[10px] font-bold text-gray-400 tracking-widest flex items-center gap-2 uppercase border-b border-black/10">
@@ -141,17 +149,17 @@ export default function TerminalOne() {
           <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible py-2 custom-scrollbar no-scrollbar-md">
             {Object.entries(groupedProjects).map(([dir, items]) => (
               <div key={dir} className="flex flex-row md:flex-col shrink-0 md:shrink-1 items-center md:items-stretch border-r md:border-r-0 border-black/5 last:border-r-0">
-                <button 
+                <button
                   onClick={() => toggleDir(dir)}
                   className="flex items-center gap-1.5 px-3 py-1 text-gray-500 hover:text-gray-700 text-[10px] md:text-xs transition-colors shrink-0 whitespace-nowrap"
                 >
                   {expandedDirs[dir] ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                   <span className="uppercase tracking-tighter font-black">📁 {dir}/</span>
                 </button>
-                
+
                 <AnimatePresence initial={false}>
                   {(expandedDirs[dir] || isMobile) && (
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -185,7 +193,7 @@ export default function TerminalOne() {
 
         {/* Main Window: Terminal Output */}
         <div className="flex-1 bg-gray-900 flex flex-col min-h-[350px] md:min-h-[500px] relative overflow-hidden">
-          
+
           {/* CRT Overlay Effects */}
           <div className="absolute inset-0 pointer-events-none z-20">
             {/* Scanlines */}
@@ -196,7 +204,10 @@ export default function TerminalOne() {
             <div className="absolute inset-0 opacity-[0.015] bg-white animate-flicker pointer-events-none" />
           </div>
 
-          <div className="p-4 md:p-8 flex-1 overflow-y-auto relative z-10 custom-scrollbar">
+          <div
+            className={`p-4 md:p-8 flex-1 overflow-y-auto relative z-10 custom-scrollbar ${isTyping ? "cursor-pointer" : ""}`}
+            onClick={handleSkipTyping}
+          >
             {!activeProject ? (
               <div className="h-full flex flex-col justify-center items-center select-none gap-4">
                 <Terminal className="w-16 h-16 text-green-500/10 animate-pulse" />
@@ -228,6 +239,11 @@ export default function TerminalOne() {
                     <span className="inline-block w-2.5 h-4 ml-1 bg-blue-500 animate-terminal-cursor align-middle shadow-[0_0_8px_#3b82f6]" />
                   )}
                 </pre>
+                {isTyping && (
+                  <span className="block text-[9px] text-gray-600 uppercase tracking-widest -mt-6 mb-6 select-none">
+                    click to skip
+                  </span>
+                )}
 
                 {/* Post-typing actions: Assets & Links */}
                 <AnimatePresence>
@@ -237,20 +253,23 @@ export default function TerminalOne() {
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-6 flex flex-col md:flex-row gap-8 py-6 border-t border-white/5"
                     >
-                      {activeProject.imagePath ? (
+                      {resolvedImageSrc && !imageFailed ? (
                         <div className="relative w-full md:w-64 overflow-hidden rounded border border-white/10 shrink-0 aspect-video group/img">
                           <Image
-                            src={getOptimizedImagePath(activeProject.imagePath)}
+                            src={resolvedImageSrc}
                             alt={activeProject.title}
                             fill
+                            sizes="256px"
                             className="object-cover opacity-70 group-hover/img:opacity-100 transition-opacity duration-500"
                             loading="lazy"
+                            onError={() => setImageFailed(true)}
                           />
                           <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay" />
                         </div>
                       ) : (
-                        <div className="w-full md:w-64 h-36 bg-white/[0.05] rounded border border-white/5 flex items-center justify-center text-gray-500 italic text-[10px] shrink-0 uppercase tracking-widest">
-                          [ Null_Asset_Record ]
+                        <div className="relative w-full md:w-64 h-36 bg-white/[0.05] rounded border border-white/5 flex items-center justify-center text-gray-500 text-[10px] shrink-0 uppercase tracking-widest overflow-hidden">
+                          <div className="absolute inset-0 opacity-[0.08] bg-[repeating-linear-gradient(0deg,#fff_0px,#fff_1px,transparent_1px,transparent_3px)]" />
+                          <span className="italic relative z-10">[ Null_Asset_Record ]</span>
                         </div>
                       )}
 

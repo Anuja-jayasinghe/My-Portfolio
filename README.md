@@ -7,7 +7,7 @@ This is a personal asset, not a template for others to clone and run — this RE
 ## ✨ Highlights
 
 - **Data-driven, not hardcoded** - Projects (`src/data/projects.json`) and certificates (`src/data/certificates.json`) are stored as structured data and rendered by components, so adding a project or cert doesn't touch layout code.
-- **Live GitHub contribution graph** - `src/app/api/github/route.ts` queries the GitHub GraphQL API for real contribution data, cached for an hour, and rendered as an interactive timeline (`GitHubTimeline.tsx`).
+- **Live GitHub contribution graph** - `src/lib/github-contributions.ts` queries the GitHub GraphQL API for real contribution data server-side, cached for an hour, and rendered as an interactive timeline (`GitHubTimelineServer.tsx` → `GitHubTimeline.tsx`).
 - **`/cv` and `/resume` shortcuts** - Both permanently redirect straight to the CV PDF, via Next.js's built-in `redirects()` config (`next.config.ts`), so anyone can jump to my resume without hunting for a link.
 - **Splash screen + smooth animations** - Framer Motion powers the entry animation and interactions throughout.
 - **Fully responsive** - Mobile-friendly navbar, layout, and sections.
@@ -33,7 +33,6 @@ My-Portfolio/
 │   └── projects/           # Project images and assets
 ├── src/
 │   ├── app/
-│   │   ├── api/github/     # GitHub contributions API route
 │   │   ├── dir/             # Resume viewer route
 │   │   ├── layout.tsx       # Root layout
 │   │   ├── page.tsx         # Main page
@@ -46,9 +45,8 @@ My-Portfolio/
 │   │   ├── projects.json     # Project content
 │   │   └── certificates.json # Certificate content
 │   └── lib/
-│       └── github-contributions.ts
-├── portfolio_data.md        # Source content notes
-└── questionnaire.md         # Design requirements
+│       └── github-contributions.ts  # Server-side GitHub GraphQL fetch
+└── docs/notes/               # Source content notes, design requirements
 ```
 
 ## 📦 Featured Projects
@@ -63,7 +61,6 @@ Full project data lives in [`src/data/projects.json`](src/data/projects.json).
 ## 🔗 Notable Routes
 
 - `/cv` and `/resume` → permanent redirect to the CV PDF
-- `/api/github` → live GitHub contribution data (GraphQL, 1-hour cache)
 
 ## 📧 Contact
 

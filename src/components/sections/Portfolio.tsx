@@ -1,6 +1,12 @@
+import dynamic from "next/dynamic";
 import projectsData from "../../data/projects.json";
-import TerminalOne from "../ui/TerminalOne";
 import PortfolioFeaturedCard from "./PortfolioFeaturedCard";
+
+const TerminalOne = dynamic(() => import("../ui/TerminalOne"), {
+    loading: () => (
+        <div className="w-full max-w-[1200px] mx-auto h-[500px] rounded-lg bg-gray-100 border border-black/10 animate-pulse" />
+    ),
+});
 
 
 
