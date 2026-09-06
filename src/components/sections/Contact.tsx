@@ -2,7 +2,6 @@
 import { useState, FormEvent, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Terminal,
   Send,
   Wifi,
   Cpu,
@@ -10,7 +9,6 @@ import {
   Mail,
   Github,
   Linkedin,
-  Twitter,
   ChevronRight,
   Database
 } from "lucide-react";
