@@ -5,13 +5,7 @@ import { ExternalLink, Github, FolderCode, Terminal, FileCode2, ChevronRight, Ch
 import { motion, AnimatePresence } from "framer-motion";
 import projectsData from "../../data/projects.json";
 import type { Project } from "@/types/project";
-
-function getGithubBannerUrl(repoUrl: string): string | null {
-  const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/i);
-  if (!match) return null;
-  const [, owner, repo] = match;
-  return `https://opengraph.githubassets.com/1/${owner}/${repo}`;
-}
+import { getGithubBannerUrl } from "./terminal-one-helpers";
 
 export default function TerminalOne() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
