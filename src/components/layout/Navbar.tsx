@@ -130,10 +130,10 @@ export default function Navbar() {
                         <div className={`hidden sm:flex items-center gap-6 mr-2 transition-all duration-300 ${
                             scrolled ? "opacity-0 pointer-events-none" : "opacity-100"
                         }`}>
-                            <Link href="https://github.com/Anuja-jayasinghe" target="_blank" className="text-black hover:text-accent transition-colors">
+                            <Link href="https://github.com/Anuja-jayasinghe" target="_blank" rel="noopener noreferrer" className="text-black hover:text-accent transition-colors">
                                 <Github className="w-6 h-6" />
                             </Link>
-                            <Link href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" className="text-black hover:text-accent transition-colors">
+                            <Link href="https://linkedin.com/in/anuja-jayasinghe" target="_blank" rel="noopener noreferrer" className="text-black hover:text-accent transition-colors">
                                 <Linkedin className="w-6 h-6" />
                             </Link>
                             <Link href="mailto:anujajayasinhe@gmail.com" className="text-black hover:text-accent transition-colors">
